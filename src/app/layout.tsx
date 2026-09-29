@@ -17,8 +17,22 @@ const playfair = Playfair_Display({
   style: ["normal", "italic"],
 });
 
-// Public address of the site, for absolute links in social previews. Set SITE_URL in production.
-const SITE_URL = process.env.SITE_URL ?? "http://localhost:3000";
+/**
+ * Public address of the site: metadataBase, so social previews get absolute links
+ * (og:image must be reachable by a crawler — never localhost in production).
+ *   NEXT_PUBLIC_SITE_URL / SITE_URL — set explicitly (e.g. a custom domain)
+ *   VERCEL_PROJECT_PRODUCTION_URL   — set by Vercel on every deployment: the production domain, no protocol
+ *   http://localhost:3000           — local development
+ */
+function siteUrl(): string {
+  const explicit = (process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL)?.trim();
+  if (explicit) return explicit;
+  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (vercel) return `https://${vercel}`;
+  return "http://localhost:3000";
+}
+
+const SITE_URL = siteUrl();
 
 /** Open Graph locale codes (language_TERRITORY) */
 const OG_LOCALE: Record<Locale, string> = { ru: "ru_RU", en: "en_GB", ky: "ky_KG" };
