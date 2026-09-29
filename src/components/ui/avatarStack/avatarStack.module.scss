@@ -1,0 +1,63 @@
+.stack {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
+.avatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+
+  width: var(--size);
+  height: var(--size);
+  margin-left: calc(var(--size) * -0.28);
+
+  border: 2px solid var(--color-surface);
+  border-radius: 50%;
+
+  color: var(--color-snow);
+  font-size: calc(var(--size) * 0.4);
+  font-weight: 700;
+
+  &:first-child {
+    margin-left: 0;
+  }
+}
+
+.sm {
+  --size: 30px;
+}
+
+.md {
+  --size: 36px;
+}
+
+// Tones
+.blue {
+  background: var(--color-blue);
+}
+
+.purple {
+  background: var(--color-purple);
+}
+
+.crimson {
+  background: var(--color-crimson);
+}
+
+.red {
+  background: var(--color-red);
+}
+
+.amber {
+  background: var(--color-gold);
+  color: var(--color-navy-1000);
+}
+
+.green {
+  background: var(--color-green);
+}
+
+.teal {
+  background: var(--color-teal);
+}

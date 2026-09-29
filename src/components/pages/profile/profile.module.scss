@@ -1,0 +1,711 @@
+.page {
+  display: grid;
+  gap: 28px;
+  max-width: 1080px;
+}
+
+.title {
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 48px);
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  margin-top: 6px;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+}
+
+// Small round icon button — works on the night hero and on light cards
+.iconButton {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+
+  min-width: 36px;
+  height: 36px;
+  padding: 0 8px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-text-muted);
+    background: var(--color-bg-soft);
+    color: var(--color-text);
+  }
+}
+
+.confirmDelete {
+  border-color: transparent;
+  background: var(--color-error);
+  color: var(--color-snow);
+  font-size: 13px;
+  font-weight: 700;
+
+  &:hover {
+    border-color: transparent;
+    background: var(--color-crimson-deep);
+    color: var(--color-snow);
+  }
+}
+
+.fieldError {
+  color: var(--color-error);
+  font-size: 14px;
+}
+
+// ===================== Hero (always night) =====================
+
+.hero {
+  position: relative;
+  overflow: hidden;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 32px;
+
+  padding: 36px 40px;
+
+  border: 1px solid rgb(var(--rgb-gold) / 0.2);
+  border-radius: var(--radius-2xl);
+  background:
+    radial-gradient(55% 90% at 90% 20%, rgb(var(--rgb-gold) / 0.12), transparent 70%),
+    radial-gradient(50% 80% at 0% 100%, rgb(var(--rgb-crimson) / 0.18), transparent 70%),
+    radial-gradient(40% 70% at 30% 0%, rgb(var(--rgb-purple) / 0.22), transparent 70%),
+    var(--color-navy-900);
+
+  > :not(.heroSnow) {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.heroSnow {
+  opacity: 0.7;
+}
+
+.identity {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-width: 0;
+}
+
+.heroAvatar {
+  box-shadow:
+    0 0 0 3px var(--color-navy-900),
+    0 0 0 5px var(--color-gold),
+    0 0 30px rgb(var(--rgb-gold) / 0.35);
+}
+
+.identityText {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+// Normal names wrap to a second line instead of truncating; only really long ones get "…"
+.name {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+
+  color: var(--color-snow);
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 36px);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+
+.nameForm {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.nameInput {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.heroError {
+  flex-basis: 100%;
+  color: var(--color-crimson-light);
+  font-size: 14px;
+}
+
+.email {
+  overflow-wrap: anywhere;
+  color: var(--color-text-on-dark-secondary);
+  font-size: 15px;
+}
+
+// ---------- Readiness garland ----------
+
+.readiness {
+  display: grid;
+  gap: 16px;
+  padding: 22px 24px;
+
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-glass-bg);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.readinessTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--color-gold);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.garland {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  list-style: none;
+
+  // The wire the bulbs hang on
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 12%;
+    right: 12%;
+    height: 14px;
+    border-bottom: 2px solid rgb(var(--rgb-snow) / 0.18);
+    border-radius: 0 0 50% 50%;
+  }
+}
+
+.bulb {
+  --bulb: var(--color-crimson);
+
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+
+  &:nth-child(2) {
+    --bulb: var(--color-gold);
+  }
+
+  &:nth-child(3) {
+    --bulb: var(--color-green-bright);
+  }
+}
+
+.bulbGlass {
+  position: relative;
+  display: grid;
+  place-items: center;
+
+  width: 30px;
+  height: 36px;
+  margin-top: 8px;
+
+  border-radius: 50% 50% 50% 50% / 42% 42% 58% 58%;
+  background: rgb(var(--rgb-snow) / 0.1);
+  color: var(--color-navy-900);
+  font-size: 14px;
+
+  transition:
+    background var(--transition-normal),
+    box-shadow var(--transition-normal);
+
+  // Little socket on top
+  &::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    width: 12px;
+    height: 8px;
+    border-radius: 3px 3px 1px 1px;
+    background: rgb(var(--rgb-snow) / 0.35);
+  }
+}
+
+.lit .bulbGlass {
+  background: var(--bulb);
+  box-shadow:
+    0 0 14px var(--bulb),
+    0 0 34px color-mix(in srgb, var(--bulb) 55%, transparent);
+  animation: twinkle 2.8s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.45s);
+}
+
+.bulbLabel {
+  color: var(--color-text-on-dark-secondary);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.lit .bulbLabel {
+  color: var(--color-snow);
+}
+
+.readinessText {
+  color: var(--color-text-on-dark-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+
+  50% {
+    filter: brightness(1.35);
+  }
+}
+
+// ===================== Cards =====================
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  align-items: start;
+  gap: 24px;
+}
+
+.card {
+  display: grid;
+  gap: 18px;
+  padding: 26px;
+}
+
+.cardHeader {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 14px;
+}
+
+.cardIcon {
+  display: grid;
+  place-items: center;
+
+  width: 42px;
+  height: 42px;
+
+  border-radius: var(--radius-md);
+  font-size: 20px;
+}
+
+.iconCrimson {
+  background: var(--color-red-soft);
+  color: var(--color-crimson);
+}
+
+.iconGold {
+  background: var(--color-gold-soft);
+  color: var(--color-gold-deep);
+}
+
+.cardTitle {
+  color: var(--color-text);
+  font-size: 19px;
+}
+
+.cardText {
+  margin-top: 2px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.counter {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.empty {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.inlineForm {
+  display: flex;
+  gap: 10px;
+
+  input {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+// ---------- Interests as ornaments ----------
+
+.ornaments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style: none;
+}
+
+.ornament {
+  --tone: var(--color-crimson);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 7px 8px 7px 14px;
+
+  border: 1px solid color-mix(in srgb, var(--tone) 35%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--tone) 12%, transparent);
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 600;
+
+  animation: pop 0.35s var(--ease-out-expo);
+
+  // A shiny bauble dot
+  &::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, rgb(255 255 255 / 0.9), var(--tone) 55%);
+  }
+
+  &[data-tone="1"] {
+    --tone: var(--color-gold);
+  }
+
+  &[data-tone="2"] {
+    --tone: var(--color-green);
+  }
+
+  &[data-tone="3"] {
+    --tone: var(--color-blue);
+  }
+
+  &[data-tone="4"] {
+    --tone: var(--color-purple);
+  }
+}
+
+.ornamentRemove {
+  display: grid;
+  place-items: center;
+
+  width: 22px;
+  height: 22px;
+
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 11px;
+
+  cursor: pointer;
+
+  &:hover {
+    background: color-mix(in srgb, var(--tone) 25%, transparent);
+    color: var(--color-text);
+  }
+}
+
+.suggestions {
+  display: grid;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px dashed var(--color-border);
+}
+
+.suggestionsTitle {
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.suggestionList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.suggestion {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 6px 12px;
+
+  border: 1px dashed var(--color-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    background var(--transition-fast);
+
+  svg {
+    font-size: 11px;
+  }
+
+  &:hover {
+    border-style: solid;
+    border-color: var(--color-gold);
+    background: var(--color-gold-soft);
+    color: var(--color-text);
+  }
+}
+
+// ---------- Wishlist as gift tags ----------
+
+.gifts {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+}
+
+.gift {
+  --ribbon: var(--color-crimson);
+
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  min-height: 64px;
+  padding: 14px 14px 14px 22px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-soft);
+
+  animation: pop 0.35s var(--ease-out-expo);
+
+  // Ribbon down the left edge
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 6px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--ribbon) 0 6px,
+      color-mix(in srgb, var(--ribbon) 70%, white) 6px 12px
+    );
+  }
+
+  &[data-tone="1"] {
+    --ribbon: var(--color-gold);
+  }
+
+  &[data-tone="2"] {
+    --ribbon: var(--color-green);
+  }
+}
+
+.skeleton {
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.giftBody {
+  flex: 1;
+  min-width: 0;
+}
+
+.giftTitle {
+  overflow-wrap: anywhere;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.giftMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  margin-top: 4px;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.price {
+  color: var(--color-success-text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.giftLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+
+  color: var(--color-accent-text);
+  font-size: 13px;
+  font-weight: 600;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.giftActions {
+  display: flex;
+  gap: 6px;
+}
+
+.giftEditing,
+.addPanel {
+  padding: 18px;
+  border: 1px solid var(--color-gold);
+  border-radius: var(--radius-lg);
+  background: var(--color-gold-soft);
+  box-shadow: 0 0 0 4px rgb(var(--rgb-gold) / 0.08);
+}
+
+.emptyGifts {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+
+  strong {
+    display: block;
+    color: var(--color-text);
+  }
+}
+
+.loadError {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+
+  color: var(--color-error);
+  font-size: 14px;
+}
+
+.addButton {
+  width: 100%;
+  border-style: dashed;
+}
+
+.giftForm {
+  display: grid;
+  gap: 14px;
+}
+
+.giftFormRow {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: 14px;
+}
+
+.giftFormActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+}
+
+@keyframes shimmer {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lit .bulbGlass,
+  .ornament,
+  .gift,
+  .skeleton {
+    animation: none;
+  }
+}
+
+// ===================== Responsive =====================
+
+@media (max-width: 960px) {
+  .hero,
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .hero {
+    padding: 26px 20px;
+  }
+
+  .identity {
+    gap: 16px;
+  }
+
+  .card {
+    padding: 22px 18px;
+  }
+
+  .giftFormRow {
+    grid-template-columns: 1fr;
+  }
+
+  .emptyGifts {
+    flex-direction: column;
+    text-align: center;
+  }
+}

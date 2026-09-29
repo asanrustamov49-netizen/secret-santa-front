@@ -1,0 +1,1494 @@
+// AI assistant — /ai. A night "stage" (the same midnight card as the profile and dashboard
+// heroes) opens the page; everything else sits on the app's themed surfaces.
+// Only existing tokens: colours, radii, shadows and easing all come from globals.css.
+
+// Mirror appShell.module.scss: the mobile top bar and tab bar around the page
+$topbar-height: 64px;
+$tabbar-height: 64px;
+
+// ===================== Page =====================
+
+.page {
+  display: grid;
+  grid-template-columns: 264px minmax(0, 1fr);
+  align-items: start;
+  gap: 28px;
+  max-width: 1240px;
+}
+
+.workspace {
+  min-width: 0;
+}
+
+// Shared small square button: back, history, new chat, delete
+.iconButton {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 17px;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    border-color: var(--color-glass-border-strong);
+    background: var(--color-ghost);
+    color: var(--color-text);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.iconButton,
+.contextPill,
+.quickCard,
+.chip,
+.pageHint,
+.historyItem,
+.sendButton {
+  &:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+}
+
+.mobileOnly,
+.sheetClose,
+.sheetHandle,
+.sheetBackdrop {
+  display: none;
+}
+
+// ===================== History =====================
+
+.historyColumn {
+  position: sticky;
+  top: 24px;
+}
+
+.history {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  max-height: calc(100svh - 48px);
+  padding: 14px 12px 16px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--surface-card-bg);
+  box-shadow: var(--shadow-card);
+}
+
+.historyHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 2px 0 6px;
+}
+
+.historyTitle {
+  flex: 1;
+  min-width: 0;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.historyGroup {
+  display: grid;
+  gap: 6px;
+}
+
+.historyGroupTitle {
+  padding: 0 8px;
+  color: var(--color-text-muted);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.historyNote {
+  display: grid;
+  gap: 12px;
+  padding: 4px 8px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.historySkeleton {
+  display: grid;
+  gap: 8px;
+
+  span {
+    height: 50px;
+    border-radius: var(--radius-md);
+    background: var(--color-surface-sunken);
+    animation: pulse 1.4s ease-in-out infinite;
+  }
+}
+
+.historyList {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.historyItem {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+
+  &:hover {
+    background: var(--color-ghost);
+  }
+}
+
+.historyItemIcon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+
+  border-radius: 9px;
+  background: var(--color-surface-sunken);
+  color: var(--color-text-muted);
+  font-size: 14px;
+  transition: color var(--transition-fast);
+}
+
+.historyItemText {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+
+.historyItemTitle,
+.historyItemMeta {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.historyItemTitle {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.historyItemMeta {
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.historyActive {
+  border-color: rgb(var(--rgb-gold) / 0.4);
+  background: rgb(var(--rgb-gold) / 0.1);
+
+  &:hover {
+    background: rgb(var(--rgb-gold) / 0.14);
+  }
+
+  .historyItemIcon {
+    background: rgb(var(--rgb-gold) / 0.18);
+    color: var(--color-accent-text);
+  }
+}
+
+// ===================== Start: the night stage =====================
+
+.start {
+  display: grid;
+  gap: 22px;
+}
+
+.startSkeleton {
+  min-height: 340px;
+  border-radius: var(--radius-2xl);
+  background: var(--surface-card-bg);
+  box-shadow: var(--shadow-card);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.stage {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  display: grid;
+  gap: 20px;
+  padding: 24px 32px 28px;
+
+  border: 1px solid rgb(var(--rgb-gold) / 0.22);
+  border-radius: var(--radius-2xl);
+  background:
+    radial-gradient(36% 64% at 84% 44%, rgb(var(--rgb-gold) / 0.17), transparent 72%),
+    radial-gradient(46% 80% at 6% -6%, rgb(var(--rgb-blue) / 0.3), transparent 70%),
+    radial-gradient(42% 74% at 46% 112%, rgb(var(--rgb-purple) / 0.24), transparent 72%),
+    linear-gradient(180deg, var(--color-navy-900), var(--color-navy-1000));
+  box-shadow: 0 32px 64px -34px rgb(var(--rgb-navy) / 0.75);
+  color: var(--color-text);
+  animation: rise 0.7s var(--ease-out-expo) both;
+
+  > :not(.stageSnow) {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.stageSnow {
+  opacity: 0.5;
+}
+
+.stageTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+
+  border: 1px solid rgb(var(--rgb-gold) / 0.32);
+  border-radius: 999px;
+  background: rgb(var(--rgb-gold) / 0.08);
+  color: var(--color-gold);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.stageBody {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+}
+
+.stageTitle {
+  max-width: 15ch;
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: clamp(30px, 3.3vw, 46px);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  text-shadow: var(--glow-heading);
+}
+
+.stageSubtitle {
+  max-width: 46ch;
+  margin-top: 12px;
+  color: var(--color-text-secondary);
+  font-size: 16px;
+  line-height: 1.55;
+}
+
+// The centerpiece: the brand gift inside a quiet golden halo, with one AI spark
+.halo {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 184px;
+  height: 184px;
+
+  // Two points of light, like stars caught in the rings
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  &::before {
+    bottom: 26px;
+    left: 20px;
+    width: 5px;
+    height: 5px;
+    background: var(--color-gold-light);
+    box-shadow: 0 0 10px 2px rgb(var(--rgb-gold) / 0.6);
+  }
+
+  &::after {
+    top: 34px;
+    left: 14px;
+    width: 3px;
+    height: 3px;
+    background: var(--color-snow);
+    box-shadow: 0 0 8px rgb(var(--rgb-snow) / 0.7);
+  }
+}
+
+.haloRing {
+  position: absolute;
+  inset: 22px;
+  border: 1px solid rgb(var(--rgb-gold) / 0.3);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(var(--rgb-gold) / 0.16), transparent 66%);
+}
+
+.haloRingOuter {
+  inset: 0;
+  border-color: rgb(var(--rgb-snow) / 0.09);
+  background: none;
+}
+
+.haloGift {
+  position: relative;
+  animation: gift-in 0.9s 0.15s var(--ease-out-expo) both;
+}
+
+.haloSpark {
+  position: absolute;
+  top: 26px;
+  right: 24px;
+
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+
+  border: 1px solid rgb(var(--rgb-gold) / 0.55);
+  border-radius: 50%;
+  background: var(--color-navy-800);
+  box-shadow: 0 0 18px rgb(var(--rgb-gold) / 0.45);
+  color: var(--color-gold);
+  font-size: 15px;
+}
+
+// ----- Context: what the assistant helps with -----
+
+.context {
+  display: grid;
+  gap: 10px;
+}
+
+.contextLabel {
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.contextRail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.contextPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 260px;
+  height: 38px;
+  padding: 0 14px;
+
+  border: 1px solid var(--color-glass-border-strong);
+  border-radius: 999px;
+  background: var(--color-glass-bg);
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition:
+    background var(--transition-normal),
+    border-color var(--transition-normal),
+    color var(--transition-normal);
+
+  svg {
+    flex-shrink: 0;
+    color: var(--color-gold);
+    font-size: 15px;
+    transition: color var(--transition-normal);
+  }
+
+  &:hover {
+    border-color: rgb(var(--rgb-gold) / 0.45);
+    color: var(--color-text);
+  }
+}
+
+.contextPillName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.contextPillActive {
+  border-color: var(--color-gold);
+  background: var(--color-gold);
+  color: var(--color-navy-1000);
+
+  svg {
+    color: var(--color-navy-1000);
+  }
+
+  &:hover {
+    color: var(--color-navy-1000);
+  }
+}
+
+// ----- Ribbon: what the chosen context holds -----
+
+.ribbon {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  padding: 12px 16px;
+
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  background: rgb(var(--rgb-navy) / 0.45);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: var(--color-text);
+  font-size: 14px;
+  line-height: 1.45;
+  animation: fade-up 0.45s var(--ease-out-expo) both;
+}
+
+.ribbonGift {
+  flex-shrink: 0;
+}
+
+.ribbonIcon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+  background: var(--color-glass-bg-strong);
+  color: var(--color-gold);
+  font-size: 16px;
+}
+
+.ribbonText {
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  min-width: min(200px, 100%);
+}
+
+.ribbonKicker {
+  color: var(--color-text-secondary);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.ribbonName {
+  overflow-wrap: anywhere;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.ribbonBudget {
+  display: grid;
+  gap: 2px;
+  padding-left: 16px;
+  border-left: 1px solid var(--color-glass-border);
+  font-weight: 600;
+}
+
+.ribbonAction {
+  min-height: 38px;
+  padding: 0 16px;
+  font-size: 14px;
+}
+
+// ===================== Start: actions =====================
+
+// "You came from Create event — what can I do here?"
+.pageHint {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px 16px;
+  width: 100%;
+  padding: 14px 18px;
+
+  border: 1px dashed rgb(var(--rgb-gold) / 0.5);
+  border-radius: var(--radius-lg);
+  background: rgb(var(--rgb-gold) / 0.06);
+  color: var(--color-text);
+  text-align: left;
+  transition: background var(--transition-fast);
+  animation: fade-up 0.5s 0.1s var(--ease-out-expo) both;
+
+  &:hover:not(:disabled) {
+    background: rgb(var(--rgb-gold) / 0.11);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+.pageHintFrom {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+
+  strong {
+    color: var(--color-text);
+  }
+}
+
+.pageHintAsk {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--color-accent-text);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.actions {
+  display: grid;
+  gap: 14px;
+}
+
+.sectionLabel {
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.toneGold {
+  --tone: var(--rgb-gold);
+  --tone-ink: var(--color-accent-text);
+}
+
+.toneBlue {
+  --tone: var(--rgb-blue);
+  --tone-ink: var(--color-blue);
+
+  :global([data-theme="dark"]) & {
+    --tone-ink: color-mix(in srgb, var(--color-blue) 55%, white);
+  }
+}
+
+.quickCard {
+  position: relative;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  min-height: 76px;
+  padding: 14px 16px 14px 14px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card-bg);
+  box-shadow: var(--shadow-card);
+  color: var(--color-text);
+  text-align: left;
+  transition:
+    transform var(--transition-normal),
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal);
+  animation: fade-up 0.55s var(--ease-out-expo) both;
+  animation-delay: calc(var(--i, 0) * 60ms + 120ms);
+
+  // The glow that gathers around the icon on hover
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(160px 90px at 0% 50%, rgb(var(--tone) / 0.16), transparent 72%);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+    pointer-events: none;
+  }
+
+  &:hover:not(:disabled) {
+    border-color: rgb(var(--tone) / 0.45);
+    box-shadow: 0 16px 34px -20px rgb(var(--tone) / 0.7);
+    transform: translateY(-2px);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .quickArrow {
+      color: var(--tone-ink);
+      transform: translateX(3px);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+.quickIcon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+
+  border: 1px solid rgb(var(--tone) / 0.25);
+  border-radius: var(--radius-md);
+  background: rgb(var(--tone) / 0.12);
+  color: var(--tone-ink);
+  font-size: 20px;
+}
+
+.quickText {
+  position: relative;
+  display: grid;
+  flex: 1;
+  gap: 2px;
+  min-width: 0;
+}
+
+.quickTitle {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.quickHint {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.quickArrow {
+  position: relative;
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  transition:
+    transform var(--transition-normal),
+    color var(--transition-normal);
+}
+
+// With a recipient, the app questions shrink to one row of chips
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  animation: fade-up 0.5s 0.35s var(--ease-out-expo) both;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 100%;
+  min-height: 36px;
+  padding: 6px 14px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+
+  svg {
+    flex-shrink: 0;
+    color: var(--color-blue);
+  }
+
+  &:hover:not(:disabled) {
+    border-color: rgb(var(--rgb-blue) / 0.5);
+    color: var(--color-text);
+  }
+
+  &:disabled {
+    opacity: 0.55;
+  }
+}
+
+// ===================== Chat =====================
+
+// At least a screen tall, so a short conversation keeps the composer at the bottom
+// (desktop: minus AppShell's .main padding, 40px + 64px)
+.chat {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 4px;
+  min-height: calc(100svh - 104px);
+  animation: fade-in 0.35s ease both;
+}
+
+.chatHeader {
+  position: sticky;
+  top: 12px;
+  z-index: 4;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-header-glass);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-sm);
+}
+
+.chatAvatar {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+
+  border: 1px solid rgb(var(--rgb-gold) / 0.4);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, var(--color-navy-700), var(--color-navy-1000));
+  box-shadow: 0 0 0 4px rgb(var(--rgb-gold) / 0.08);
+}
+
+.statusDot {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--color-surface);
+  border-radius: 50%;
+}
+
+.statusReady {
+  background: var(--color-green-bright);
+}
+
+.statusBusy {
+  background: var(--color-gold);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.statusPaused {
+  background: var(--color-text-muted);
+}
+
+.chatHeading {
+  flex: 1;
+  min-width: 0;
+}
+
+.chatTitle {
+  overflow: hidden;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chatMeta {
+  display: flex;
+  gap: 6px;
+  min-width: 0;
+  margin-top: 2px;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.chatStatus {
+  flex-shrink: 0;
+  color: var(--color-accent-text);
+  font-weight: 600;
+}
+
+.chatContext {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.chatActions {
+  display: flex;
+  gap: 8px;
+}
+
+.deleteButton:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--color-error) 45%, transparent);
+  background: var(--color-error-soft);
+  color: var(--color-error);
+}
+
+.dangerSolid {
+  flex-shrink: 0;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: var(--radius-md);
+  background: var(--color-error);
+  color: var(--color-snow);
+  font-size: 13px;
+
+  &:hover {
+    background: var(--color-crimson-deep);
+  }
+}
+
+.messages {
+  display: grid;
+  align-content: start;
+  gap: 22px;
+  margin: 0;
+  padding: 22px 4px 8px;
+  list-style: none;
+}
+
+.userMessage {
+  justify-self: end;
+  max-width: min(78%, 560px);
+  padding: 11px 16px;
+
+  border: 1px solid rgb(var(--rgb-gold) / 0.35);
+  border-radius: 20px 20px 6px 20px;
+  background: linear-gradient(180deg, rgb(var(--rgb-gold) / 0.2), rgb(var(--rgb-gold) / 0.11));
+  animation: message-in 0.4s var(--ease-out-expo) both;
+}
+
+.assistantMessage {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+  max-width: 720px;
+  animation: message-in 0.4s var(--ease-out-expo) both;
+
+  .messageText,
+  .thinking {
+    padding-top: 5px;
+  }
+}
+
+.assistantMark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid rgb(var(--rgb-gold) / 0.35);
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 30%, var(--color-navy-700), var(--color-navy-1000));
+  box-shadow: 0 6px 16px -6px rgb(var(--rgb-navy) / 0.5);
+}
+
+.messageText {
+  color: var(--color-text);
+  font-size: 15.5px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+// The reply as it arrives: a soft caret after the last word
+.streaming::after {
+  content: "";
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.15em;
+  background: var(--color-gold);
+  animation: blink 1s steps(2) infinite;
+}
+
+.thinking {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.dots {
+  display: inline-flex;
+  gap: 4px;
+
+  span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-gold);
+    animation: bounce 1.2s ease-in-out infinite;
+
+    &:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+  }
+}
+
+.chatError {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.dismiss {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+
+  &:hover {
+    background: var(--color-ghost);
+  }
+}
+
+.closedNote {
+  margin: 0;
+}
+
+// "Open your Secret Santa" above the composer — a hint, not an error
+.chatHint {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  text-align: center;
+  overflow-wrap: anywhere;
+
+  a {
+    color: var(--color-accent-text);
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}
+
+.stateCard {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 48px 24px;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+// ===================== Composer =====================
+
+// Stays at the bottom of the screen while the page scrolls under it
+.composerDock {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+
+  display: grid;
+  gap: 8px;
+  // Content scrolling under the dock fades out instead of showing through the disclaimer
+  margin: 0 -8px;
+  padding: 18px 8px 14px;
+  background: linear-gradient(to top, var(--color-bg) 64%, transparent);
+}
+
+.composer {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "input send"
+    "keys  send";
+  align-items: end;
+  column-gap: 12px;
+  padding: 12px 12px 10px 18px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 22px;
+  background: var(--color-surface);
+  box-shadow:
+    var(--shadow-sm),
+    0 22px 44px -26px rgb(28 44 84 / 0.4);
+  transition:
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal);
+
+  &:focus-within {
+    border-color: rgb(var(--rgb-gold) / 0.6);
+    box-shadow:
+      0 0 0 4px rgb(var(--rgb-gold) / 0.14),
+      0 22px 44px -26px rgb(var(--rgb-gold) / 0.45);
+  }
+}
+
+// A reply is being written: a calmer gold edge
+.composerBusy {
+  border-color: rgb(var(--rgb-gold) / 0.35);
+}
+
+.composerInput {
+  grid-area: input;
+  min-width: 0;
+  min-height: 48px;
+  max-height: 200px;
+  padding: 2px 0;
+
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 16px; // 16px: iOS doesn't zoom into the field
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+
+  &::placeholder {
+    color: var(--color-text-muted);
+  }
+}
+
+.keyHint {
+  grid-area: keys;
+  padding-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.counter {
+  position: absolute;
+  right: 72px;
+  bottom: 10px;
+  padding-left: 8px;
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.sendButton {
+  grid-area: send;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+
+  border-radius: 14px;
+  background: var(--color-gold);
+  color: var(--color-navy-1000);
+  font-size: 18px;
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    background: var(--color-gold-hover);
+    box-shadow: var(--glow-button-gold);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: var(--color-surface-sunken);
+    color: var(--color-text-muted);
+  }
+}
+
+.disclaimer {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+// Touch screens have no Shift+Enter to explain
+@media (hover: none) {
+  .keyHint {
+    display: none;
+  }
+}
+
+// ===================== Motion =====================
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes message-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes gift-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.94);
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes sheet-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage,
+  .haloGift,
+  .ribbon,
+  .pageHint,
+  .quickCard,
+  .chips,
+  .chat,
+  .userMessage,
+  .assistantMessage,
+  .streaming::after,
+  .dots span,
+  .statusBusy,
+  .historySkeleton span,
+  .startSkeleton,
+  .sheetBackdrop {
+    animation: none;
+  }
+
+  .quickCard,
+  .quickArrow,
+  .sendButton,
+  .historyColumn {
+    transition: none;
+  }
+
+  .quickCard:hover:not(:disabled),
+  .sendButton:hover:not(:disabled) {
+    transform: none;
+  }
+
+  .quickCard:hover:not(:disabled) .quickArrow {
+    transform: none;
+  }
+}
+
+// ===================== Tablet & mobile =====================
+
+@media (max-width: 960px) {
+  .page {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .mobileOnly,
+  .sheetClose {
+    display: grid;
+  }
+
+  // History becomes a bottom sheet over the page
+  .sheetBackdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-menu) + 1);
+    background: rgb(var(--rgb-navy) / 0.5);
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+    animation: sheet-fade 0.25s ease both;
+  }
+
+  .historyColumn {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: calc(var(--z-menu) + 2);
+
+    visibility: hidden;
+    translate: 0 100%;
+    transition:
+      translate 0.4s var(--ease-out-expo),
+      visibility 0.4s;
+  }
+
+  .historyOpen {
+    visibility: visible;
+    translate: 0 0;
+  }
+
+  .history {
+    max-height: min(78dvh, 640px);
+    padding: 8px 16px calc(18px + env(safe-area-inset-bottom));
+    border-bottom: 0;
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+    background: var(--color-surface);
+    box-shadow: 0 -20px 50px -20px rgb(var(--rgb-navy) / 0.45);
+  }
+
+  .sheetHandle {
+    display: block;
+    justify-self: center;
+    width: 40px;
+    height: 4px;
+    border-radius: 4px;
+    background: var(--color-border);
+  }
+
+  .chatHeader {
+    top: calc(#{$topbar-height} + 8px);
+  }
+
+  // Minus the top bar and AppShell's mobile .main padding (24px + tab bar + 32px)
+  .chat {
+    min-height: calc(100svh - #{$topbar-height} - 24px - #{$tabbar-height} - 32px - env(safe-area-inset-bottom));
+  }
+
+  .composerDock {
+    bottom: calc(#{$tabbar-height} + env(safe-area-inset-bottom));
+    padding-bottom: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .start {
+    gap: 18px;
+  }
+
+  // Centred on phones: the gift above, the words below
+  .stage {
+    gap: 16px;
+    padding: 16px 16px 20px;
+    border-radius: var(--radius-xl);
+  }
+
+  .stageBody {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: center;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .halo {
+    order: -1;
+    width: 150px;
+    height: 150px;
+    margin-top: -6px;
+  }
+
+  .haloRing {
+    inset: 18px;
+  }
+
+  .haloGift {
+    scale: 0.84;
+  }
+
+  .haloSpark {
+    top: 18px;
+    right: 16px;
+  }
+
+  .stageTitle {
+    max-width: none;
+    font-size: clamp(28px, 8vw, 34px);
+  }
+
+  .stageSubtitle {
+    margin-top: 8px;
+    font-size: 15px;
+  }
+
+  // One swipeable row instead of a wall of pills
+  .contextRail {
+    flex-wrap: nowrap;
+    margin: 0 -16px;
+    padding: 2px 16px;
+    overflow-x: auto;
+    scroll-padding-inline: 16px;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .contextPill {
+    flex-shrink: 0;
+    max-width: 220px;
+  }
+
+  .ribbon {
+    padding: 12px;
+  }
+
+  .ribbonBudget {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .ribbonAction {
+    width: 100%;
+  }
+
+  .sectionLabel {
+    font-size: 21px;
+  }
+
+  .quickGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .quickCard {
+    min-height: 68px;
+    padding: 12px 14px 12px 12px;
+  }
+
+  .chatHeader {
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .iconButton {
+    width: 38px;
+    height: 38px;
+  }
+
+  .chatAvatar {
+    display: none;
+  }
+
+  .messages {
+    gap: 18px;
+    padding: 18px 0 6px;
+  }
+
+  .userMessage {
+    max-width: 88%;
+  }
+
+  .assistantMessage {
+    grid-template-columns: 28px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .assistantMark {
+    width: 28px;
+    height: 28px;
+  }
+
+  .messageText {
+    font-size: 15px;
+  }
+
+  .composer {
+    padding: 10px 10px 10px 14px;
+    border-radius: 18px;
+  }
+
+  .composerInput {
+    min-height: 44px;
+  }
+}

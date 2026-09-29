@@ -1,0 +1,26 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  // Behind siblings — the parent must set `isolation: isolate` (AppShell does)
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+
+  background: var(--atmosphere), var(--color-bg);
+}
+
+// Background, not a show: sparse and faint so text on top stays effortless to read
+.snow {
+  opacity: 0.55;
+
+  // Only the far and middle layers — the near one is too busy behind UI
+  > :last-child {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .snow {
+    opacity: 0.4;
+  }
+}

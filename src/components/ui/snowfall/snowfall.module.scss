@@ -1,0 +1,244 @@
+@use "sass:math";
+@use "sass:list";
+
+// Snow is generated at build time: every layer is ONE element whose
+// box-shadow list contains N flakes at random positions. No JS, no library.
+// ::after is a copy shifted one tile up, so translating by one tile loops seamlessly.
+
+$tile: 1400px;
+
+@function flakes($count, $min-alpha, $max-alpha) {
+  $shadows: ();
+
+  @for $i from 1 through $count {
+    $x: math.random(1000) * 0.1vw;
+    $y: math.random(math.div($tile, 1px)) * 1px;
+    $alpha: $min-alpha + math.random(100) * 0.01 * ($max-alpha - $min-alpha);
+    $shadows: list.append(
+      $shadows,
+      $x $y 0 rgb(var(--rgb-flake, 245 247 255) / #{$alpha}),
+      $separator: comma
+    );
+  }
+
+  @return $shadows;
+}
+
+.snowfall {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+// Sway wrapper: gentle horizontal drift, independent of the fall
+.sway {
+  position: absolute;
+  inset: 0;
+  animation: sway 14s ease-in-out infinite alternate;
+}
+
+.layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  will-change: transform;
+  animation: fall linear infinite;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: -$tile;
+    left: 0;
+    width: inherit;
+    height: inherit;
+    border-radius: inherit;
+    box-shadow: inherit;
+  }
+}
+
+// Far — tiny, dim, slow
+.far {
+  width: 1px;
+  height: 1px;
+  box-shadow: flakes(170, 0.15, 0.55);
+  animation-duration: 90s;
+}
+
+// Middle — small, sharper
+.mid {
+  width: 2px;
+  height: 2px;
+  box-shadow: flakes(80, 0.35, 0.85);
+  animation-duration: 55s;
+}
+
+// Near — larger and slightly soft
+.near {
+  width: 3px;
+  height: 3px;
+  box-shadow: flakes(32, 0.5, 0.95);
+  filter: blur(0.6px);
+  animation-duration: 32s;
+}
+
+.sway:nth-child(2) {
+  animation-duration: 18s;
+  animation-delay: -6s;
+}
+
+.sway:nth-child(3) {
+  animation-duration: 11s;
+  animation-delay: -3s;
+}
+
+// ---------- Bokeh: a few big out-of-focus flakes in the foreground ----------
+
+.bokeh {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgb(var(--rgb-snow) / 0.55) 0%,
+    rgb(var(--rgb-snow) / 0) 70%
+  );
+  filter: blur(6px);
+  animation: drift 26s ease-in-out infinite alternate;
+
+  &:nth-child(1) {
+    top: 18%;
+    left: 6%;
+    width: 38px;
+    height: 38px;
+    opacity: 0.35;
+  }
+
+  &:nth-child(2) {
+    top: 62%;
+    left: 44%;
+    width: 22px;
+    height: 22px;
+    opacity: 0.3;
+    animation-duration: 21s;
+    animation-delay: -8s;
+  }
+
+  &:nth-child(3) {
+    top: 12%;
+    right: 12%;
+    width: 56px;
+    height: 56px;
+    opacity: 0.18;
+    filter: blur(10px);
+    animation-duration: 30s;
+  }
+
+  &:nth-child(4) {
+    bottom: 10%;
+    right: 30%;
+    width: 30px;
+    height: 30px;
+    opacity: 0.26;
+    animation-delay: -14s;
+  }
+
+  &:nth-child(5) {
+    bottom: 22%;
+    left: 22%;
+    width: 64px;
+    height: 64px;
+    opacity: 0.12;
+    filter: blur(14px);
+    animation-duration: 34s;
+  }
+}
+
+// ---------- Twinkles: rare golden sparks ----------
+
+.twinkle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--color-gold-light);
+  box-shadow:
+    0 0 6px 1px rgb(var(--rgb-gold) / 0.8),
+    0 0 18px 4px rgb(var(--rgb-gold) / 0.25);
+  opacity: 0;
+  animation: twinkle 5.5s ease-in-out infinite;
+
+  $positions: (
+    (14%, 38%, 0s),
+    (8%, 72%, -1.4s),
+    (30%, 92%, -3.1s),
+    (46%, 62%, -2.2s),
+    (70%, 86%, -4.4s),
+    (80%, 8%, -0.7s),
+    (36%, 4%, -3.8s),
+    (88%, 52%, -2.9s)
+  );
+
+  @for $i from 1 through list.length($positions) {
+    $p: list.nth($positions, $i);
+
+    &:nth-of-type(#{$i}) {
+      top: list.nth($p, 1);
+      left: list.nth($p, 2);
+      animation-delay: list.nth($p, 3);
+    }
+  }
+}
+
+@keyframes fall {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(0, $tile, 0);
+  }
+}
+
+@keyframes sway {
+  from {
+    transform: translateX(-14px);
+  }
+
+  to {
+    transform: translateX(14px);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(24px, 40px, 0);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 768px) {
+  .near {
+    display: none;
+  }
+
+  .bokeh:nth-child(n + 4) {
+    display: none;
+  }
+}

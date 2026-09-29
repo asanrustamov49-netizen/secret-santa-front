@@ -1,0 +1,18 @@
+.avatar {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  overflow: hidden;
+
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-purple-light), var(--color-blue));
+  color: var(--color-snow);
+  font-weight: 700;
+  line-height: 1;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

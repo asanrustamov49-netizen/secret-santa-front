@@ -1,0 +1,175 @@
+.sky {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  background:
+    radial-gradient(120% 80% at 50% 0%, var(--color-navy-900) 0%, transparent 60%),
+    linear-gradient(180deg, var(--color-navy-1000) 0%, var(--color-navy-950) 55%, var(--color-navy-1000) 100%);
+}
+
+// ---------- Light sources ----------
+
+.glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: breathe 9s ease-in-out infinite alternate;
+}
+
+.blue {
+  background: radial-gradient(circle, rgb(var(--rgb-blue) / 0.32) 0%, transparent 65%);
+}
+
+.purple {
+  background: radial-gradient(circle, rgb(var(--rgb-purple) / 0.42) 0%, transparent 65%);
+  animation-delay: -3s;
+}
+
+.gold {
+  background: radial-gradient(circle, rgb(var(--rgb-gold) / 0.16) 0%, transparent 65%);
+  animation-duration: 11s;
+  animation-delay: -5s;
+}
+
+// ---------- Distant static stars ----------
+
+.stars {
+  position: absolute;
+  inset: 0;
+  opacity: 0.55;
+  background-image:
+    radial-gradient(1px 1px at 12% 18%, rgb(var(--rgb-snow) / 0.8), transparent),
+    radial-gradient(1px 1px at 27% 64%, rgb(var(--rgb-snow) / 0.5), transparent),
+    radial-gradient(1px 1px at 41% 12%, rgb(var(--rgb-snow) / 0.7), transparent),
+    radial-gradient(1.5px 1.5px at 58% 34%, rgb(var(--rgb-snow) / 0.6), transparent),
+    radial-gradient(1px 1px at 66% 8%, rgb(var(--rgb-snow) / 0.8), transparent),
+    radial-gradient(1px 1px at 79% 46%, rgb(var(--rgb-snow) / 0.5), transparent),
+    radial-gradient(1.5px 1.5px at 91% 22%, rgb(var(--rgb-snow) / 0.7), transparent),
+    radial-gradient(1px 1px at 6% 82%, rgb(var(--rgb-snow) / 0.5), transparent),
+    radial-gradient(1px 1px at 84% 88%, rgb(var(--rgb-snow) / 0.6), transparent);
+}
+
+// ---------- Depth ----------
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(130% 100% at 50% 40%, transparent 55%, rgb(var(--rgb-navy) / 0.85) 100%),
+    linear-gradient(180deg, transparent 75%, rgb(var(--rgb-navy) / 0.9) 100%);
+}
+
+// Fine grain — kills gradient banding on large dark surfaces
+.grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+// ---------- Variants ----------
+
+.hero {
+  .blue {
+    top: -20%;
+    left: -12%;
+    width: 60vw;
+    height: 60vw;
+  }
+
+  .purple {
+    top: 18%;
+    right: 2%;
+    width: 46vw;
+    height: 46vw;
+  }
+
+  .gold {
+    top: 8%;
+    left: 4%;
+    width: 42vw;
+    height: 32vw;
+  }
+}
+
+.magic {
+  .blue {
+    bottom: -30%;
+    left: 10%;
+    width: 55vw;
+    height: 55vw;
+  }
+
+  .purple {
+    top: -20%;
+    left: 30%;
+    width: 50vw;
+    height: 50vw;
+  }
+
+  .gold {
+    top: 30%;
+    right: 0;
+    width: 36vw;
+    height: 36vw;
+  }
+}
+
+.cta {
+  .blue {
+    top: -10%;
+    left: -10%;
+    width: 45vw;
+    height: 45vw;
+  }
+
+  .purple {
+    top: -10%;
+    right: -10%;
+    width: 45vw;
+    height: 45vw;
+  }
+
+  .gold {
+    top: 25%;
+    left: 30%;
+    width: 40vw;
+    height: 40vw;
+  }
+}
+
+@keyframes breathe {
+  from {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    .blue {
+      width: 120vw;
+      height: 120vw;
+    }
+
+    .purple {
+      top: 45%;
+      right: -30%;
+      width: 110vw;
+      height: 110vw;
+    }
+
+    .gold {
+      width: 100vw;
+      height: 80vw;
+    }
+  }
+}

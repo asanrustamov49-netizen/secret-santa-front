@@ -1,0 +1,313 @@
+.header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-header);
+
+  border-bottom: 1px solid transparent;
+
+  transition:
+    background var(--transition-slow),
+    border-color var(--transition-slow),
+    backdrop-filter var(--transition-slow);
+}
+
+// Glass once the page is scrolled
+.scrolled,
+.menuOpen {
+  background: var(--color-header-glass);
+  border-bottom-color: var(--color-glass-border);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  backdrop-filter: blur(18px) saturate(140%);
+}
+
+.container {
+  width: min(1320px, calc(100% - 64px));
+  height: var(--header-height);
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  gap: 32px;
+
+  transition: height var(--transition-slow);
+}
+
+.scrolled .container {
+  height: 72px;
+}
+
+// Logo
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--color-text);
+  white-space: nowrap;
+}
+
+.logoIcon {
+  margin-top: -6px;
+  filter: drop-shadow(0 0 10px rgb(var(--rgb-gold) / 0.35));
+  transition: transform var(--transition-normal);
+
+  .logo:hover & {
+    transform: rotate(-8deg) scale(1.06);
+  }
+}
+
+.logoText {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+// Navigation
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  margin-inline: auto;
+}
+
+.navLink,
+.dashboardLink {
+  position: relative;
+  white-space: nowrap;
+
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  font-weight: 500;
+
+  transition: color var(--transition-fast);
+
+  &:hover {
+    color: var(--color-text);
+  }
+}
+
+// Thin gold underline on hover
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 1px;
+
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  opacity: 0;
+  transform: scaleX(0.4);
+
+  transition:
+    opacity var(--transition-normal),
+    transform var(--transition-normal);
+}
+
+.navLink:hover::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+// Actions
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.mySantaButton {
+  white-space: nowrap;
+}
+
+// Hamburger — mobile only
+
+.menuButton {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  width: 44px;
+  height: 44px;
+
+  background: transparent;
+
+  span {
+    display: block;
+    width: 24px;
+    height: 1.5px;
+
+    background: var(--color-text);
+    border-radius: 2px;
+
+    transition:
+      transform var(--transition-normal),
+      opacity var(--transition-normal);
+  }
+}
+
+.menuOpen .menuButton span {
+  &:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+  }
+
+  &:nth-child(2) {
+    opacity: 0;
+  }
+
+  &:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
+  }
+}
+
+// Mobile menu
+
+.mobileMenu {
+  position: fixed;
+  // Opens under the header: full height on wide screens, 72px on phones (see below)
+  inset: var(--header-height) 0 0;
+  z-index: var(--z-menu);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+
+  padding: 32px 24px 40px;
+
+  background:
+    radial-gradient(80% 50% at 100% 0%, rgb(var(--rgb-purple) / 0.14), transparent 70%),
+    var(--color-bg);
+
+  animation: menuIn 0.35s var(--ease-out-expo);
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.mobileNav {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobileLink {
+  padding: 18px 0;
+
+  border-bottom: 1px solid var(--color-glass-border);
+
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.mobileActions {
+  display: grid;
+  gap: 12px;
+}
+
+.mobileTheme {
+  margin-bottom: 8px;
+}
+
+@keyframes menuIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Not enough room for the section links next to the actions: they move into the
+// menu, the rest of the header stays as it is. Russian and Kyrgyz labels are longer,
+// so they switch earlier (the language is known on the server — no layout jump).
+
+@mixin links-in-menu {
+  .navigation {
+    display: none;
+  }
+
+  .actions {
+    margin-left: auto;
+  }
+
+  .menuButton {
+    display: flex;
+  }
+}
+
+@media (max-width: 1180px) {
+  @include links-in-menu;
+}
+
+@media (max-width: 1279px) {
+  .header[data-locale="ru"] {
+    @include links-in-menu;
+  }
+}
+
+@media (max-width: 1359px) {
+  .header[data-locale="ky"] {
+    @include links-in-menu;
+  }
+}
+
+// Tablet
+
+@media (max-width: 1100px) {
+  .container {
+    width: calc(100% - 40px);
+    gap: 20px;
+  }
+
+  .navigation {
+    gap: 24px;
+  }
+
+  .actions {
+    gap: 20px;
+  }
+}
+
+// Mobile
+
+@media (max-width: 860px) {
+  .container {
+    width: calc(100% - 32px);
+    height: 72px;
+  }
+
+  .navigation,
+  .dashboardLink,
+  .mySantaButton,
+  .themeSwitcher {
+    display: none;
+  }
+
+  .actions {
+    margin-left: auto;
+  }
+
+  .menuButton {
+    display: flex;
+  }
+
+  .mobileMenu {
+    inset: 72px 0 0;
+  }
+
+  .logoText {
+    font-size: 22px;
+  }
+}

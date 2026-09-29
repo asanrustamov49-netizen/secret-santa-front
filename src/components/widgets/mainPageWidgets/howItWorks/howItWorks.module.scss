@@ -1,0 +1,103 @@
+.section {
+  padding-top: 140px;
+  scroll-margin-top: 40px;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 64px;
+  list-style: none;
+}
+
+.step {
+  position: relative;
+  overflow: hidden;
+  padding: 32px 28px 36px;
+
+  transition:
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal),
+    translate var(--transition-normal);
+
+  &:hover {
+    translate: 0 -4px;
+    border-color: rgb(var(--rgb-gold) / 0.28);
+    box-shadow: 0 24px 60px -30px rgb(var(--rgb-gold) / 0.35);
+  }
+}
+
+// Big ghost number in the corner
+.number {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+
+  color: var(--color-ghost);
+  font-family: var(--font-display);
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 1;
+
+  transition: color var(--transition-normal);
+
+  .step:hover & {
+    color: rgb(var(--rgb-gold) / 0.12);
+  }
+}
+
+.icon {
+  display: grid;
+  place-items: center;
+
+  width: 56px;
+  height: 56px;
+  margin-bottom: 32px;
+
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-glass-bg-strong);
+
+  font-size: 26px;
+}
+
+.tree {
+  color: var(--color-success-text);
+}
+
+.link {
+  color: var(--color-text);
+}
+
+.label {
+  margin-bottom: 8px;
+
+  color: var(--color-accent-text);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.title {
+  margin-bottom: 12px;
+
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 28px;
+}
+
+.text {
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+@media (max-width: 900px) {
+  .steps {
+    grid-template-columns: 1fr;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+}

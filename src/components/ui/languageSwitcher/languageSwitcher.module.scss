@@ -1,0 +1,138 @@
+// The segmented control itself comes from themeSwitcher.module.scss; this only adds
+// what a language option needs: a flag and a short text label.
+
+.option {
+  gap: 6px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.compact .option {
+  height: 32px;
+  padding: 0 9px;
+  font-size: 12px;
+}
+
+// "names" variant: full names, codes on narrow phones
+.short {
+  display: none;
+}
+
+@media (max-width: 480px) {
+  .long {
+    display: none;
+  }
+
+  .short {
+    display: inline;
+  }
+}
+
+// ---------- LanguageMenu: one button + a small menu ----------
+
+.menuRoot {
+  position: relative;
+}
+
+.menuButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 10px;
+
+  border: 1px solid var(--color-glass-border);
+  border-radius: 999px;
+  background: var(--color-glass-bg);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+
+  transition: color var(--transition-fast);
+
+  &:hover,
+  &[aria-expanded="true"] {
+    color: var(--color-text);
+  }
+}
+
+.caret {
+  font-size: 10px;
+  transition: transform var(--transition-fast);
+
+  [aria-expanded="true"] > & {
+    transform: rotate(180deg);
+  }
+}
+
+.menu {
+  position: absolute;
+  z-index: var(--z-menu);
+  top: calc(100% + 8px);
+  right: 0;
+
+  display: grid;
+  min-width: 200px;
+  padding: 6px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-lg);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 12px;
+
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--color-glass-bg-strong);
+  }
+
+  &[aria-checked="true"] {
+    color: var(--color-accent-text);
+  }
+}
+
+.menuName {
+  flex: 1;
+}
+
+.menuCode {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.check {
+  font-size: 14px;
+}
+
+.flag {
+  display: inline-flex;
+  flex-shrink: 0;
+  width: 18px;
+  height: 12px;
+  overflow: hidden;
+
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.12);
+
+  svg {
+    width: 100%;
+    height: 100%;
+    font-size: inherit;
+  }
+}

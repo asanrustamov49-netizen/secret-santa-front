@@ -1,0 +1,48 @@
+.confetti {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.bit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  background: var(--c);
+  opacity: 0;
+
+  animation: burst 1.6s cubic-bezier(0.15, 0.7, 0.3, 1) forwards;
+}
+
+.round {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+@keyframes burst {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0);
+  }
+
+  70% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y) + 160px)) rotate(var(--r));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .confetti {
+    display: none;
+  }
+}

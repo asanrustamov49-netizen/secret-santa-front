@@ -1,0 +1,39 @@
+.strip {
+  position: relative;
+  z-index: 1;
+  margin-top: -40px; // tucks under the hero's fade
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  padding: 36px 24px;
+  text-align: center;
+}
+
+.caption {
+  color: var(--color-text-secondary);
+  font-size: 15px;
+}
+
+.proof {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.tree {
+  display: inline-block;
+  margin-left: 6px;
+  vertical-align: -3px;
+  color: var(--color-success-text);
+}

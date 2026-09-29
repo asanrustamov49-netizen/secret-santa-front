@@ -1,0 +1,77 @@
+.switcher {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+
+  border: 1px solid var(--color-glass-border);
+  border-radius: 999px;
+  background: var(--color-glass-bg);
+}
+
+.option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-secondary);
+
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+
+  svg {
+    font-size: 16px;
+  }
+
+  &:hover {
+    color: var(--color-text);
+  }
+}
+
+.active {
+  background: var(--color-surface);
+  color: var(--color-accent-text);
+  box-shadow: var(--shadow-sm);
+
+  &:hover {
+    color: var(--color-accent-text);
+  }
+}
+
+.compact .option {
+  width: 32px;
+  height: 32px;
+}
+
+.full {
+  width: 100%;
+  // Its own size decides the layout below — and it never stretches its parent
+  // (e.g. the 240px sidebar) however long the labels are in some language
+  container-type: inline-size;
+
+  .option {
+    flex: 1;
+    min-width: 0;
+    min-height: 44px;
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+// Narrow (sidebar, phones): icon above a smaller label, like the mobile tab bar,
+// so "Системная" / "Системалык" still fit next to their neighbours
+@container (max-width: 360px) {
+  .full .option {
+    flex-direction: column;
+    gap: 2px;
+    min-height: 48px;
+    padding: 4px 2px;
+    font-size: 11px;
+    line-height: 1.15;
+    text-align: center;
+  }
+}

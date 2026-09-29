@@ -1,0 +1,187 @@
+.section {
+  scroll-margin-top: 40px;
+  overflow-x: clip; // the card's halo must not widen the page
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 64px;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.cta {
+  svg {
+    font-size: 20px;
+  }
+}
+
+// ---------- Profile card ----------
+
+.stage {
+  position: relative;
+
+  // Soft blue halo behind the card
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -12%;
+    z-index: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgb(var(--rgb-blue) / 0.28), transparent 65%);
+    filter: blur(40px);
+  }
+}
+
+.card {
+  position: relative;
+  z-index: 1;
+
+  max-width: 480px;
+  margin-left: auto;
+  padding: 28px;
+
+  border: 1px solid rgb(var(--rgb-blue) / 0.35);
+  border-radius: var(--radius-2xl);
+  background: var(--surface-card-bg);
+
+  box-shadow:
+    0 30px 80px -30px rgb(var(--rgb-blue) / 0.5);
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-purple-light), var(--color-blue));
+
+  color: var(--color-snow);
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.name {
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.role {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.label {
+  margin-bottom: 12px;
+
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.likes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+  list-style: none;
+}
+
+.like {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 7px 14px;
+
+  border: 1px solid var(--color-glass-border);
+  border-radius: 999px;
+  background: var(--color-glass-bg);
+
+  color: var(--color-text);
+  font-size: 14px;
+
+  svg {
+    color: var(--color-accent-text);
+  }
+}
+
+.wishlist {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+}
+
+.wish {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  padding: 14px 16px;
+
+  border: 1px solid var(--color-glass-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface-sunken);
+
+  transition: border-color var(--transition-normal);
+
+  &:hover {
+    border-color: rgb(var(--rgb-gold) / 0.3);
+  }
+}
+
+.wishIcon {
+  flex-shrink: 0;
+  color: var(--color-text);
+  font-size: 20px;
+}
+
+.wishLabel {
+  flex: 1;
+  color: var(--color-text);
+  font-size: 15px;
+}
+
+.price {
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .inner {
+    grid-template-columns: 1fr;
+    gap: 56px;
+  }
+
+  .card {
+    margin-inline: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 22px 18px;
+  }
+}

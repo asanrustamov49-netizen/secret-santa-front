@@ -1,0 +1,9 @@
+// The landing canvas follows the theme; night sections pin data-theme="dark" themselves.
+// The winter backdrop (z-index -1) shows through the light sections, which are transparent.
+.home {
+  isolation: isolate;
+  color: var(--color-text);
+
+  // Decorative glows never create horizontal scroll (clip keeps sticky/fixed working)
+  overflow-x: clip;
+}

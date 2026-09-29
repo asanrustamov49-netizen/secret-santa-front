@@ -1,0 +1,64 @@
+.gift {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.svg {
+  position: relative;
+  z-index: 1;
+  overflow: visible;
+}
+
+// Warm diffused light behind the box
+.withGlow::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 50% 55%, rgb(var(--rgb-gold) / 0.35) 0%, transparent 55%),
+    radial-gradient(circle at 50% 60%, rgb(var(--rgb-crimson) / 0.25) 0%, transparent 65%);
+  filter: blur(24px);
+  animation: pulse 7s ease-in-out infinite alternate;
+}
+
+.sparkles path {
+  transform-box: fill-box;
+  transform-origin: center;
+  filter: drop-shadow(0 0 6px rgb(var(--rgb-gold) / 0.9));
+  animation: sparkle 3.6s ease-in-out infinite;
+
+  &:nth-child(2) {
+    animation-delay: -1.2s;
+  }
+
+  &:nth-child(3) {
+    animation-delay: -2.4s;
+  }
+}
+
+@keyframes pulse {
+  from {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes sparkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.6);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

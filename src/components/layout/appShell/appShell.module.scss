@@ -1,0 +1,569 @@
+$sidebar-width: 264px;
+$sidebar-collapsed: 76px;
+
+$tabbar-height: 64px;
+
+.shell {
+  display: grid;
+  grid-template-columns: $sidebar-width minmax(0, 1fr);
+  min-height: 100vh;
+  min-height: 100svh;
+
+  // Own stacking context: the winter backdrop (z-index -1) paints behind every
+  // child here, without touching the sticky/fixed positioning of the sidebar & bars
+  isolation: isolate;
+  color: var(--color-text);
+}
+
+// ---------- Loading / error ----------
+
+.state {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 20px;
+  min-height: 100vh;
+
+  isolation: isolate;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.stateActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.loadingGift {
+  animation: breathe 1.6s ease-in-out infinite alternate;
+}
+
+// ---------- Sidebar ----------
+// Always night (data-theme="dark" in the markup): the same midnight surface as the
+// /ai stage. Navigation first — quiet, with gold only where it means something.
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  z-index: 5; // collapsed tooltips float over the page
+
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+
+  height: 100vh;
+  height: 100svh;
+  padding: 22px 14px 18px;
+
+  border-right: 1px solid rgb(var(--rgb-gold) / 0.12);
+  background:
+    radial-gradient(120% 34% at 0% 0%, rgb(var(--rgb-gold) / 0.1), transparent 70%),
+    radial-gradient(120% 40% at 100% 100%, rgb(var(--rgb-purple) / 0.14), transparent 70%),
+    linear-gradient(180deg, var(--color-navy-900), var(--color-navy-1000));
+  color: var(--color-text);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 21px;
+  font-weight: 700;
+}
+
+// The brand mark sits in a small pool of warm light — the one Christmas accent here
+.sidebarLogo {
+  position: relative;
+  min-width: 0;
+  padding: 4px 6px;
+
+  :global(svg) {
+    filter: drop-shadow(0 0 10px rgb(var(--rgb-gold) / 0.35));
+  }
+}
+
+.logoText {
+  overflow: hidden;
+  text-shadow: var(--glow-text-white);
+  white-space: nowrap;
+}
+
+.collapseButton {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover {
+    background: var(--color-glass-bg-strong);
+    color: var(--color-text);
+  }
+}
+
+.nav {
+  display: grid;
+  gap: 22px;
+}
+
+.navGroup {
+  display: grid;
+  gap: 3px;
+}
+
+.groupLabel {
+  padding: 0 12px 6px;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.navItem,
+.logout {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  font-weight: 500;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover {
+    background: var(--color-glass-bg-strong);
+    color: var(--color-text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: -2px;
+  }
+}
+
+.navIcon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  font-size: 20px;
+}
+
+.label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// "You are here": a gold edge, a warm wash, bright text — calm, but unmistakable
+.active {
+  background: linear-gradient(90deg, rgb(var(--rgb-gold) / 0.16), rgb(var(--rgb-gold) / 0.04));
+  color: var(--color-text);
+  font-weight: 600;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 9px;
+    bottom: 9px;
+    left: 0;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: var(--color-gold);
+    box-shadow: 0 0 12px rgb(var(--rgb-gold) / 0.7);
+  }
+
+  .navIcon {
+    color: var(--color-gold);
+  }
+
+  &:hover {
+    background: linear-gradient(90deg, rgb(var(--rgb-gold) / 0.2), rgb(var(--rgb-gold) / 0.06));
+  }
+}
+
+// The AI assistant's sparkle is always a little golden
+.accent .navIcon {
+  color: var(--color-gold-light);
+}
+
+.badge {
+  display: grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  margin-left: auto;
+  padding: 0 6px;
+
+  border-radius: 999px;
+  background: var(--color-crimson);
+  box-shadow: 0 0 12px rgb(var(--rgb-crimson) / 0.6);
+  color: var(--color-snow);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+// The badge's stand-in when the sidebar shows icons only
+.dot {
+  display: none;
+  position: absolute;
+  top: -1px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--color-navy-900);
+  border-radius: 50%;
+  background: var(--color-crimson);
+}
+
+.sidebarFooter {
+  display: grid;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border-light);
+}
+
+.prefs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+// Sign out: always there, never loud — it only warms up under the pointer
+.logout {
+  width: 100%;
+  font-size: 14px;
+
+  &:hover:not(:disabled) {
+    background: var(--color-error-soft);
+    color: var(--color-danger-text);
+  }
+
+  &:disabled {
+    opacity: 0.7;
+  }
+}
+
+.tooltip {
+  display: none;
+}
+
+// ---------- Collapsed sidebar (desktop): icons, with the names as tooltips ----------
+
+@media (min-width: 961px) {
+  .shell {
+    transition: grid-template-columns 0.3s var(--ease-out-expo);
+  }
+
+  .collapsed {
+    grid-template-columns: $sidebar-collapsed minmax(0, 1fr);
+
+    .sidebar {
+      padding-inline: 12px;
+    }
+
+    .brand {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .logoText,
+    .groupLabel,
+    .badge,
+    .prefs {
+      display: none;
+    }
+
+    .sidebarLogo {
+      padding: 4px;
+    }
+
+    // A hairline between the groups instead of their names
+    .navGroup + .navGroup {
+      padding-top: 18px;
+      border-top: 1px solid var(--color-border-light);
+    }
+
+    .nav {
+      gap: 18px;
+    }
+
+    .navItem,
+    .logout {
+      justify-content: center;
+      padding: 0;
+    }
+
+    .dot {
+      display: block;
+    }
+
+    .active::before {
+      top: 12px;
+      bottom: 12px;
+    }
+
+    // The name floats out as a tooltip on hover and keyboard focus;
+    // it stays in the accessibility tree as the link's name either way
+    .label,
+    .tooltip {
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: calc(100% + 14px);
+      z-index: 10;
+
+      padding: 7px 11px;
+      border: 1px solid var(--color-glass-border-strong);
+      border-radius: var(--radius-sm);
+      background: var(--color-navy-800);
+      box-shadow: var(--shadow-md);
+      color: var(--color-snow);
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+
+      opacity: 0;
+      translate: -4px -50%;
+      pointer-events: none;
+      transition:
+        opacity var(--transition-fast),
+        translate var(--transition-fast);
+    }
+
+    .navItem:hover .label,
+    .navItem:focus-visible .label,
+    .logout:hover .label,
+    .logout:focus-visible .label,
+    .collapseButton:hover .tooltip,
+    .collapseButton:focus-visible .tooltip {
+      opacity: 1;
+      translate: 0 -50%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell,
+  .collapsed .label,
+  .collapsed .tooltip {
+    transition: none;
+  }
+}
+
+// ---------- Content ----------
+
+.main {
+  min-width: 0;
+  padding: 40px 48px 64px;
+}
+
+// ---------- Mobile ----------
+
+.topbar,
+.overlay,
+.tabbar {
+  display: none;
+}
+
+// ---------- Mobile tab bar ----------
+
+.tab {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 3px;
+  min-width: 0;
+
+  color: var(--color-text-muted);
+  // Six tabs: the label shrinks with the screen so the longest one ("Иш-чаралар") fits on one line
+  font-size: clamp(9px, 2.6vw, 11px);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-align: center;
+  white-space: nowrap;
+
+  transition: color var(--transition-fast);
+}
+
+.tabIcon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 30px;
+
+  border-radius: 999px;
+  font-size: 21px;
+  transition: background var(--transition-fast);
+}
+
+.tabActive {
+  color: var(--color-accent-text);
+
+  .tabIcon {
+    background: rgb(var(--rgb-gold) / 0.16);
+  }
+}
+
+.tabBadge {
+  position: absolute;
+  top: -3px;
+  right: 2px;
+
+  display: grid;
+  place-items: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+
+  border: 2px solid var(--color-surface);
+  border-radius: 999px;
+  background: var(--color-crimson);
+  color: var(--color-snow);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.menuButton {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text);
+  font-size: 24px;
+}
+
+@media (max-width: 960px) {
+  .shell {
+    grid-template-columns: 1fr;
+    // Rows are just topbar + main; without this, min-height's spare space on
+    // short pages is shared between them and opens a gap under the topbar
+    align-content: start;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-header);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    height: 64px;
+    padding: 0 12px 0 16px;
+
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-header-glass);
+    -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
+  }
+
+  .sidebar {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: var(--z-menu);
+
+    width: min($sidebar-width, 86vw);
+    translate: -100% 0;
+    transition: translate 0.35s var(--ease-out-expo);
+  }
+
+  .open {
+    translate: 0 0;
+    box-shadow: var(--shadow-lg);
+  }
+
+  // The drawer is always full: nothing to collapse
+  .collapseButton {
+    display: none;
+  }
+
+  .overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: calc(var(--z-menu) - 1);
+    background: rgb(var(--rgb-navy) / 0.5);
+  }
+
+  .main {
+    // Clear the tab bar (+ the iPhone home indicator)
+    padding: 24px 16px calc(#{$tabbar-height} + 32px + env(safe-area-inset-bottom));
+  }
+
+  // Toasts (rendered outside the shell) float above the tab bar instead of covering it
+  :global(body):has(.tabbar) {
+    --toast-bottom: calc(#{$tabbar-height} + 16px + env(safe-area-inset-bottom));
+  }
+
+  .tabbar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: var(--z-header);
+
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    height: calc(#{$tabbar-height} + env(safe-area-inset-bottom));
+    padding: 0 2px env(safe-area-inset-bottom);
+
+    border-top: 1px solid var(--color-border);
+    background: var(--color-header-glass);
+    -webkit-backdrop-filter: blur(18px);
+    backdrop-filter: blur(18px);
+  }
+}
+
+@keyframes breathe {
+  from {
+    opacity: 0.6;
+    transform: scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+}
