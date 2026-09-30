@@ -4,7 +4,8 @@ import { plural } from "../plural";
 // (the Messages type checks it), so a missing translation fails the build instead
 // of quietly showing English.
 
-const n = (count: number, one: string, other: string) => plural("en", count, { one, other });
+const n = (count: number, one: string, other: string) =>
+  plural("en", count, { one, other });
 
 export const en = {
   meta: {
@@ -102,7 +103,8 @@ export const en = {
       {
         // Account preferences (theme, notifications) with a value the API doesn't accept
         pattern: /^(themePreference|notify\w+) must be /,
-        text: () => "Couldn't save this setting. Refresh the page and try again",
+        text: () =>
+          "Couldn't save this setting. Refresh the page and try again",
       },
     ] as Array<{ pattern: RegExp; text: (match: RegExpMatchArray) => string }>,
   },
@@ -114,7 +116,14 @@ export const en = {
     ai: "AI Assistant",
     profile: "Profile",
     settings: "Settings",
-    short: { dashboard: "Home", myEvents: "Events", mySanta: "My Santa", ai: "AI", profile: "Profile", settings: "Settings" },
+    short: {
+      dashboard: "Home",
+      myEvents: "Events",
+      mySanta: "My Santa",
+      ai: "AI",
+      profile: "Profile",
+      settings: "Settings",
+    },
     groups: { main: "Main", account: "Account" },
     collapse: "Collapse menu",
     expand: "Expand menu",
@@ -168,7 +177,8 @@ export const en = {
       line1: "Make Christmas",
       line2: "a little more",
       line3: "magical.",
-      subtitle: "Create a Secret Santa, invite your friends and make gift-giving part of the celebration.",
+      subtitle:
+        "Create a Secret Santa, invite your friends and make gift-giving part of the celebration.",
       create: "Create Secret Santa",
       join: "Join a Secret Santa",
       scroll: "Scroll",
@@ -199,9 +209,18 @@ export const en = {
       title2: "3 simple steps",
       step: (number: string) => `Step ${number}`,
       steps: [
-        { title: "Create", text: "Set up your event — choose a name, number of participants, and gift budget." },
-        { title: "Invite", text: "Share a single link. Friends join with one click, no sign-up friction." },
-        { title: "Reveal", text: "When everyone is ready, discover who you're gifting — privately and magically." },
+        {
+          title: "Create",
+          text: "Set up your event — choose a name, number of participants, and gift budget.",
+        },
+        {
+          title: "Invite",
+          text: "Share a single link. Friends join with one click, no sign-up friction.",
+        },
+        {
+          title: "Reveal",
+          text: "When everyone is ready, discover who you're gifting — privately and magically.",
+        },
       ],
     },
     features: {
@@ -211,17 +230,20 @@ export const en = {
         "One platform to handle invites, wishlists, matching and gift ideas — so you can focus on the fun part.",
       eventsEyebrow: "Event management",
       eventsTitle: "Create events",
-      eventsText: "Manage separate Secret Santas for different groups — work, family, friends.",
+      eventsText:
+        "Manage separate Secret Santas for different groups — work, family, friends.",
       eventName: "New Year Party 2026",
       eventMeta: "18 participants · 1,000–3,000 som",
       active: "Active",
       participantsReady: "Participants ready",
       everyoneReady: "Everyone ready",
       privateTitle: "Private matching",
-      privateText: "Each participant only sees their own recipient. Complete privacy guaranteed.",
+      privateText:
+        "Each participant only sees their own recipient. Complete privacy guaranteed.",
       privateNotice: "Your match is private. Only you can see it.",
       wishlistsTitle: "Wishlists",
-      wishlistsText: "Participants share what they actually want. No more guessing.",
+      wishlistsText:
+        "Participants share what they actually want. No more guessing.",
       wishes: ["Headphones", "Hoodie", "Chocolate", "Football", "Gaming"],
     },
     recipient: {
@@ -264,12 +286,27 @@ export const en = {
       title: "Built for the holidays.",
       subtitle: "Every detail is designed to make Secret Santa effortless.",
       perks: [
-        { title: "Secret matching", text: "Random assignment — nobody sees who got who." },
-        { title: "Fully private", text: "Each participant only sees their own recipient." },
-        { title: "Wishlists", text: "Every participant shares what they actually want." },
-        { title: "Budget control", text: "Organizer sets the spending range for everyone." },
+        {
+          title: "Secret matching",
+          text: "Random assignment — nobody sees who got who.",
+        },
+        {
+          title: "Fully private",
+          text: "Each participant only sees their own recipient.",
+        },
+        {
+          title: "Wishlists",
+          text: "Every participant shares what they actually want.",
+        },
+        {
+          title: "Budget control",
+          text: "Organizer sets the spending range for everyone.",
+        },
         { title: "Easy invite", text: "One link, anyone can join in seconds." },
-        { title: "AI gift ideas", text: "Smart suggestions based on wishlist & budget." },
+        {
+          title: "AI gift ideas",
+          text: "Smart suggestions based on wishlist & budget.",
+        },
       ],
     },
     cta: {
@@ -283,7 +320,8 @@ export const en = {
   auth: {
     login: {
       asideTitle: "Welcome back.",
-      asideText: "Your Secret Santa events are waiting. Let the magic continue.",
+      asideText:
+        "Your Secret Santa events are waiting. Let the magic continue.",
       demoMatch: "Aybek got matched!",
       demoEvent: "New Year Party 2026",
       demoReady: "Everyone is ready!",
@@ -296,8 +334,13 @@ export const en = {
     },
     signup: {
       asideTitle: "Join the magic.",
-      asideText: "Start your first Secret Santa in seconds. Make this Christmas unforgettable.",
-      perks: ["Create unlimited events", "Share your wishlist", "Get AI gift ideas"],
+      asideText:
+        "Start your first Secret Santa in seconds. Make this Christmas unforgettable.",
+      perks: [
+        "Create unlimited events",
+        "Share your wishlist",
+        "Get AI gift ideas",
+      ],
       title: "Create account",
       subtitle: "Start for free. No credit card required.",
       name: "Your name",
@@ -321,21 +364,28 @@ export const en = {
     google: "Continue with Google",
     or: "or",
     googleErrors: {
-      google: "Google sign-in didn't work. Please try again or use your email and password.",
+      google:
+        "Google sign-in didn't work. Please try again or use your email and password.",
       google_email_not_verified:
         "Your Google account's email isn't verified. Verify it with Google, or sign up with email and password.",
-      google_account_exists: "An account with this email already exists. Log in with your email and password.",
+      google_account_exists:
+        "An account with this email already exists. Log in with your email and password.",
     } as Record<string, string>,
     reauthErrors: {
       reauth_wrong_account:
         "That Google account isn't the one connected to Secret Santa. Choose the right account and try again.",
-      reauth_no_session: "Your session ended. Log in again, then try once more.",
+      reauth_no_session:
+        "Your session ended. Log in again, then try once more.",
     } as Record<string, string>,
     reauthFailed: "We couldn't confirm it with Google. Please try again.",
   },
 
   dashboard: {
-    greeting: { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening" },
+    greeting: {
+      morning: "Good morning",
+      afternoon: "Good afternoon",
+      evening: "Good evening",
+    },
     subtitle: "Ready to make someone's Christmas magical?",
     hero: {
       label: "Your Secret Santa",
@@ -346,7 +396,8 @@ export const en = {
       emptyKicker: "No active Secret Santa",
       emptyTitle: "Your Christmas story",
       emptyTitleAccent: "starts here.",
-      emptyText: "Create an event and invite your friends with one link — or join one you've been invited to.",
+      emptyText:
+        "Create an event and invite your friends with one link — or join one you've been invited to.",
       create: "Create Secret Santa",
       joinWithLink: "Join with a link",
       readyKicker: "Your Secret Santa is ready",
@@ -364,11 +415,14 @@ export const en = {
       viewWishlist: "View their wishlist",
       gettingReady: "Getting ready",
       people: "People",
-      peopleValue: (count: number, max: number | null) => (max ? `${count} of ${max}` : `${count}`),
+      peopleValue: (count: number, max: number | null) =>
+        max ? `${count} of ${max}` : `${count}`,
       profilesReady: "Profiles ready",
-      profilesReadyValue: (ready: number, total: number) => `${ready} of ${total}`,
+      profilesReadyValue: (ready: number, total: number) =>
+        `${ready} of ${total}`,
       preparing: "Preparing",
-      inviteMore: (missing: number) => `Invite ${missing} more ${n(missing, "person", "people")} to draw names.`,
+      inviteMore: (missing: number) =>
+        `Invite ${missing} more ${n(missing, "person", "people")} to draw names.`,
       everyoneHere: "Everyone you need is here — draw names when you're ready.",
       waitingFor: (owner: string) => `Waiting for ${owner} to draw names.`,
       inviteFriends: "Invite friends",
@@ -380,18 +434,25 @@ export const en = {
       loading: "Loading countdown",
       unavailable: "Countdown is unavailable right now.",
       title: "Countdown",
-      noEvents: "The countdown starts when your first event has a gift-exchange day.",
+      noEvents:
+        "The countdown starts when your first event has a gift-exchange day.",
       noDates: "None of your events has a gift-exchange day yet.",
       setDate: (event: string) => `Set a date for ${event}`,
       eventIn: "Your event is in",
-      timerLabel: (days: number, hours: number, minutes: number, event: string) =>
+      timerLabel: (
+        days: number,
+        hours: number,
+        minutes: number,
+        event: string,
+      ) =>
         `${days} ${n(days, "day", "days")}, ${hours} ${n(hours, "hour", "hours")}, ${minutes} ${n(minutes, "minute", "minutes")} until ${event}`,
       days: (count: number) => n(count, "Day", "Days"),
       hours: (count: number) => n(count, "Hour", "Hours"),
       minutes: (count: number) => n(count, "Minute", "Minutes"),
       giftDay: "It's gift day!",
       happyNewYear: "Happy New Year!",
-      untilNewYear: (days: number) => `${days} ${n(days, "day", "days")} until New Year`,
+      untilNewYear: (days: number) =>
+        `${days} ${n(days, "day", "days")} until New Year`,
     },
     quick: {
       label: "Quick actions",
@@ -413,7 +474,8 @@ export const en = {
       noActive: "No active Secret Santa right now",
       noEvents: "No Secret Santa events yet",
       noActiveText: "Last season is wrapped up. Ready for the next one?",
-      noEventsText: "Create your first Secret Santa and invite your people with one link.",
+      noEventsText:
+        "Create your first Secret Santa and invite your people with one link.",
       create: "Create Secret Santa",
       startAnother: "Start another group",
     },
@@ -437,7 +499,11 @@ export const en = {
   },
 
   events: {
-    status: { open: "Gathering people", drawn: "Names drawn", completed: "Completed" },
+    status: {
+      open: "Gathering people",
+      drawn: "Names drawn",
+      completed: "Completed",
+    },
     card: {
       organizesThis: "You organize this one",
       people: (count: number) => `${count} ${n(count, "person", "people")}`,
@@ -451,7 +517,8 @@ export const en = {
       loading: "Loading events",
       error: "Couldn't load your events.",
       emptyTitle: "Your Christmas story starts here.",
-      emptyText: "Start a Secret Santa for friends, family or your team — it takes less than a minute.",
+      emptyText:
+        "Start a Secret Santa for friends, family or your team — it takes less than a minute.",
       createFirst: "Create your first event",
       active: "Active",
       newGroup: "Start a new group",
@@ -474,18 +541,29 @@ export const en = {
     create: {
       steps: ["Event", "Budget", "Profile", "Ready"],
       stepsLabel: "Steps",
-      nameIdeas: ["New Year Party 2027", "Office Secret Santa", "Family Christmas", "Friends Gift Swap"],
+      nameIdeas: [
+        "New Year Party 2027",
+        "Office Secret Santa",
+        "Family Christmas",
+        "Friends Gift Swap",
+      ],
       budgets: ["Up to 500", "500–1,000", "1,000–3,000", "3,000–5,000"],
-      dateIdeas: { christmasEve: "Christmas Eve", christmas: "Christmas", newYearsEve: "New Year's Eve" },
+      dateIdeas: {
+        christmasEve: "Christmas Eve",
+        christmas: "Christmas",
+        newYearsEve: "New Year's Eve",
+      },
       eventTitle: "Create your event",
       eventSubtitle: "Set up the basics for your Secret Santa.",
       name: "Event name",
       namePlaceholder: "New Year Party 2027",
       description: "Description",
-      descriptionPlaceholder: "Where and when you'll swap gifts, dress code, anything fun…",
+      descriptionPlaceholder:
+        "Where and when you'll swap gifts, dress code, anything fun…",
       date: "Gift exchange day",
       budgetTitle: "Budget & group",
-      budgetSubtitle: "A shared budget keeps gifts fair. Everything here is optional.",
+      budgetSubtitle:
+        "A shared budget keeps gifts fair. Everything here is optional.",
       budget: "Gift budget, som",
       from: "From",
       to: "To",
@@ -493,8 +571,10 @@ export const en = {
       noLimit: "No limit",
       maxPeopleHint: "The link stops accepting people once the group is full.",
       profileTitle: "Your profile",
-      profileSubtitle: "You're taking part too! Tell your Secret Santa what you like — or skip and do it later.",
-      giftsOnWishlist: (count: number) => `${count} ${n(count, "gift", "gifts")} on your wishlist.`,
+      profileSubtitle:
+        "You're taking part too! Tell your Secret Santa what you like — or skip and do it later.",
+      giftsOnWishlist: (count: number) =>
+        `${count} ${n(count, "gift", "gifts")} on your wishlist.`,
       addGiftsLater: "Add gifts to your wishlist any time on your profile.",
       summaryEvent: "Event",
       summaryDate: "Date",
@@ -502,7 +582,8 @@ export const en = {
       submit: "Create event",
       submitting: "Creating…",
       successTitle: "You're all set!",
-      successText: (event: string) => `${event} is ready. Send the link to everyone who should take part.`,
+      successText: (event: string) =>
+        `${event} is ready. Send the link to everyone who should take part.`,
       goToEvent: "Go to event",
       errors: {
         name: "Give your event a name",
@@ -524,10 +605,12 @@ export const en = {
       organizedBy: (owner: string) => `Organized by ${owner}`,
       peopleOf: (count: number, max: number | null) =>
         `${count} ${n(count, "person", "people")}${max ? ` of ${max}` : ""}`,
-      readyForSanta: (ready: number, total: number) => `${ready}/${total} ready for Santa`,
+      readyForSanta: (ready: number, total: number) =>
+        `${ready}/${total} ready for Santa`,
       inviteTitle: "Invite your friends",
       inviteNote: "Anyone with this link can join until names are drawn.",
-      privacyNote: "Pairs are private: everyone sees only their own recipient — the organizer too.",
+      privacyNote:
+        "Pairs are private: everyone sees only their own recipient — the organizer too.",
       nudgeTitle: "Your Santa knows nothing about you yet.",
       nudgeText: "Add a few interests or a wishlist.",
     },
@@ -546,7 +629,8 @@ export const en = {
         `${owner} will draw names when everyone has joined. Meanwhile, invite friends and fill in your profile.`,
       inviteMore: (missing: number) => `Invite ${missing} more to draw`,
       readyWhenYouAre: "Ready when you are",
-      needMore: (min: number) => `The gifts are waiting for a few more people — you need at least ${min}.`,
+      needMore: (min: number) =>
+        `The gifts are waiting for a few more people — you need at least ${min}.`,
       readyCount: (ready: number, total: number) =>
         `${ready} of ${total} have filled in their profile. After the draw nobody can join or leave.`,
       drawConfirm: (count: number) => `Draw names for ${count}?`,
@@ -564,7 +648,8 @@ export const en = {
       budgetTo: "Budget to, som",
       updated: "Event updated",
       newLink: "New invite link",
-      newLinkText: "The old link stops working. Handy if it was shared too widely.",
+      newLinkText:
+        "The old link stops working. Handy if it was shared too widely.",
       replaceLink: "Replace link",
       replacing: "Replacing…",
       newLinkButton: "New link",
@@ -582,7 +667,8 @@ export const en = {
       leave: "Leave event",
       left: "You left the event",
       deleteTitle: "Delete event",
-      deleteText: "Removes it for everyone, including all pairs. Can't be undone.",
+      deleteText:
+        "Removes it for everyone, including all pairs. Can't be undone.",
       deleteConfirm: "Delete for everyone",
       deleting: "Deleting…",
       delete: "Delete",
@@ -596,7 +682,8 @@ export const en = {
     participants: {
       title: "Participants",
       closed: "Joining closed",
-      spotsLeft: (count: number) => `${count} ${n(count, "spot", "spots")} left`,
+      spotsLeft: (count: number) =>
+        `${count} ${n(count, "spot", "spots")} left`,
       full: "Group is full",
       ready: "Ready for Santa",
       notReady: "No interests or wishlist yet",
@@ -605,11 +692,17 @@ export const en = {
       removing: (name: string) => `Removing ${name}…`,
       removed: (name: string) => `${name} was removed`,
       readyNoteStrong: "Ready",
-      readyNote: " means they've shared interests or a wishlist, so their Santa has something to go on.",
+      readyNote:
+        " means they've shared interests or a wishlist, so their Santa has something to go on.",
     },
     checklist: {
       title: "Gift checklist",
-      steps: { idea: "Picked a gift idea", bought: "Bought it", wrapped: "Wrapped it", given: "Handed it over" },
+      steps: {
+        idea: "Picked a gift idea",
+        bought: "Bought it",
+        wrapped: "Wrapped it",
+        given: "Handed it over",
+      },
       private: "Only you can see this list.",
     },
   },
@@ -617,7 +710,8 @@ export const en = {
   santa: {
     back: "Back to event",
     loading: "Loading",
-    notDrawn: "Names haven't been drawn yet. Your Secret Santa will appear here after the draw.",
+    notDrawn:
+      "Names haven't been drawn yet. Your Secret Santa will appear here after the draw.",
     loadError: "Couldn't load your Secret Santa.",
     youAreSantaFor: "You're the Secret Santa for",
     onlyYou: "Only you can see this. Keep the secret!",
@@ -630,7 +724,8 @@ export const en = {
     interestsHint: "Their interests above are a great place to start.",
     unwrapping: "Unwrapping…",
     readyTitle: "Your Secret Santa is ready.",
-    readyText: "There's someone waiting for your gift. Ready to find out who it is?",
+    readyText:
+      "There's someone waiting for your gift. Ready to find out who it is?",
     open: "Open my Secret Santa",
     private: "Completely private — nobody else can see your match.",
   },
@@ -640,7 +735,8 @@ export const en = {
     subtitle: "Who you're gifting this season. Shh — it's a secret.",
     loadError: "Couldn't load your matches.",
     emptyTitle: "No draws yet",
-    emptyText: "Once the organizer of your event draws names, the person you're gifting appears here.",
+    emptyText:
+      "Once the organizer of your event draws names, the person you're gifting appears here.",
     goToEvents: "Go to my events",
     gifting: "You're gifting",
     wrapped: "Still wrapped",
@@ -654,7 +750,8 @@ export const en = {
     loading: "Loading invite",
     invalidTitle: "This invite link doesn't work",
     errorTitle: "Something went wrong",
-    invalidText: "It may have been replaced by the organizer. Ask them for a fresh link.",
+    invalidText:
+      "It may have been replaced by the organizer. Ask them for a fresh link.",
     home: "Go to Secret Santa",
     invitedYou: (owner: string) => `${owner} invited you to`,
     giftBudget: "gift budget",
@@ -687,9 +784,12 @@ export const en = {
       editName: "Edit name",
       yourName: "Your name",
       ready: "Ready for Santa!",
-      readiness: (done: number, total: number) => `Santa readiness · ${done}/${total}`,
-      completeText: "Your Secret Santa has everything they need to pick a great gift.",
-      incompleteText: "The more you share, the easier it is for your Santa to surprise you.",
+      readiness: (done: number, total: number) =>
+        `Santa readiness · ${done}/${total}`,
+      completeText:
+        "Your Secret Santa has everything they need to pick a great gift.",
+      incompleteText:
+        "The more you share, the easier it is for your Santa to surprise you.",
     },
     interests: {
       title: "Interests",
@@ -703,8 +803,20 @@ export const en = {
       add: "Add",
       ideas: "Need ideas? Tap to add",
       suggestions: [
-        "Coffee", "Tea", "Books", "Board games", "Music", "Movies", "Cooking",
-        "Travel", "Sports", "Gaming", "Art", "Plants", "Photography", "Fashion",
+        "Coffee",
+        "Tea",
+        "Books",
+        "Board games",
+        "Music",
+        "Movies",
+        "Cooking",
+        "Travel",
+        "Sports",
+        "Gaming",
+        "Art",
+        "Plants",
+        "Photography",
+        "Fashion",
       ],
       tooLong: (max: number) => `Keep each interest under ${max} characters`,
       tooMany: (max: number) => `Up to ${max} interests`,
@@ -750,11 +862,16 @@ export const en = {
     sections: {
       account: "Who you are in Secret Santa.",
       appearance: "How Secret Santa looks and which language it speaks.",
-      security: { title: "Security", text: "Your password and the devices you're signed in on." },
+      security: {
+        title: "Security",
+        text: "Your password and the devices you're signed in on.",
+      },
     },
-    profileText: "Your name, interests and wishlist live on your profile — that's what your Secret Santa sees.",
+    profileText:
+      "Your name, interests and wishlist live on your profile — that's what your Secret Santa sees.",
     emailNote: "You sign in with this email. Other participants never see it.",
-    themeText: "System follows your device. Your choice is saved to your account, so your other devices get it too.",
+    themeText:
+      "System follows your device. Your choice is saved to your account, so your other devices get it too.",
     account: {
       title: "Account",
       name: "Name",
@@ -766,7 +883,8 @@ export const en = {
       title: "Appearance",
       text1: "Choose a theme.",
       system: "System",
-      text2: "follows your device and switches automatically. It's saved to your account, so your other devices get it too.",
+      text2:
+        "follows your device and switches automatically. It's saved to your account, so your other devices get it too.",
     },
     language: {
       title: "Language",
@@ -780,7 +898,8 @@ export const en = {
       change: "Change password",
       changeText: "Changing it logs you out on every other device.",
       set: "Set password",
-      googleConfirmed: "Google confirmed it's you. Choose a password within the next 5 minutes.",
+      googleConfirmed:
+        "Google confirmed it's you. Choose a password within the next 5 minutes.",
       current: "Current password",
       new: "New password",
       confirm: "Confirm new password",
@@ -788,7 +907,8 @@ export const en = {
       savePassword: "Save password",
       changed: "Password changed. Your other devices were logged out",
       setDone: "Password set — you can now also log in with your email",
-      expired: "Your Google confirmation expired. Confirm again, then set your password within 5 minutes.",
+      expired:
+        "Your Google confirmation expired. Confirm again, then set your password within 5 minutes.",
     },
     sessions: {
       title: "Sessions",
@@ -812,7 +932,8 @@ export const en = {
     title: "Event chat",
     subtitle: "Everyone in this Secret Santa can read it",
     lockedTitle: "The chat opens after the draw",
-    lockedText: "Once names are drawn, everyone here can talk: agree on the day, the place and the wrapping.",
+    lockedText:
+      "Once names are drawn, everyone here can talk: agree on the day, the place and the wrapping.",
     privacy: "Keep the secret: don't tell who you're gifting.",
     empty: "No messages yet. Say hi and agree on when you'll swap gifts.",
     messagesLabel: "Messages",
@@ -821,7 +942,8 @@ export const en = {
     send: "Send",
     sending: "Sending…",
     keyHint: "Enter to send · Shift + Enter for a new line",
-    charsLeft: (count: number) => `${count} ${n(count, "character", "characters")} left`,
+    charsLeft: (count: number) =>
+      `${count} ${n(count, "character", "characters")} left`,
     loadEarlier: "Show earlier messages",
     loading: "Loading messages",
     loadError: "Couldn't load the chat.",
@@ -851,30 +973,85 @@ export const en = {
     teaserAction: "Show me",
     teaserDismiss: "Not now",
     welcomeTitle: "Hi! I'll help you find your way around Secret Santa.",
-    welcomeText: "I can show you how to create an event, invite friends or find a gift.",
+    welcomeText:
+      "I can show you how to create an event, invite friends or find a gift.",
     greeting: "What can I help you with?",
     greetingText: "Ask about this page or anything in the app.",
     quickLabel: "Suggestions",
     quick: {
-      howItWorks: { label: "How does it work?", prompt: "How does Secret Santa work?" },
-      createSanta: { label: "How do I create a Secret Santa?", prompt: "How do I create a Secret Santa?" },
-      inviteFriends: { label: "How do I invite friends?", prompt: "How do I invite friends to my Secret Santa?" },
-      whereRecipient: { label: "Where is my recipient?", prompt: "Where do I see who I'm gifting?" },
-      createEvent: { label: "How do I create an event?", prompt: "How do I create an event?" },
-      joinEvent: { label: "How do I join an event?", prompt: "How do I join someone else's Secret Santa?" },
-      eventSteps: { label: "What are the steps?", prompt: "What do I fill in when creating an event?" },
-      whatNext: { label: "What do I do next?", prompt: "What should I do next in this event?" },
-      whoReady: { label: "What does \"ready\" mean?", prompt: "What does \"ready for Santa\" mean, and how does someone become ready?" },
-      whenDraw: { label: "When should I draw names?", prompt: "When should I draw names in my event?" },
-      eventChat: { label: "How does the event chat work?", prompt: "How does the event chat work?" },
-      whatToGift: { label: "What should I gift?", prompt: "Give me tips on choosing a Secret Santa gift." },
-      howWishlist: { label: "How does the wishlist work?", prompt: "How does the wishlist work?" },
-      interests: { label: "What to add to interests?", prompt: "What should I add to my interests so my Santa finds a good gift?" },
-      fillWishlist: { label: "How do I fill in my wishlist?", prompt: "How do I fill in my wishlist?" },
-      changeTheme: { label: "How do I change the theme?", prompt: "How do I change the theme?" },
-      changeLanguage: { label: "How do I change the language?", prompt: "How do I change the language?" },
+      howItWorks: {
+        label: "How does it work?",
+        prompt: "How does Secret Santa work?",
+      },
+      createSanta: {
+        label: "How do I create a Secret Santa?",
+        prompt: "How do I create a Secret Santa?",
+      },
+      inviteFriends: {
+        label: "How do I invite friends?",
+        prompt: "How do I invite friends to my Secret Santa?",
+      },
+      whereRecipient: {
+        label: "Where is my recipient?",
+        prompt: "Where do I see who I'm gifting?",
+      },
+      createEvent: {
+        label: "How do I create an event?",
+        prompt: "How do I create an event?",
+      },
+      joinEvent: {
+        label: "How do I join an event?",
+        prompt: "How do I join someone else's Secret Santa?",
+      },
+      eventSteps: {
+        label: "What are the steps?",
+        prompt: "What do I fill in when creating an event?",
+      },
+      whatNext: {
+        label: "What do I do next?",
+        prompt: "What should I do next in this event?",
+      },
+      whoReady: {
+        label: 'What does "ready" mean?',
+        prompt:
+          'What does "ready for Santa" mean, and how does someone become ready?',
+      },
+      whenDraw: {
+        label: "When should I draw names?",
+        prompt: "When should I draw names in my event?",
+      },
+      eventChat: {
+        label: "How does the event chat work?",
+        prompt: "How does the event chat work?",
+      },
+      whatToGift: {
+        label: "What should I gift?",
+        prompt: "Give me tips on choosing a Secret Santa gift.",
+      },
+      howWishlist: {
+        label: "How does the wishlist work?",
+        prompt: "How does the wishlist work?",
+      },
+      interests: {
+        label: "What to add to interests?",
+        prompt:
+          "What should I add to my interests so my Santa finds a good gift?",
+      },
+      fillWishlist: {
+        label: "How do I fill in my wishlist?",
+        prompt: "How do I fill in my wishlist?",
+      },
+      changeTheme: {
+        label: "How do I change the theme?",
+        prompt: "How do I change the theme?",
+      },
+      changeLanguage: {
+        label: "How do I change the language?",
+        prompt: "How do I change the language?",
+      },
     },
-    giftHint: "For gift ideas for your own recipient, open the full assistant and pick your event.",
+    giftHint:
+      "For gift ideas for your own recipient, open the full assistant and pick your event.",
     newChat: "New conversation",
     openFull: "Open full assistant",
     placeholder: "Ask a question…",
@@ -903,7 +1080,11 @@ export const en = {
     forRecipient: (name: string) => `Gift for ${name}`,
     general: "General questions",
     helpingWith: "Helping with",
-    pageHint: { title: "What can I do here?", prompt: "What can I do on this page?", from: "You came from" },
+    pageHint: {
+      title: "What can I do here?",
+      prompt: "What can I do on this page?",
+      from: "You came from",
+    },
     recent: "Recent conversations",
     earlier: "Earlier",
     closeHistory: "Close history",
@@ -912,16 +1093,48 @@ export const en = {
     chooseEvent: "What's it about?",
     quickLabel: "What shall we do?",
     quick: {
-      howItWorks: { title: "How does Secret Santa work?", text: "The whole process, step by step", prompt: "How does Secret Santa work?" },
-      createEvent: { title: "How do I create an event?", text: "Set up a group in a minute", prompt: "How do I create an event?" },
-      invite: { title: "How do I invite people?", text: "One link for everyone", prompt: "How do I invite people?" },
-      findGift: { title: "Help me find a gift", text: "Tips for a great present", prompt: "Help me find a gift." },
+      howItWorks: {
+        title: "How does Secret Santa work?",
+        text: "The whole process, step by step",
+        prompt: "How does Secret Santa work?",
+      },
+      createEvent: {
+        title: "How do I create an event?",
+        text: "Set up a group in a minute",
+        prompt: "How do I create an event?",
+      },
+      invite: {
+        title: "How do I invite people?",
+        text: "One link for everyone",
+        prompt: "How do I invite people?",
+      },
+      findGift: {
+        title: "Help me find a gift",
+        text: "Tips for a great present",
+        prompt: "Help me find a gift.",
+      },
     },
     giftQuick: {
-      choose: { title: "Help me choose a gift", text: "Ideas that suit them", prompt: "Help me choose a gift for my recipient." },
-      budget: { title: "Find a gift within my budget", text: "Ideas at the right price", prompt: "Find a gift for my recipient within our budget." },
-      wishlist: { title: "Use their wishlist", text: "Build on what they asked for", prompt: "Look at their wishlist: which gift would you choose, and why?" },
-      ideas: { title: "Give me 5 gift ideas", text: "Five options to pick from", prompt: "Give me 5 gift ideas for my recipient." },
+      choose: {
+        title: "Help me choose a gift",
+        text: "Ideas that suit them",
+        prompt: "Help me choose a gift for my recipient.",
+      },
+      budget: {
+        title: "Find a gift within my budget",
+        text: "Ideas at the right price",
+        prompt: "Find a gift for my recipient within our budget.",
+      },
+      wishlist: {
+        title: "Use their wishlist",
+        text: "Build on what they asked for",
+        prompt: "Look at their wishlist: which gift would you choose, and why?",
+      },
+      ideas: {
+        title: "Give me 5 gift ideas",
+        text: "Five options to pick from",
+        prompt: "Give me 5 gift ideas for my recipient.",
+      },
     },
     placeholder: "Ask me anything…",
     send: "Send",
@@ -937,12 +1150,14 @@ export const en = {
     loadError: "We couldn't load this conversation.",
     listError: "We couldn't load your conversations.",
     notFound: "This conversation doesn't exist or isn't yours.",
-    disclaimer: "AI can make mistakes. Check prices and details before you buy.",
+    disclaimer:
+      "AI can make mistakes. Check prices and details before you buy.",
     notRevealed: {
       text: "Open your Secret Santa, and I'll help you pick a gift for your person.",
       action: "Open my Secret Santa",
     },
-    closed: "This conversation can't continue: the event is no longer available to you.",
+    closed:
+      "This conversation can't continue: the event is no longer available to you.",
     actions: {
       label: "Suggested setting",
       "theme:light": "Switch to the light theme",
@@ -955,11 +1170,270 @@ export const en = {
       active: "Already on",
     },
     errors: {
-      ai_unavailable: "The assistant is unavailable right now. Try again in a moment.",
+      ai_unavailable:
+        "The assistant is unavailable right now. Try again in a moment.",
       ai_busy: "The assistant is busy. Try again in a minute.",
       ai_timeout: "The assistant took too long to answer. Try again.",
-      ai_refused: "The assistant can't help with that request. Try asking another way.",
+      ai_refused:
+        "The assistant can't help with that request. Try asking another way.",
       tooMany: "That's a lot of messages at once. Wait a moment and try again.",
+    },
+  },
+  privacy: {
+    title: "Privacy Policy",
+    lastUpdated: "Last updated: September 30, 2026",
+
+    introduction: {
+      title: "1. Introduction",
+      text: [
+        "Secret Santa is a service that helps friends, families, students, teams, and other groups organize Secret Santa gift exchanges.",
+        "This Privacy Policy explains what information we collect, how we use it, and how we protect it when you use the Secret Santa website and application.",
+      ],
+    },
+
+    information: {
+      title: "2. Information We Collect",
+      intro: "Depending on how you use the service, we may collect:",
+      items: {
+        account: "Account information: name and email address.",
+        authentication:
+          "Authentication information: information necessary to authenticate your account.",
+        profile:
+          "Profile information: avatar, interests, and wishlist information that you choose to provide.",
+        events:
+          "Event information: event names, dates, budgets, participants, and related event settings.",
+        messages:
+          "Messages: messages you send through available event chat or AI assistant features.",
+        technical:
+          "Technical information: information necessary to keep the service secure and functioning properly.",
+      },
+    },
+
+    google: {
+      title: "3. Google Sign-In",
+      text: [
+        "You may create or access your Secret Santa account using Google Sign-In.",
+        "When you use Google Sign-In, we may receive information provided by Google according to the permissions you authorize, such as your name, email address, profile picture, and Google account identifier.",
+        "We use this information to create and authenticate your Secret Santa account.",
+      ],
+    },
+
+    usage: {
+      title: "4. How We Use Your Information",
+      intro: "We use collected information to:",
+      items: {
+        account: "create and manage your account;",
+        authentication: "authenticate you securely;",
+        events: "create and manage Secret Santa events;",
+        participants: "allow participants to join events;",
+        matching: "perform Secret Santa participant matching;",
+        recipient: "display the recipient information available to you;",
+        wishlist: "provide wishlist and gift suggestion features;",
+        chat: "provide event chat functionality;",
+        ai: "provide the AI assistant when you choose to use it;",
+        security:
+          "maintain and improve the security and reliability of the service.",
+      },
+    },
+
+    secretSantaPrivacy: {
+      title: "5. Secret Santa Privacy",
+      text: [
+        "Secret Santa is designed so that participants do not receive the complete list of gift assignments.",
+        "A participant can see the recipient assigned to them when the Secret Santa draw has been revealed. Information about other assignments is not intentionally exposed through the normal user interface.",
+      ],
+    },
+
+    ai: {
+      title: "6. AI Assistant",
+      text: [
+        "Secret Santa may provide AI-powered features such as gift ideas and assistance with using the service.",
+        "When you use these features, relevant information may be processed to generate a response. The application is designed to provide the AI assistant only with the information necessary for the requested feature.",
+        "You should avoid sending passwords, payment information, or other highly sensitive personal information to the AI assistant.",
+      ],
+    },
+
+    cookies: {
+      title: "7. Cookies and Local Storage",
+      text: [
+        "The service may use cookies and browser storage to maintain authentication, language preferences, interface preferences, and other functionality required by the application.",
+        "Some cookies are necessary for the service to operate securely, including authentication and session management.",
+      ],
+    },
+
+    security: {
+      title: "8. Data Security",
+      text: [
+        "We use reasonable technical and organizational measures designed to protect account information and application data against unauthorized access, alteration, disclosure, or destruction.",
+        "No internet service can guarantee absolute security, so users should also take reasonable steps to protect their accounts and credentials.",
+      ],
+    },
+
+    retention: {
+      title: "9. Data Retention and Deletion",
+      text: [
+        "We retain information for as long as reasonably necessary to provide the service, maintain accounts, operate events, and meet legitimate technical and security requirements.",
+        "If account deletion functionality is available in your account settings, you may use it to request deletion of your account and associated information.",
+      ],
+    },
+
+    thirdParty: {
+      title: "10. Third-Party Services",
+      text: [
+        "The service may rely on third-party providers for services such as authentication, hosting, databases, and AI processing.",
+        "Such providers may process information as necessary to provide their services and are subject to their own terms and privacy policies.",
+      ],
+    },
+
+    children: {
+      title: "11. Children's Privacy",
+      text: [
+        "Secret Santa is intended to be used with appropriate permission and supervision where required by applicable law or by the rules of a school, organization, or event.",
+        "We do not knowingly collect personal information from children in circumstances where such collection is prohibited by applicable law.",
+      ],
+    },
+
+    changes: {
+      title: "12. Changes to This Policy",
+      text: [
+        "We may update this Privacy Policy when the service or applicable requirements change.",
+        "The updated version will be published on this page together with its updated date.",
+      ],
+    },
+
+    contact: {
+      title: "13. Contact",
+      text: "If you have questions about this Privacy Policy or the handling of your information, please contact the Secret Santa service administrator through the contact method provided on the website.",
+    },
+  },
+
+  terms: {
+    title: "Terms of Service",
+    lastUpdated: "Last updated: September 30, 2026",
+
+    acceptance: {
+      title: "1. Acceptance of Terms",
+      text: [
+        "By accessing or using Secret Santa, you agree to these Terms of Service and to use the service in accordance with applicable laws and regulations.",
+        "If you do not agree with these Terms, please do not use the service.",
+      ],
+    },
+
+    service: {
+      title: "2. About the Service",
+      text: [
+        "Secret Santa provides tools for organizing gift exchanges between groups of people.",
+        "Depending on the available features, the service may include event creation, participant invitations, Secret Santa matching, wishlists, event chat, and AI-powered gift suggestions.",
+      ],
+    },
+
+    accounts: {
+      title: "3. Accounts",
+      text: [
+        "Some features require you to create an account.",
+        "You are responsible for providing accurate information and for keeping your account credentials secure.",
+        "You should not share your password or authentication credentials with other people.",
+      ],
+    },
+
+    events: {
+      title: "4. Secret Santa Events",
+      text: [
+        "Event organizers are responsible for creating and managing their events, including selecting appropriate dates, budgets, and participant settings.",
+        "Participants are responsible for providing accurate profile, interest, and wishlist information when they choose to provide it.",
+        "Once a Secret Santa draw has been performed, some event settings may become restricted in order to preserve the integrity of the existing assignments.",
+      ],
+    },
+
+    assignments: {
+      title: "5. Gift Assignments",
+      text: [
+        "Secret Santa uses an automated process to create gift assignments between event participants.",
+        "The service is designed to prevent participants from being matched with themselves and to keep other participants' assignments private.",
+        "Users are responsible for keeping their own recipient information private and should not intentionally attempt to discover another participant's assignment.",
+      ],
+    },
+
+    userContent: {
+      title: "6. User Content",
+      text: [
+        "You may provide information such as your name, interests, wishlist, messages, and other content while using the service.",
+        "You are responsible for the content you submit and should not submit content that is illegal, threatening, abusive, deceptive, or that violates another person's rights.",
+      ],
+    },
+
+    chat: {
+      title: "7. Event Chat",
+      text: [
+        "Some Secret Santa events may include a group chat that becomes available after the Secret Santa draw.",
+        "Messages in event chat should be respectful and appropriate for the participants of the event.",
+        "Do not use event chat to share passwords, payment credentials, or other highly sensitive information.",
+      ],
+    },
+
+    ai: {
+      title: "8. AI Features",
+      text: [
+        "Secret Santa may provide AI-powered features for gift ideas, wishlist assistance, and questions about the service.",
+        "AI-generated suggestions are provided for informational purposes. They may be incomplete, inaccurate, or unsuitable for a particular situation.",
+        "You remain responsible for deciding whether and how to use any suggestion provided by the AI assistant.",
+      ],
+    },
+
+    prohibited: {
+      title: "9. Prohibited Use",
+      intro: "You agree not to:",
+      items: {
+        unlawful: "use the service for unlawful purposes;",
+        account: "attempt to access another user's account;",
+        assignments: "attempt to reveal private Secret Santa assignments;",
+        security: "interfere with the security or operation of the service;",
+        malicious: "send malicious code or automated abusive requests;",
+        impersonate: "impersonate another person or organization;",
+        harassment: "use the service to harass or threaten other participants.",
+      },
+    },
+
+    availability: {
+      title: "10. Availability",
+      text: [
+        "We aim to keep Secret Santa available and reliable, but we cannot guarantee uninterrupted access to the service.",
+        "The service may occasionally be unavailable because of maintenance, updates, technical problems, or circumstances outside our control.",
+      ],
+    },
+
+    thirdParty: {
+      title: "11. Third-Party Services",
+      text: [
+        "Secret Santa may integrate with third-party services such as Google authentication, hosting providers, databases, and AI providers.",
+        "Your use of third-party services may also be subject to their own terms and policies.",
+      ],
+    },
+
+    changes: {
+      title: "12. Changes to the Service",
+      text: [
+        "We may add, modify, or remove features from Secret Santa as the service develops.",
+        "We may also update these Terms when necessary. The latest version will be published on this page.",
+      ],
+    },
+
+    termination: {
+      title: "13. Account Suspension or Termination",
+      text: [
+        "Access to an account may be restricted or terminated if the account is used in violation of these Terms or in a way that threatens the security or operation of the service.",
+        "You may stop using the service at any time.",
+      ],
+    },
+
+    disclaimer: {
+      title: "14. Disclaimer",
+      text: "Secret Santa is provided on an “as available” basis. To the extent permitted by applicable law, we do not guarantee that the service will always be error-free, uninterrupted, or suitable for every particular purpose.",
+    },
+
+    contact: {
+      title: "15. Contact",
+      text: "If you have questions about these Terms of Service, please contact the Secret Santa service administrator through the contact method provided on the website.",
     },
   },
 };

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getI18n } from "@/i18n/server";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Secret Santa",
@@ -10,7 +11,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function PrivacyPolicyPage() {
+export default async function PrivacyPolicyPage() {
+  const { m } = await getI18n();
+  const t = m.privacy;
+
   return (
     <main
       style={{
@@ -50,7 +54,7 @@ export default function PrivacyPolicyPage() {
               letterSpacing: "-0.03em",
             }}
           >
-            Privacy Policy
+            {t.title}
           </h1>
 
           <p
@@ -60,206 +64,134 @@ export default function PrivacyPolicyPage() {
               fontSize: "15px",
             }}
           >
-            Last updated: September 30, 2026
+            {t.lastUpdated}
           </p>
         </div>
 
-        <Section title="1. Introduction">
-          <p>
-            Secret Santa is a service that helps friends, families, students,
-            teams, and other groups organize Secret Santa gift exchanges.
-          </p>
-
-          <p>
-            This Privacy Policy explains what information we collect, how we use
-            it, and how we protect it when you use the Secret Santa website and
-            application.
-          </p>
+        <Section title={`1. ${t.introduction.title}`}>
+          {t.introduction.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="2. Information We Collect">
-          <p>Depending on how you use the service, we may collect:</p>
+        <Section title={`2. ${t.information.title}`}>
+          <p>{t.information.intro}</p>
 
           <ul>
             <li>
-              <strong>Account information:</strong> name and email address.
+              <strong>{t.information.items.account.split(":")[0]}:</strong>{" "}
+              {t.information.items.account.split(":").slice(1).join(":").trim()}
             </li>
             <li>
-              <strong>Authentication information:</strong> information necessary
-              to authenticate your account.
+              <strong>
+                {t.information.items.authentication.split(":")[0]}:
+              </strong>{" "}
+              {t.information.items.authentication
+                .split(":")
+                .slice(1)
+                .join(":")
+                .trim()}
             </li>
             <li>
-              <strong>Profile information:</strong> avatar, interests, and
-              wishlist information that you choose to provide.
+              <strong>{t.information.items.profile.split(":")[0]}:</strong>{" "}
+              {t.information.items.profile.split(":").slice(1).join(":").trim()}
             </li>
             <li>
-              <strong>Event information:</strong> event names, dates, budgets,
-              participants, and related event settings.
+              <strong>{t.information.items.events.split(":")[0]}:</strong>{" "}
+              {t.information.items.events.split(":").slice(1).join(":").trim()}
             </li>
             <li>
-              <strong>Messages:</strong> messages you send through available
-              event chat or AI assistant features.
+              <strong>{t.information.items.messages.split(":")[0]}:</strong>{" "}
+              {t.information.items.messages
+                .split(":")
+                .slice(1)
+                .join(":")
+                .trim()}
             </li>
             <li>
-              <strong>Technical information:</strong> information necessary to
-              keep the service secure and functioning properly.
+              <strong>{t.information.items.technical.split(":")[0]}:</strong>{" "}
+              {t.information.items.technical
+                .split(":")
+                .slice(1)
+                .join(":")
+                .trim()}
             </li>
           </ul>
         </Section>
 
-        <Section title="3. Google Sign-In">
-          <p>
-            You may create or access your Secret Santa account using Google
-            Sign-In.
-          </p>
-
-          <p>
-            When you use Google Sign-In, we may receive information provided by
-            Google according to the permissions you authorize, such as your
-            name, email address, profile picture, and Google account identifier.
-          </p>
-
-          <p>
-            We use this information to create and authenticate your Secret Santa
-            account.
-          </p>
+        <Section title={`3. ${t.google.title}`}>
+          {t.google.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="4. How We Use Your Information">
-          <p>We use collected information to:</p>
+        <Section title={`4. ${t.usage.title}`}>
+          <p>{t.usage.intro}</p>
 
           <ul>
-            <li>create and manage your account;</li>
-            <li>authenticate you securely;</li>
-            <li>create and manage Secret Santa events;</li>
-            <li>allow participants to join events;</li>
-            <li>perform Secret Santa participant matching;</li>
-            <li>display the recipient information available to you;</li>
-            <li>provide wishlist and gift suggestion features;</li>
-            <li>provide event chat functionality;</li>
-            <li>provide the AI assistant when you choose to use it;</li>
-            <li>
-              maintain and improve the security and reliability of the service.
-            </li>
+            <li>{t.usage.items.account}</li>
+            <li>{t.usage.items.authentication}</li>
+            <li>{t.usage.items.events}</li>
+            <li>{t.usage.items.participants}</li>
+            <li>{t.usage.items.matching}</li>
+            <li>{t.usage.items.recipient}</li>
+            <li>{t.usage.items.wishlist}</li>
+            <li>{t.usage.items.chat}</li>
+            <li>{t.usage.items.ai}</li>
+            <li>{t.usage.items.security}</li>
           </ul>
         </Section>
 
-        <Section title="5. Secret Santa Privacy">
-          <p>
-            Secret Santa is designed so that participants do not receive the
-            complete list of gift assignments.
-          </p>
-
-          <p>
-            A participant can see the recipient assigned to them when the Secret
-            Santa draw has been revealed. Information about other assignments is
-            not intentionally exposed through the normal user interface.
-          </p>
+        <Section title={`5. ${t.secretSantaPrivacy.title}`}>
+          {t.secretSantaPrivacy.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="6. AI Assistant">
-          <p>
-            Secret Santa may provide AI-powered features such as gift ideas and
-            assistance with using the service.
-          </p>
-
-          <p>
-            When you use these features, relevant information may be processed
-            to generate a response. The application is designed to provide the
-            AI assistant only with the information necessary for the requested
-            feature.
-          </p>
-
-          <p>
-            You should avoid sending passwords, payment information, or other
-            highly sensitive personal information to the AI assistant.
-          </p>
+        <Section title={`6. ${t.ai.title}`}>
+          {t.ai.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="7. Cookies and Local Storage">
-          <p>
-            The service may use cookies and browser storage to maintain
-            authentication, language preferences, interface preferences, and
-            other functionality required by the application.
-          </p>
-
-          <p>
-            Some cookies are necessary for the service to operate securely,
-            including authentication and session management.
-          </p>
+        <Section title={`7. ${t.cookies.title}`}>
+          {t.cookies.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="8. Data Security">
-          <p>
-            We use reasonable technical and organizational measures designed to
-            protect account information and application data against
-            unauthorized access, alteration, disclosure, or destruction.
-          </p>
-
-          <p>
-            No internet service can guarantee absolute security, so users should
-            also take reasonable steps to protect their accounts and
-            credentials.
-          </p>
+        <Section title={`8. ${t.security.title}`}>
+          {t.security.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="9. Data Retention and Deletion">
-          <p>
-            We retain information for as long as reasonably necessary to provide
-            the service, maintain accounts, operate events, and meet legitimate
-            technical and security requirements.
-          </p>
-
-          <p>
-            If account deletion functionality is available in your account
-            settings, you may use it to request deletion of your account and
-            associated information.
-          </p>
+        <Section title={`9. ${t.retention.title}`}>
+          {t.retention.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="10. Third-Party Services">
-          <p>
-            The service may rely on third-party providers for services such as
-            authentication, hosting, databases, and AI processing.
-          </p>
-
-          <p>
-            Such providers may process information as necessary to provide their
-            services and are subject to their own terms and privacy policies.
-          </p>
+        <Section title={`10. ${t.thirdParty.title}`}>
+          {t.thirdParty.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="11. Children's Privacy">
-          <p>
-            Secret Santa is intended to be used with appropriate permission and
-            supervision where required by applicable law or by the rules of a
-            school, organization, or event.
-          </p>
-
-          <p>
-            We do not knowingly collect personal information from children in
-            circumstances where such collection is prohibited by applicable law.
-          </p>
+        <Section title={`11. ${t.children.title}`}>
+          {t.children.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="12. Changes to This Policy">
-          <p>
-            We may update this Privacy Policy when the service or applicable
-            requirements change.
-          </p>
-
-          <p>
-            The updated version will be published on this page together with its
-            updated date.
-          </p>
+        <Section title={`12. ${t.changes.title}`}>
+          {t.changes.text.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="13. Contact">
-          <p>
-            If you have questions about this Privacy Policy or the handling of
-            your information, please contact the Secret Santa service
-            administrator through the contact method provided on the website.
-          </p>
+        <Section title={`13. ${t.contact.title}`}>
+          <p>{t.contact.text}</p>
         </Section>
 
         <FooterNote />
@@ -276,11 +208,7 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section
-      style={{
-        marginBottom: "42px",
-      }}
-    >
+    <section style={{ marginBottom: "42px" }}>
       <h2
         style={{
           fontSize: "24px",

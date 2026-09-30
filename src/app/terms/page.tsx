@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { getI18n } from "@/i18n/server";
 
 export const metadata: Metadata = {
   title: "Terms of Service | Secret Santa",
@@ -10,7 +11,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function TermsPage() {
+export default async function TermsPage() {
+  const { m } = await getI18n();
+  const t = m.terms;
+
   return (
     <main
       style={{
@@ -50,7 +54,7 @@ export default function TermsPage() {
               letterSpacing: "-0.03em",
             }}
           >
-            Terms of Service
+            {t.title}
           </h1>
 
           <p
@@ -60,209 +64,102 @@ export default function TermsPage() {
               fontSize: "15px",
             }}
           >
-            Last updated: September 30, 2026
+            {t.lastUpdated}
           </p>
         </div>
 
-        <Section title="1. Acceptance of Terms">
-          <p>
-            By accessing or using Secret Santa, you agree to these Terms of
-            Service and to use the service in accordance with applicable laws
-            and regulations.
-          </p>
-
-          <p>
-            If you do not agree with these Terms, please do not use the service.
-          </p>
+        <Section title={t.acceptance.title}>
+          {t.acceptance.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="2. About the Service">
-          <p>
-            Secret Santa provides tools for organizing gift exchanges between
-            groups of people.
-          </p>
-
-          <p>
-            Depending on the available features, the service may include event
-            creation, participant invitations, Secret Santa matching, wishlists,
-            event chat, and AI-powered gift suggestions.
-          </p>
+        <Section title={t.service.title}>
+          {t.service.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="3. Accounts">
-          <p>Some features require you to create an account.</p>
-
-          <p>
-            You are responsible for providing accurate information and for
-            keeping your account credentials secure.
-          </p>
-
-          <p>
-            You should not share your password or authentication credentials
-            with other people.
-          </p>
+        <Section title={t.accounts.title}>
+          {t.accounts.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="4. Secret Santa Events">
-          <p>
-            Event organizers are responsible for creating and managing their
-            events, including selecting appropriate dates, budgets, and
-            participant settings.
-          </p>
-
-          <p>
-            Participants are responsible for providing accurate profile,
-            interest, and wishlist information when they choose to provide it.
-          </p>
-
-          <p>
-            Once a Secret Santa draw has been performed, some event settings may
-            become restricted in order to preserve the integrity of the existing
-            assignments.
-          </p>
+        <Section title={t.events.title}>
+          {t.events.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="5. Gift Assignments">
-          <p>
-            Secret Santa uses an automated process to create gift assignments
-            between event participants.
-          </p>
-
-          <p>
-            The service is designed to prevent participants from being matched
-            with themselves and to keep other participants' assignments private.
-          </p>
-
-          <p>
-            Users are responsible for keeping their own recipient information
-            private and should not intentionally attempt to discover another
-            participant's assignment.
-          </p>
+        <Section title={t.assignments.title}>
+          {t.assignments.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="6. User Content">
-          <p>
-            You may provide information such as your name, interests, wishlist,
-            messages, and other content while using the service.
-          </p>
-
-          <p>
-            You are responsible for the content you submit and should not submit
-            content that is illegal, threatening, abusive, deceptive, or that
-            violates another person's rights.
-          </p>
+        <Section title={t.userContent.title}>
+          {t.userContent.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="7. Event Chat">
-          <p>
-            Some Secret Santa events may include a group chat that becomes
-            available after the Secret Santa draw.
-          </p>
-
-          <p>
-            Messages in event chat should be respectful and appropriate for the
-            participants of the event.
-          </p>
-
-          <p>
-            Do not use event chat to share passwords, payment credentials, or
-            other highly sensitive information.
-          </p>
+        <Section title={t.chat.title}>
+          {t.chat.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="8. AI Features">
-          <p>
-            Secret Santa may provide AI-powered features for gift ideas,
-            wishlist assistance, and questions about the service.
-          </p>
-
-          <p>
-            AI-generated suggestions are provided for informational purposes.
-            They may be incomplete, inaccurate, or unsuitable for a particular
-            situation.
-          </p>
-
-          <p>
-            You remain responsible for deciding whether and how to use any
-            suggestion provided by the AI assistant.
-          </p>
+        <Section title={t.ai.title}>
+          {t.ai.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="9. Prohibited Use">
-          <p>You agree not to:</p>
+        <Section title={t.prohibited.title}>
+          <p>{t.prohibited.intro}</p>
 
           <ul>
-            <li>use the service for unlawful purposes;</li>
-            <li>attempt to access another user's account;</li>
-            <li>attempt to reveal private Secret Santa assignments;</li>
-            <li>interfere with the security or operation of the service;</li>
-            <li>send malicious code or automated abusive requests;</li>
-            <li>impersonate another person or organization;</li>
-            <li>use the service to harass or threaten other participants.</li>
+            <li>{t.prohibited.items.unlawful}</li>
+            <li>{t.prohibited.items.account}</li>
+            <li>{t.prohibited.items.assignments}</li>
+            <li>{t.prohibited.items.security}</li>
+            <li>{t.prohibited.items.malicious}</li>
+            <li>{t.prohibited.items.impersonate}</li>
+            <li>{t.prohibited.items.harassment}</li>
           </ul>
         </Section>
 
-        <Section title="10. Availability">
-          <p>
-            We aim to keep Secret Santa available and reliable, but we cannot
-            guarantee uninterrupted access to the service.
-          </p>
-
-          <p>
-            The service may occasionally be unavailable because of maintenance,
-            updates, technical problems, or circumstances outside our control.
-          </p>
+        <Section title={t.availability.title}>
+          {t.availability.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="11. Third-Party Services">
-          <p>
-            Secret Santa may integrate with third-party services such as Google
-            authentication, hosting providers, databases, and AI providers.
-          </p>
-
-          <p>
-            Your use of third-party services may also be subject to their own
-            terms and policies.
-          </p>
+        <Section title={t.thirdParty.title}>
+          {t.thirdParty.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="12. Changes to the Service">
-          <p>
-            We may add, modify, or remove features from Secret Santa as the
-            service develops.
-          </p>
-
-          <p>
-            We may also update these Terms when necessary. The latest version
-            will be published on this page.
-          </p>
+        <Section title={t.changes.title}>
+          {t.changes.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="13. Account Suspension or Termination">
-          <p>
-            Access to an account may be restricted or terminated if the account
-            is used in violation of these Terms or in a way that threatens the
-            security or operation of the service.
-          </p>
-
-          <p>You may stop using the service at any time.</p>
+        <Section title={t.termination.title}>
+          {t.termination.text.map((text) => (
+            <p key={text}>{text}</p>
+          ))}
         </Section>
 
-        <Section title="14. Disclaimer">
-          <p>
-            Secret Santa is provided on an “as available” basis. To the extent
-            permitted by applicable law, we do not guarantee that the service
-            will always be error-free, uninterrupted, or suitable for every
-            particular purpose.
-          </p>
+        <Section title={t.disclaimer.title}>
+          <p>{t.disclaimer.text}</p>
         </Section>
 
-        <Section title="15. Contact">
-          <p>
-            If you have questions about these Terms of Service, please contact
-            the Secret Santa service administrator through the contact method
-            provided on the website.
-          </p>
+        <Section title={t.contact.title}>
+          <p>{t.contact.text}</p>
         </Section>
 
         <FooterNote />
