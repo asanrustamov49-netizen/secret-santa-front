@@ -111,7 +111,9 @@ const OpenChat = ({ eventId, myId }: { eventId: string; myId: string }) => {
         inView = entry.isIntersecting;
         check();
       },
-      { root: list, threshold: 0.5 },
+      // The viewport as root (the list's own scrolling still clips it): "seen" means on screen,
+      // not merely at the end of a chat card that is scrolled out of view
+      { threshold: 0.5 },
     );
     observer.observe(end);
     // Came back to the tab with the chat already scrolled to the end
@@ -146,8 +148,9 @@ const OpenChat = ({ eventId, myId }: { eventId: string; myId: string }) => {
   const dayLabel = (iso: string) => {
     const day = toDayString(new Date(iso));
     const diff = daysUntil(day);
-    if (diff === 0) return m.format.today;
-    if (diff === -1) return m.format.yesterday;
+    // Day headings ("Today" / "Yesterday") — not the countdown's "today!"
+    if (diff === 0) return m.ai.today;
+    if (diff === -1) return m.ai.yesterday;
     return formatDay(day, locale);
   };
 

@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { useLayoutEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { PiPaperPlaneRightFill, PiStopFill } from "react-icons/pi";
 import scss from "./chatComposer.module.scss";
 
@@ -53,24 +53,21 @@ const ChatComposer = ({
   // The counter appears only near the limit
   const showCounter = value.length >= maxLength - Math.min(200, Math.round(maxLength / 5));
 
-  const resize = () => {
+  // Grows with the text (and shrinks back once it is sent) — measured after each change
+  useLayoutEffect(() => {
     const input = inputRef.current;
     if (!input) return;
     input.style.height = "auto";
     input.style.height = `${input.scrollHeight}px`;
-  };
+  }, [value]);
 
   const submit = async (event?: FormEvent) => {
     event?.preventDefault();
     if (!canSend) return;
     setValue("");
-    requestAnimationFrame(resize);
     const sent = await onSend(text);
     // Nothing lost: a failed message comes back unless something new was typed meanwhile
-    if (!sent) {
-      setValue((current) => current || text);
-      requestAnimationFrame(resize);
-    }
+    if (!sent) setValue((current) => current || text);
     inputRef.current?.focus();
   };
 
@@ -103,10 +100,7 @@ const ChatComposer = ({
         disabled={disabled}
         autoFocus={autoFocus}
         enterKeyHint="send"
-        onChange={(event) => {
-          setValue(event.target.value);
-          resize();
-        }}
+        onChange={(event) => setValue(event.target.value)}
         onKeyDown={onKeyDown}
         aria-describedby={hintId}
       />

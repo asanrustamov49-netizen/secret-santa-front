@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PiHeartFill } from "react-icons/pi";
+import { PiArrowUpRight, PiHeartFill } from "react-icons/pi";
 import GiftBox from "@/components/ui/giftBox/GiftBox";
 import { getI18n } from "@/i18n/server";
 import scss from "./footer.module.scss";
@@ -20,10 +20,7 @@ const Footer = async () => {
     },
     {
       title: t.company,
-      links: [
-        { href: "/#about", label: t.about },
-        { href: "/contact", label: t.contact },
-      ],
+      links: [{ href: "/#about", label: t.about }],
     },
     {
       title: t.legal,
@@ -38,22 +35,36 @@ const Footer = async () => {
     <footer className={scss.footer} data-theme="dark">
       <div className={`container ${scss.top}`}>
         <div className={scss.brand}>
-          <Link href="/" className={scss.logo}>
-            <GiftBox size={30} />
-            <span>{m.common.logo}</span>
+          <Link href="/" className={scss.logo} aria-label={m.common.logo}>
+            <span className={scss.logoIcon}>
+              <GiftBox size={32} />
+            </span>
+
+            <span className={scss.logoText}>{m.common.logo}</span>
           </Link>
+
           <p className={scss.tagline}>{t.tagline}</p>
+
+          <Link href="/signup" className={scss.cta}>
+            <span>{t.giftIdeas}</span>
+            <PiArrowUpRight aria-hidden="true" />
+          </Link>
         </div>
 
         <nav className={scss.columns} aria-label={t.nav}>
           {columns.map((column) => (
-            <div key={column.title}>
+            <div className={scss.column} key={column.title}>
               <p className={scss.columnTitle}>{column.title}</p>
+
               <ul className={scss.links}>
                 {column.links.map((link) => (
                   <li key={link.href}>
                     <Link href={link.href} className={scss.link}>
-                      {link.label}
+                      <span>{link.label}</span>
+                      <PiArrowUpRight
+                        className={scss.linkIcon}
+                        aria-hidden="true"
+                      />
                     </Link>
                   </li>
                 ))}
@@ -64,9 +75,12 @@ const Footer = async () => {
       </div>
 
       <div className={`container ${scss.bottom}`}>
-        <p>{t.rights(year)}</p>
+        <p className={scss.copyright}>{t.rights(year)}</p>
+
         <p className={scss.love}>
-          {t.madeWith} <PiHeartFill className={scss.heart} aria-label={t.love} /> {t.forHolidays}
+          {t.madeWith}
+          <PiHeartFill className={scss.heart} aria-label={t.love} />
+          {t.forHolidays}
         </p>
       </div>
     </footer>

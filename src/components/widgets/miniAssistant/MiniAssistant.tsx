@@ -52,11 +52,15 @@ const MiniAssistant = ({ userId, page, eventId }: MiniAssistantProps) => {
     markOnboarded();
   };
 
-  const close = () => {
-    setOpen(false);
-    // Back to where the user was: the button that opened it
-    requestAnimationFrame(() => launcherRef.current?.focus());
-  };
+  const close = () => setOpen(false);
+
+  // Closed: focus goes back to where the user was — the button that opened it.
+  // After the commit, so it never depends on a frame being painted (background tabs skip those).
+  const wasOpen = useRef(false);
+  useEffect(() => {
+    if (wasOpen.current && !open) launcherRef.current?.focus();
+    wasOpen.current = open;
+  }, [open]);
 
   return (
     <div className={`${scss.root} ${open ? scss.isOpen : ""}`}>
