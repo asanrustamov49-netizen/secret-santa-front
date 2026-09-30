@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { AxiosError } from "axios";
-import { PiCalendarBlank, PiLockKeyFill, PiUsersThree, PiWallet } from "react-icons/pi";
+import { PiCalendarBlank, PiLockKeyFill, PiTreeEvergreenFill, PiUsersThree, PiWallet } from "react-icons/pi";
 import Avatar from "@/components/ui/avatar/Avatar";
 import GiftBox from "@/components/ui/giftBox/GiftBox";
 import NightSky from "@/components/ui/nightSky/NightSky";
@@ -31,7 +31,7 @@ const JoinEvent = () => {
   const onJoin = () =>
     join.mutate(code, {
       onSuccess: ({ eventId, joined }) => {
-        toast((m) => (joined ? m.join.joined : m.join.alreadyIn));
+        toast((m) => (joined ? m.join.joined : m.join.alreadyIn), "success", joined ? PiTreeEvergreenFill : undefined);
         router.push(`/events/${eventId}`);
       },
       onError: (error) => {
@@ -111,6 +111,7 @@ const JoinEvent = () => {
           <p className={scss.notice}>{t.full(event.ownerName)}</p>
         ) : signedIn ? (
           <button type="button" className="btn btn-primary btn-lg btn-glow" onClick={onJoin} disabled={join.isPending}>
+            {join.isPending ? <span className="spinner" aria-hidden="true" /> : <PiTreeEvergreenFill className="icon-wiggle" aria-hidden="true" />}
             {join.isPending ? t.joining : t.join}
           </button>
         ) : (

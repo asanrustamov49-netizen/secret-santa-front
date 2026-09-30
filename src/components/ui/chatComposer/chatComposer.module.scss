@@ -1,0 +1,138 @@
+// The message field of the event chat and the mini assistant — the same family as
+// the /ai composer: a soft surface, gold focus, a gold send button.
+
+.composer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "input send"
+    "meta  meta";
+  align-items: end;
+  column-gap: 10px;
+  padding: 8px 8px 8px 16px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  transition:
+    border-color var(--transition-normal),
+    box-shadow var(--transition-normal);
+
+  &:focus-within {
+    border-color: rgb(var(--rgb-gold) / 0.6);
+    box-shadow:
+      var(--shadow-sm),
+      0 0 0 4px rgb(var(--rgb-gold) / 0.12);
+  }
+}
+
+.busy {
+  border-color: rgb(var(--rgb-gold) / 0.35);
+}
+
+.disabled {
+  opacity: 0.6;
+}
+
+.input {
+  grid-area: input;
+  align-self: center;
+  min-width: 0;
+  min-height: 24px;
+  max-height: 160px;
+  padding: 6px 0;
+
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 16px; // 16px: iOS doesn't zoom into the field
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+
+  &::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.send {
+  grid-area: send;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+
+  border-radius: 12px;
+  background: var(--color-gold);
+  color: var(--color-navy-1000);
+  font-size: 17px;
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    opacity var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    background: var(--color-gold-hover);
+    box-shadow: 0 8px 22px -8px rgb(var(--rgb-gold) / 0.7);
+  }
+
+  &:disabled {
+    opacity: 0.4;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+  }
+
+  :global(.spinner) {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.meta {
+  grid-area: meta;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+  padding: 4px 4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.counter {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.compact {
+  padding: 6px 6px 6px 14px;
+  border-radius: 16px;
+
+  .input {
+    max-height: 120px;
+    font-size: 16px;
+  }
+
+  .send {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    font-size: 16px;
+  }
+}
+
+// Phones: the key hint means nothing without a keyboard
+@media (hover: none) {
+  .keyHint {
+    display: none;
+  }
+}

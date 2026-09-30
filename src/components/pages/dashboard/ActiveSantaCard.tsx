@@ -144,7 +144,7 @@ const ActiveSantaCard = ({
         />
         <div className={scss.heroActions}>
           <Link href={`/events/${event.id}/santa`} className="btn btn-primary btn-lg">
-            {t.viewWishlist} <PiArrowRightBold aria-hidden="true" />
+            {t.viewWishlist} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
           </Link>
           <Link href={`/events/${event.id}`} className="btn btn-glass btn-lg">
             {t.openEvent}
@@ -180,7 +180,7 @@ const ActiveSantaCard = ({
         <div className={scss.heroActions}>
           <Link href={`/events/${event.id}`} className="btn btn-primary btn-lg">
             {event.isOwner ? (missing > 0 ? t.inviteFriends : t.drawNames) : t.openEvent}
-            <PiArrowRightBold aria-hidden="true" />
+            <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
           </Link>
         </div>
       </div>
@@ -196,7 +196,7 @@ const ActiveSantaCard = ({
       </div>
       {moreToReveal > 0 && (
         <Link href="/my-santa" className={scss.heroMore}>
-          {t.moreToReveal(moreToReveal)} <PiArrowRightBold aria-hidden="true" />
+          {t.moreToReveal(moreToReveal)} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
         </Link>
       )}
     </section>

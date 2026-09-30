@@ -168,7 +168,7 @@ const CreateEvent = () => {
     <div className={scss.wizard}>
       {step < 3 && (
         <Link href="/events" className={`touch-target ${scss.backLink}`}>
-          <PiArrowLeftBold aria-hidden="true" /> {m.common.allEvents}
+          <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" /> {m.common.allEvents}
         </Link>
       )}
 
@@ -215,7 +215,8 @@ const CreateEvent = () => {
 
             <div className={scss.fieldGroup}>
               <label htmlFor="event-description" className={scss.label}>
-                {t.description} <span className={scss.optional}>{m.common.optional}</span>
+                {t.description}
+                <span className={scss.optional}>{m.common.optional}</span>
               </label>
               <textarea
                 id="event-description"
@@ -231,6 +232,7 @@ const CreateEvent = () => {
             <div className={scss.fieldGroup}>
               <TextField
                 label={t.date}
+                optional
                 type="date"
                 value={draft.eventDate}
                 min={toDayString(new Date())}
@@ -256,7 +258,7 @@ const CreateEvent = () => {
 
             <div className={scss.wizardActions}>
               <button type="submit" className="btn btn-primary btn-lg">
-                {m.common.continue} <PiArrowRightBold aria-hidden="true" />
+                {m.common.continue} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
               </button>
             </div>
           </form>
@@ -270,7 +272,10 @@ const CreateEvent = () => {
             </header>
 
             <div className={scss.fieldGroup}>
-              <p className={scss.label}>{t.budget}</p>
+              <p className={scss.label}>
+                {t.budget}
+                <span className={scss.optional}>{m.common.optional}</span>
+              </p>
               <div className={scss.chips}>
                 {BUDGETS.map((preset, i) => {
                   const active = draft.budgetMin === preset.min && draft.budgetMax === preset.max;
@@ -311,6 +316,7 @@ const CreateEvent = () => {
 
             <TextField
               label={t.maxPeople}
+              optional
               inputMode="numeric"
               placeholder={t.noLimit}
               hint={t.maxPeopleHint}
@@ -321,10 +327,10 @@ const CreateEvent = () => {
 
             <div className={scss.wizardActions}>
               <button type="button" className="btn btn-ghost" onClick={() => setStep(0)}>
-                <PiArrowLeftBold aria-hidden="true" /> {m.common.back}
+                <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" /> {m.common.back}
               </button>
               <button type="submit" className="btn btn-primary btn-lg">
-                {m.common.continue} <PiArrowRightBold aria-hidden="true" />
+                {m.common.continue} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
               </button>
             </div>
           </form>
@@ -377,7 +383,7 @@ const CreateEvent = () => {
 
             <div className={scss.wizardActions}>
               <button type="button" className="btn btn-ghost" onClick={() => setStep(1)}>
-                <PiArrowLeftBold aria-hidden="true" /> {m.common.back}
+                <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" /> {m.common.back}
               </button>
               <button type="button" className="btn btn-primary btn-lg btn-glow" onClick={submit} disabled={create.isPending}>
                 <PiGiftFill aria-hidden="true" />
@@ -400,7 +406,7 @@ const CreateEvent = () => {
 
             <div className={scss.wizardActions}>
               <button type="button" className="btn btn-primary btn-lg" onClick={() => router.push(`/events/${created.id}`)}>
-                {t.goToEvent} <PiArrowRightBold aria-hidden="true" />
+                {t.goToEvent} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
               </button>
             </div>
           </div>

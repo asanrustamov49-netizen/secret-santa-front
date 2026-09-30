@@ -7,6 +7,7 @@ import {
   PiPencilSimpleBold,
   PiSignOutBold,
   PiTrashBold,
+  PiTreeEvergreenFill,
 } from "react-icons/pi";
 import ConfirmButton from "@/components/ui/confirmButton/ConfirmButton";
 import TextField from "@/components/ui/textField/TextField";
@@ -266,7 +267,7 @@ const EventManage = ({ event }: { event: SantaEvent }) => {
                   pendingLabel={t.completing}
                   onConfirm={() =>
                     complete.mutate(undefined, {
-                      onSuccess: () => toast((m) => m.events.manage.completed),
+                      onSuccess: () => toast((m) => m.events.manage.completed, "success", PiTreeEvergreenFill),
                       onError: onFailure,
                     })
                   }

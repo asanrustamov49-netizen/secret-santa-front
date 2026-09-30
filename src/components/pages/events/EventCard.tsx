@@ -36,7 +36,7 @@ const EventCard = ({ event }: { event: SantaEvent }) => {
       <ul className={scss.eventMeta}>
         {event.eventDate && (
           <li>
-            <PiCalendarBlank aria-hidden="true" />
+            <PiCalendarBlank className="icon-tilt" aria-hidden="true" />
             {formatDay(event.eventDate, locale)}
             {upcoming && <span className={scss.countdown}>{relativeDay(event.eventDate, m)}</span>}
           </li>

@@ -25,6 +25,18 @@ const PAGES: [RegExp, AiPage][] = [
   [/^\/ai$/, "ai"],
 ];
 
+/**
+ * The event of an event page (/events/:id, /events/:id/santa) — only for reading what that
+ * page already has in its cache on this device. It never goes to the assistant.
+ */
+export function eventIdOf(pathname: string | null | undefined): string | null {
+  if (typeof pathname !== "string") return null;
+  const match = pathname.match(
+    /^\/events\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})(?:\/santa)?\/*$/i,
+  );
+  return match ? match[1] : null;
+}
+
 /** A value from the URL (?from=) that is one of the page identifiers */
 export function isAiPage(value: unknown): value is AiPage {
   return PAGES.some(([, page]) => page === value);

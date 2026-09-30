@@ -1,4 +1,5 @@
 "use client";
+import { disconnectRealtime } from "@/lib/realtime/socket";
 import { useSyncExternalStore } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
@@ -62,8 +63,12 @@ export function useLogout() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: authApi.logout,
-    // Drop every cached query — nothing of the previous user may leak into the next one
-    onSettled: () => queryClient.clear(),
+    // Drop every cached query — nothing of the previous user may leak into the next one —
+    // and close the realtime socket, which belonged to that session
+    onSettled: () => {
+      disconnectRealtime();
+      queryClient.clear();
+    },
   });
 }
 

@@ -9,6 +9,7 @@ import {
   PiConfettiFill,
   PiCrownSimpleFill,
   PiLockKeyFill,
+  PiGiftFill,
   PiShuffleBold,
   PiSparkleFill,
   PiUserCircleBold,
@@ -22,7 +23,10 @@ import type { Participant, SantaEvent } from "@/lib/api/events";
 import { getErrorMessage } from "@/lib/api/client";
 import { daysUntil, formatBudget, formatDay, relativeDay } from "@/lib/events/format";
 import { useDrawNames, useEventDetails } from "@/lib/events/useEvents";
+import { useEventRealtime } from "@/lib/realtime/useRealtime";
+import RealtimeStatus from "@/components/ui/realtimeStatus/RealtimeStatus";
 import { toast } from "@/lib/toast";
+import EventChat from "./EventChat";
 import EventManage from "./EventManage";
 import InviteShare from "./InviteShare";
 import ParticipantsList from "./ParticipantsList";
@@ -59,7 +63,7 @@ const NextStep = ({ event }: { event: SantaEvent }) => {
           {event.revealed ? t.checkWishlist : t.findOut}
         </p>
         <Link href={`/events/${event.id}/santa`} className="btn btn-primary btn-lg btn-glow">
-          <PiSparkleFill aria-hidden="true" />
+          <PiSparkleFill className="icon-sparkle" aria-hidden="true" />
           {event.revealed ? t.seeRecipient : t.openSanta}
         </Link>
       </div>
@@ -96,12 +100,12 @@ const NextStep = ({ event }: { event: SantaEvent }) => {
         pendingLabel={t.drawing}
         onConfirm={() =>
           draw.mutate(undefined, {
-            onSuccess: () => toast((m) => m.events.next.drawn),
+            onSuccess: () => toast((m) => m.events.next.drawn, "success", PiGiftFill),
             onError: (error) => toast((m) => getErrorMessage(error, m), "error"),
           })
         }
       >
-        <PiShuffleBold aria-hidden="true" />
+        <PiShuffleBold className="icon-wiggle" aria-hidden="true" />
         {t.draw}
       </ConfirmButton>
     </div>
@@ -119,7 +123,7 @@ const ProfileNudge = ({ participants }: { participants: Participant[] }) => {
       <span>
         <strong>{m.events.page.nudgeTitle}</strong> {m.events.page.nudgeText}
       </span>
-      <PiArrowRightBold aria-hidden="true" />
+      <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
     </Link>
   );
 };
@@ -127,6 +131,8 @@ const ProfileNudge = ({ participants }: { participants: Participant[] }) => {
 const EventPage = () => {
   const { id } = useParams<{ id: string }>();
   const details = useEventDetails(id);
+  // Joins, readiness, edits and the draw show up without a refresh
+  useEventRealtime(id);
   const { m, locale } = useI18n();
   const t = m.events.page;
 
@@ -156,11 +162,12 @@ const EventPage = () => {
   const { event, participants } = details.data;
   const budget = formatBudget(event.budgetMin, event.budgetMax, locale);
   const readyShare = event.participantCount ? event.readyCount / event.participantCount : 0;
+  const me = participants.find((person) => person.isMe);
 
   return (
     <div className={scss.page}>
       <Link href="/events" className={`touch-target ${scss.backLink}`}>
-        <PiArrowLeftBold aria-hidden="true" /> {m.common.allEvents}
+        <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" /> {m.common.allEvents}
       </Link>
 
       <section className={scss.eventHero} data-theme="dark" aria-labelledby="event-name">
@@ -178,6 +185,7 @@ const EventPage = () => {
             ) : (
               <span className={scss.ownerTag}>{t.organizedBy(event.ownerName)}</span>
             )}
+            <RealtimeStatus />
           </div>
 
           <h1 id="event-name" className={scss.eventTitle}>
@@ -188,7 +196,7 @@ const EventPage = () => {
           <ul className={scss.heroMeta}>
             {event.eventDate && (
               <li>
-                <PiCalendarBlank aria-hidden="true" />
+                <PiCalendarBlank className="icon-tilt" aria-hidden="true" />
                 <span>
                   {formatDay(event.eventDate, locale)}
                   {event.status !== "completed" && daysUntil(event.eventDate) >= 0 && (
@@ -248,6 +256,9 @@ const EventPage = () => {
               {t.privacyNote}
             </p>
           )}
+
+          {/* Open once names are drawn; before that, a note that it is coming */}
+          {me && <EventChat key={event.id} event={event} myId={me.userId} />}
 
           <EventManage key={`${event.name}-${event.status}`} event={event} />
         </div>

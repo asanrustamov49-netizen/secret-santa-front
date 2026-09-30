@@ -8,10 +8,12 @@ interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, "id
   label: string;
   error?: string;
   hint?: string;
+  /** Marks the field as optional next to its label ("Link · Optional") — not in the placeholder */
+  optional?: boolean;
 }
 
 /** Labelled input with inline error. type="password" gets a show/hide toggle. */
-const TextField = ({ label, error, hint, type = "text", className, ...inputProps }: TextFieldProps) => {
+const TextField = ({ label, error, hint, optional, type = "text", className, ...inputProps }: TextFieldProps) => {
   const id = useId();
   const [isRevealed, setIsRevealed] = useState(false);
   const { m } = useI18n();
@@ -22,6 +24,7 @@ const TextField = ({ label, error, hint, type = "text", className, ...inputProps
     <div className={`${scss.field} ${className ?? ""}`}>
       <label htmlFor={id} className={scss.label}>
         {label}
+        {optional && <span className={scss.optional}>{m.common.optional}</span>}
       </label>
 
       <div className={scss.control}>

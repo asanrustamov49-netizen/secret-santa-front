@@ -17,6 +17,7 @@ import { formatPrice } from "@/lib/profile/readiness";
 import GiftChecklist from "./GiftChecklist";
 import pscss from "../profile/profile.module.scss";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useEventRealtime } from "@/lib/realtime/useRealtime";
 import scss from "./events.module.scss";
 
 const OPENING_MS = 1300;
@@ -133,6 +134,8 @@ const RecipientCard = ({ event, recipient, celebrate }: { event: SantaEvent; rec
 const SantaReveal = () => {
   const { id } = useParams<{ id: string }>();
   const match = useMatch(id);
+  // The draw, and changes to my recipient's wishlist, without a refresh
+  useEventRealtime(id);
   const reveal = useReveal(id);
   const [phase, setPhase] = useState<"idle" | "opening" | "open">("idle");
   const { m } = useI18n();
@@ -147,7 +150,7 @@ const SantaReveal = () => {
 
   const back = (
     <Link href={`/events/${id}`} className={`touch-target ${scss.backLink}`}>
-      <PiArrowLeftBold aria-hidden="true" /> {t.back}
+      <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" /> {t.back}
     </Link>
   );
 

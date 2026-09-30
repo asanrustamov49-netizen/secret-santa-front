@@ -87,7 +87,7 @@ const MySanta = () => {
                 <ul className={scss.eventMeta}>
                   {match.eventDate && (
                     <li>
-                      <PiCalendarBlank aria-hidden="true" />
+                      <PiCalendarBlank className="icon-tilt" aria-hidden="true" />
                       {formatDay(match.eventDate, locale)}
                       {match.status !== "completed" && daysUntil(match.eventDate) >= 0 && (
                         <span className={scss.countdown}>{relativeDay(match.eventDate, m)}</span>
@@ -105,7 +105,7 @@ const MySanta = () => {
                 <p className={scss.eventCardCta}>
                   {revealed ? (
                     <>
-                      {t.seeWishlist} <PiArrowRightBold aria-hidden="true" />
+                      {t.seeWishlist} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
                     </>
                   ) : (
                     <>

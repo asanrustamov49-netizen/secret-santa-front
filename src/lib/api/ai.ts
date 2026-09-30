@@ -4,6 +4,9 @@ import type { AiPage } from "@/lib/ai/pages";
 import type { Locale } from "@/i18n/config";
 import type { Messages } from "@/i18n/messages";
 
+/** Mirrors the API limit (SendMessageDto) */
+export const MAX_AI_MESSAGE_LENGTH = 2000;
+
 export interface AiConversation {
   id: string;
   /** null: a general conversation about the app */

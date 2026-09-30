@@ -31,7 +31,7 @@ const EventsSection = ({ active, pastCount, isPending, isError, onRetry }: Event
         </h2>
         {(hidden > 0 || pastCount > 0) && (
           <Link href="/events" className={`touch-target ${scss.textLink}`}>
-            {t.viewAll} <PiArrowRightBold aria-hidden="true" />
+            {t.viewAll} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
           </Link>
         )}
       </div>

@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { safeNextPath } from "@/lib/auth/schemas";
 import { useSession } from "@/lib/auth/useSession";
 import { useI18n } from "@/i18n/I18nProvider";
+import BrandLoader from "@/components/ui/brandLoader/BrandLoader";
 import scss from "./auth.module.scss";
 
 /**
@@ -29,10 +30,7 @@ const AuthCallback = () => {
   }, [session.isPending, session.data, next, router]);
 
   return (
-    <div className={scss.callback} role="status">
-      <span className="spinner" aria-hidden="true" />
-      {m.auth.callback.signingIn}
-    </div>
+    <BrandLoader label={m.auth.callback.signingIn} className={scss.callback} />
   );
 };
 

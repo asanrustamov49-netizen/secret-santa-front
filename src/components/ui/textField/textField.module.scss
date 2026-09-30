@@ -9,6 +9,19 @@
   font-weight: 600;
 }
 
+// "· Optional" after the label: quieter than the label, never inside the field
+.optional {
+  margin-left: 6px;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 500;
+
+  &::before {
+    content: "·" / "";
+    margin-right: 6px;
+  }
+}
+
 .control {
   position: relative;
 }

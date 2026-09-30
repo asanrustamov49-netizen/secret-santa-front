@@ -80,6 +80,7 @@ const WishlistItemForm = ({ item, isPending, serverError, onSubmit, onCancel }: 
       <div className={scss.giftFormRow}>
         <TextField
           label={t.price}
+          optional
           placeholder={t.pricePlaceholder}
           inputMode="numeric"
           value={price}
@@ -91,6 +92,7 @@ const WishlistItemForm = ({ item, isPending, serverError, onSubmit, onCancel }: 
         />
         <TextField
           label={t.link}
+          optional
           type="url"
           placeholder={t.linkPlaceholder}
           value={url}

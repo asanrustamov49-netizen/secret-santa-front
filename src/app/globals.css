@@ -592,6 +592,15 @@ p {
   color: var(--color-text-muted);
 }
 
+/* Placeholders are a hint, not the content: a touch smaller on phones so they fit.
+   The typed text stays 16px (smaller would also make iOS zoom in on focus). */
+@media (max-width: 560px) {
+  .input::placeholder,
+  textarea::placeholder {
+    font-size: 14px;
+  }
+}
+
 .input:hover {
   border-color: var(--color-input-hover);
 }
@@ -777,6 +786,157 @@ p {
   .btn {
     min-height: 46px;
     padding: 0 16px;
+  }
+}
+
+/* =========================================
+   ICON MOTION
+   Short, soft, and only where motion says something: an arrow leans where it
+   goes, a gift gives a little shake, a sparkle breathes. Hover effects react to
+   the link / button the icon sits in. Off with prefers-reduced-motion.
+   ========================================= */
+
+.icon-nudge,
+.icon-nudge-back,
+.icon-lift,
+.icon-tilt {
+  transition:
+    translate 0.3s var(--ease-out-expo),
+    rotate 0.3s var(--ease-out-expo);
+}
+
+:is(a, button):is(:hover, :focus-visible) > .icon-nudge {
+  translate: 3px 0;
+}
+
+:is(a, button):is(:hover, :focus-visible) > .icon-nudge-back {
+  translate: -3px 0;
+}
+
+/* Send: lifts toward where the message goes */
+:is(a, button):not(:disabled):is(:hover, :focus-visible) > .icon-lift {
+  translate: 1px -2px;
+}
+
+/* Calendar: a small tilt, like turning a page (also when its whole card is hovered) */
+:is(a, button, li):hover .icon-tilt {
+  rotate: -8deg;
+}
+
+/* Gift: a small shake on hover */
+.icon-wiggle {
+  transform-origin: 50% 80%;
+}
+
+:is(a, button):hover > .icon-wiggle,
+:is(a, button):hover > * > .icon-wiggle {
+  animation: icon-wiggle 0.6s ease-in-out;
+}
+
+/* Magic / AI: a slow breath with a soft gold glow */
+.icon-sparkle {
+  animation: icon-sparkle 3.2s ease-in-out infinite;
+}
+
+/* Something new: a short ring, twice, when it appears */
+.icon-ring {
+  transform-origin: 50% 10%;
+  animation: icon-ring 0.9s ease-in-out 2;
+}
+
+/* Done: pops in */
+.icon-pop {
+  animation: icon-pop 0.45s var(--ease-out-expo) both;
+}
+
+/* The brand gift, idle: floats very gently */
+.icon-float {
+  animation: icon-float 4.8s ease-in-out infinite;
+}
+
+@keyframes icon-wiggle {
+  25% {
+    rotate: -10deg;
+  }
+
+  50% {
+    rotate: 8deg;
+  }
+
+  75% {
+    rotate: -4deg;
+  }
+}
+
+@keyframes icon-sparkle {
+  0%,
+  100% {
+    opacity: 0.8;
+    scale: 0.92;
+    filter: drop-shadow(0 0 0 rgb(var(--rgb-gold) / 0));
+  }
+
+  50% {
+    opacity: 1;
+    scale: 1.06;
+    filter: drop-shadow(0 0 6px rgb(var(--rgb-gold) / 0.55));
+  }
+}
+
+@keyframes icon-ring {
+  20% {
+    rotate: 12deg;
+  }
+
+  40% {
+    rotate: -10deg;
+  }
+
+  60% {
+    rotate: 6deg;
+  }
+
+  80% {
+    rotate: -3deg;
+  }
+}
+
+@keyframes icon-pop {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+
+  60% {
+    scale: 1.12;
+  }
+}
+
+@keyframes icon-float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+
+  50% {
+    translate: 0 -4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .icon-wiggle,
+  .icon-sparkle,
+  .icon-ring,
+  .icon-pop,
+  .icon-float,
+  :is(a, button):hover > .icon-wiggle,
+  :is(a, button):hover > * > .icon-wiggle {
+    animation: none;
+  }
+
+  :is(.icon-nudge, .icon-nudge-back, .icon-lift, .icon-tilt) {
+    translate: none !important;
+    rotate: none !important;
   }
 }
 

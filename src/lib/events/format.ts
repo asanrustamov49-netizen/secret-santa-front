@@ -65,6 +65,11 @@ export function formatToday(date: Date, locale: Locale): string {
   return date.toLocaleDateString(INTL_LOCALE[locale], { weekday: "long", day: "numeric", month: "long" });
 }
 
+/** A moment as "14:05" in the reader's clock (the same digits in every language) */
+export function formatTime(iso: string, locale: Locale): string {
+  return new Date(iso).toLocaleTimeString(INTL_LOCALE[locale], { hour: "2-digit", minute: "2-digit" });
+}
+
 /** Whole days from today to `day` (negative = past) */
 export function daysUntil(day: string | Date): number {
   const target = typeof day === "string" ? parseDay(day) : day;

@@ -3,9 +3,11 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { AxiosError } from "axios";
 import { PiArrowLeftBold, PiClockCounterClockwiseBold, PiTrashBold, PiXBold } from "react-icons/pi";
+import AiActions from "@/components/ui/aiActions/AiActions";
 import ConfirmButton from "@/components/ui/confirmButton/ConfirmButton";
 import GiftBox from "@/components/ui/giftBox/GiftBox";
 import { getErrorMessage } from "@/lib/api/client";
+import { splitAiActions } from "@/lib/ai/actions";
 import type { useAiChat } from "@/lib/ai/useAi";
 import { useAiConversation, useDeleteAiConversation } from "@/lib/ai/useAi";
 import { toast } from "@/lib/toast";
@@ -28,6 +30,17 @@ const AssistantMark = () => (
     <GiftBox size={22} />
   </span>
 );
+
+/** A saved reply: its text, and the settings buttons it offers (markers never show as text) */
+const AssistantReply = ({ content }: { content: string }) => {
+  const { text, actions } = splitAiActions(content);
+  return (
+    <div>
+      <p className={scss.messageText}>{text}</p>
+      <AiActions actions={actions} />
+    </div>
+  );
+};
 
 /** One conversation: its messages, the reply streaming in, and the composer */
 const AiChat = ({ id, chat, onNew, onOpenHistory, historyOpen }: AiChatProps) => {
@@ -85,7 +98,7 @@ const AiChat = ({ id, chat, onNew, onOpenHistory, historyOpen }: AiChatProps) =>
     <div className={scss.chat}>
       <header className={scss.chatHeader}>
         <button type="button" className={scss.iconButton} onClick={onNew} aria-label={t.newChat} title={t.newChat}>
-          <PiArrowLeftBold aria-hidden="true" />
+          <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" />
         </button>
 
         <span className={scss.chatAvatar} aria-hidden="true">
@@ -145,12 +158,18 @@ const AiChat = ({ id, chat, onNew, onOpenHistory, historyOpen }: AiChatProps) =>
       </header>
 
       <ol className={scss.messages} aria-live="polite" aria-busy={busy}>
-        {saved.map((message) => (
-          <li key={message.id} className={message.role === "user" ? scss.userMessage : scss.assistantMessage}>
-            {message.role === "assistant" && <AssistantMark />}
-            <p className={scss.messageText}>{message.content}</p>
-          </li>
-        ))}
+        {saved.map((message) =>
+          message.role === "user" ? (
+            <li key={message.id} className={scss.userMessage}>
+              <p className={scss.messageText}>{message.content}</p>
+            </li>
+          ) : (
+            <li key={message.id} className={scss.assistantMessage}>
+              <AssistantMark />
+              <AssistantReply content={message.content} />
+            </li>
+          ),
+        )}
 
         {showPendingQuestion && (
           <li className={scss.userMessage}>
@@ -171,7 +190,7 @@ const AiChat = ({ id, chat, onNew, onOpenHistory, historyOpen }: AiChatProps) =>
                 {t.thinking}
               </p>
             ) : (
-              <p className={`${scss.messageText} ${scss.streaming}`}>{turn.reply}</p>
+              <p className={`${scss.messageText} ${scss.streaming}`}>{splitAiActions(turn.reply, true).text}</p>
             )}
           </li>
         )}

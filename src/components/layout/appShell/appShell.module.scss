@@ -36,10 +36,6 @@ $tabbar-height: 64px;
   gap: 12px;
 }
 
-.loadingGift {
-  animation: breathe 1.6s ease-in-out infinite alternate;
-}
-
 // ---------- Sidebar ----------
 // Always night (data-theme="dark" in the markup): the same midnight surface as the
 // /ai stage. Navigation first — quiet, with gold only where it means something.
@@ -390,7 +386,8 @@ $tabbar-height: 64px;
 
 .main {
   min-width: 0;
-  padding: 40px 48px 64px;
+  // Bottom: room for the mini assistant button in the corner
+  padding: 40px 48px 104px;
 }
 
 // ---------- Mobile ----------
@@ -528,8 +525,8 @@ $tabbar-height: 64px;
   }
 
   .main {
-    // Clear the tab bar (+ the iPhone home indicator)
-    padding: 24px 16px calc(#{$tabbar-height} + 32px + env(safe-area-inset-bottom));
+    // Clear the tab bar (+ the iPhone home indicator) and the mini assistant button above it
+    padding: 24px 16px calc(#{$tabbar-height} + 88px + env(safe-area-inset-bottom));
   }
 
   // Toasts (rendered outside the shell) float above the tab bar instead of covering it
@@ -556,14 +553,10 @@ $tabbar-height: 64px;
   }
 }
 
-@keyframes breathe {
-  from {
-    opacity: 0.6;
-    transform: scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1.04);
+// Phones: while typing (keyboard up), the tab bar steps aside so it never sits on the
+// field — e.g. the event chat. It comes back as soon as the field loses focus.
+@media (max-width: 960px) and (hover: none) {
+  .shell:has(.main :is(input, textarea, select):focus) .tabbar {
+    display: none;
   }
 }

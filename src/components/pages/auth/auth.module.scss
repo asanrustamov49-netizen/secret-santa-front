@@ -180,21 +180,9 @@
   }
 }
 
-// /auth/callback — shown for a moment while the session is confirmed
+// /auth/callback — shown for a moment while the session is confirmed (BrandLoader)
 .callback {
-  display: grid;
-  justify-items: center;
-  gap: 16px;
-
-  color: var(--color-text-secondary);
-  font-size: 15px;
-  text-align: center;
-
-  :global(.spinner) {
-    width: 32px;
-    height: 32px;
-    color: var(--color-accent-text);
-  }
+  min-height: 220px;
 }
 
 .switch {

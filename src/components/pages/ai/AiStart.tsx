@@ -254,7 +254,7 @@ const AiStart = ({ page, onStart, busy, error, onOpenHistory, historyOpen }: AiS
             {t.pageHint.from} <strong>{m.meta[PAGE_NAME[page]]}</strong>
           </span>
           <span className={scss.pageHintAsk}>
-            {t.pageHint.title} <PiArrowRightBold aria-hidden="true" />
+            {t.pageHint.title} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
           </span>
         </button>
       )}

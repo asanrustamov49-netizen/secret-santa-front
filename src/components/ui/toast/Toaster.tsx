@@ -13,11 +13,11 @@ const Toaster = () => {
 
   return (
     <div className={scss.toaster} role="status" aria-live="polite">
-      {toasts.map(({ id, message, tone }) => {
-        const Icon = ICONS[tone];
+      {toasts.map(({ id, message, tone, icon }) => {
+        const Icon = icon ?? ICONS[tone];
         return (
           <button key={id} type="button" className={`${scss.toast} ${scss[tone]}`} onClick={() => dismiss(id)}>
-            <Icon aria-hidden="true" />
+            <Icon className="icon-pop" aria-hidden="true" />
             {message(m)}
           </button>
         );

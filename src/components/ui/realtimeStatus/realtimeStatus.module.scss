@@ -1,0 +1,54 @@
+// A small pill: a coloured dot and one word. Used on night cards and on the page.
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+
+  border: 1px solid var(--color-glass-border);
+  border-radius: 999px;
+  background: var(--color-glass-bg);
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-text-muted);
+}
+
+.connected .dot {
+  background: var(--color-green-bright);
+  box-shadow: 0 0 8px rgb(var(--rgb-green) / 0.7);
+}
+
+.connecting .dot,
+.reconnecting .dot {
+  background: var(--color-gold);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+.offline {
+  color: var(--color-danger-text);
+
+  .dot {
+    background: var(--color-crimson-light);
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dot {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,165 @@
+// The brand loading state: gift + winter glow. Motion is slow and small on purpose.
+
+.loader {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.page {
+  min-height: 100dvh;
+}
+
+.section {
+  min-height: 260px;
+  padding: 32px 16px;
+}
+
+// Appears only when loading lasts: fast loads never flash it
+.delayed {
+  animation: appear 0.4s ease 0.35s both;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 10px 14px 16px;
+}
+
+// Winter night around the gift: soft blue and purple, warm gold at the heart
+.aura {
+  position: absolute;
+  inset: -40% -60%;
+  border-radius: 50%;
+  background:
+    radial-gradient(closest-side, rgb(var(--rgb-gold) / 0.2), transparent 70%),
+    radial-gradient(closest-side at 35% 60%, rgb(var(--rgb-blue) / 0.22), transparent 75%),
+    radial-gradient(closest-side at 68% 40%, rgb(var(--rgb-purple) / 0.2), transparent 75%);
+  filter: blur(14px);
+  animation: aura 2.8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.gift {
+  animation: float 2.8s ease-in-out infinite alternate;
+}
+
+// Its light on the "floor" — shrinks a little as the gift rises
+.floor {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  width: 56%;
+  height: 8px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(var(--rgb-gold) / 0.45), transparent);
+  animation: floor 2.8s ease-in-out infinite alternate;
+}
+
+.label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 2px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.page .label {
+  font-size: 15px;
+}
+
+.dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 2px;
+
+  span {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-gold-deep);
+    animation: dot 1.4s ease-in-out infinite;
+
+    &:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    &:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+  }
+}
+
+:global([data-theme="dark"]) .dots span {
+  background: var(--color-gold);
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes float {
+  from {
+    translate: 0 2px;
+  }
+
+  to {
+    translate: 0 -6px;
+  }
+}
+
+@keyframes floor {
+  from {
+    opacity: 1;
+    scale: 1;
+  }
+
+  to {
+    opacity: 0.55;
+    scale: 0.78;
+  }
+}
+
+@keyframes aura {
+  from {
+    opacity: 0.7;
+    scale: 0.94;
+  }
+
+  to {
+    opacity: 1;
+    scale: 1.04;
+  }
+}
+
+@keyframes dot {
+  0%,
+  100% {
+    opacity: 0.25;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aura,
+  .gift,
+  .floor,
+  .dots span {
+    animation: none;
+  }
+
+  .dots span {
+    opacity: 0.6;
+  }
+}

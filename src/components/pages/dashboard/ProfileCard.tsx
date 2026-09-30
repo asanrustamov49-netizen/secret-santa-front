@@ -85,7 +85,7 @@ const ProfileCard = ({ user, wishlistCount, wishlistError, onRetry }: ProfileCar
 
       <Link href="/profile" className={`btn ${readiness.complete ? "btn-outline" : "btn-primary"} ${scss.profileCta}`}>
         {readiness.complete ? t.edit : t.completeCta}
-        <PiArrowRightBold aria-hidden="true" />
+        <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
       </Link>
     </section>
   );
