@@ -8,7 +8,7 @@ if (!API_URL) {
 
 /** Start URL; `next` is where the user lands afterwards */
 export function googleSignInUrl(next: string): string {
-  const url = new URL("/api/auth/google", API_URL);
+  const url = new URL("/api/auth/google", window.location.origin);
 
   if (next !== "/dashboard") {
     url.searchParams.set("next", next);
@@ -28,7 +28,7 @@ export function googleErrorMessage(
 /**
  * A signed-in user confirms who they are with Google again.
  */
-export const GOOGLE_REAUTH_URL = `${API_URL}/api/auth/google?intent=reauth`;
+export const GOOGLE_REAUTH_URL = "/api/auth/google?intent=reauth";
 
 /** Message for a failed ?reauth= result */
 export function reauthErrorMessage(code: string, m: Messages): string {
