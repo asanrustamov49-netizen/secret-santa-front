@@ -1,9 +1,9 @@
 import type { Messages } from "@/i18n/messages/en";
 
-const API_URL = process.env.SITE_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 if (!API_URL) {
-  throw new Error("SITE_URL is not configured");
+  throw new Error("NEXT_PUBLIC_API_URL is not configured");
 }
 
 /** Start URL; `next` is where the user lands afterwards */
