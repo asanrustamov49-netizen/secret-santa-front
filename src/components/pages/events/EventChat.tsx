@@ -1,13 +1,23 @@
 "use client";
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { PiArrowDownBold, PiChatsCircleFill, PiLockKeyFill, PiLockSimpleFill } from "react-icons/pi";
 import Avatar from "@/components/ui/avatar/Avatar";
 import ChatComposer from "@/components/ui/chatComposer/ChatComposer";
 import type { SantaEvent } from "@/lib/api/events";
-import { MAX_CHAT_MESSAGE_LENGTH } from "@/lib/api/chat";
+import { MAX_CHAT_MESSAGE_LENGTH, type ChatUnread } from "@/lib/api/chat";
 import { getErrorMessage } from "@/lib/api/client";
 import { firstUnreadIndex, flattenChat, unreadCount, type ChatMessage } from "@/lib/chat/messages";
-import { readLastRead, useChatLastRead, useEventChat, useSendChatMessage } from "@/lib/chat/useEventChat";
+import {
+  chatUnreadKey,
+  readLastRead,
+  useChatLastRead,
+  useChatUnread,
+  useEventChat,
+  useMarkChatReadOnServer,
+  useSendChatMessage,
+} from "@/lib/chat/useEventChat";
+import { eventNoticeKey, setActiveChat } from "@/lib/realtime/notices";
 import { daysUntil, formatDay, formatTime, toDayString } from "@/lib/events/format";
 import { toast } from "@/lib/toast";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -34,7 +44,7 @@ const EventChat = ({ event, myId }: EventChatProps) => {
 
   if (event.status === "open") {
     return (
-      <section className={`surface-card ${scss.chat} ${scss.locked}`} aria-labelledby="chat-title">
+      <section id="event-chat" className={`surface-card ${scss.chat} ${scss.locked}`} aria-labelledby="chat-title">
         <span className={scss.lockedIcon} aria-hidden="true">
           <PiChatsCircleFill />
           <PiLockSimpleFill className={scss.lockBadge} />
@@ -58,6 +68,16 @@ const OpenChat = ({ eventId, myId }: { eventId: string; myId: string }) => {
   const chat = useEventChat(eventId, true);
   const send = useSendChatMessage(eventId);
   const [lastRead, markRead] = useChatLastRead(eventId);
+  // Unread on the API (the menu badge): cleared once the end of the chat has been seen
+  const queryClient = useQueryClient();
+  const serverUnread = useChatUnread().data?.find((chat) => chat.eventId === eventId)?.unread ?? 0;
+  const { mutate: readOnServer } = useMarkChatReadOnServer(eventId);
+  const readingOnServer = useRef(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // On screen: messages here need no notice
+  useEffect(() => setActiveChat(eventNoticeKey(eventId)), [eventId]);
+
   // Where "New messages" starts: fixed at what was unread when the chat was opened
   const [openedWith] = useState(() => readLastRead(eventId));
   const listRef = useRef<HTMLOListElement>(null);
@@ -65,6 +85,15 @@ const OpenChat = ({ eventId, myId }: { eventId: string; myId: string }) => {
   const [atBottom, setAtBottom] = useState(true);
 
   const messages = useMemo(() => flattenChat(chat.data), [chat.data]);
+
+  // Came from a notice (/events/:id#event-chat): bring the chat into view once its messages
+  // are here — by then the event page above it has its final height
+  const scrolledToChat = useRef(false);
+  useEffect(() => {
+    if (!chat.isSuccess || scrolledToChat.current || window.location.hash !== "#event-chat") return;
+    scrolledToChat.current = true;
+    sectionRef.current?.scrollIntoView({ block: "start" });
+  }, [chat.isSuccess]);
   const newest = messages.at(-1);
   const oldestId = messages[0]?.id;
   const dividerAt = firstUnreadIndex(messages, openedWith, myId);
@@ -104,7 +133,14 @@ const OpenChat = ({ eventId, myId }: { eventId: string; myId: string }) => {
     if (!end || !list || !newest) return;
     let inView = false;
     const check = () => {
-      if (inView && document.visibilityState === "visible") markRead(newest.createdAt);
+      if (!inView || document.visibilityState !== "visible") return;
+      markRead(newest.createdAt);
+      const unread =
+        queryClient.getQueryData<ChatUnread[]>(chatUnreadKey)?.find((chat) => chat.eventId === eventId)?.unread ?? 0;
+      if (unread > 0 && !readingOnServer.current) {
+        readingOnServer.current = true;
+        readOnServer(undefined, { onSettled: () => (readingOnServer.current = false) });
+      }
     };
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -122,7 +158,8 @@ const OpenChat = ({ eventId, myId }: { eventId: string; myId: string }) => {
       observer.disconnect();
       document.removeEventListener("visibilitychange", check);
     };
-  }, [newest, markRead]);
+    // serverUnread: a message counted while I am already looking at the end is read at once
+  }, [newest, markRead, serverUnread, queryClient, eventId, readOnServer]);
 
   const onScroll = () => {
     const list = listRef.current;
@@ -155,7 +192,7 @@ const OpenChat = ({ eventId, myId }: { eventId: string; myId: string }) => {
   };
 
   return (
-    <section className={`surface-card ${scss.chat}`} aria-labelledby="chat-title">
+    <section ref={sectionRef} id="event-chat" className={`surface-card ${scss.chat}`} aria-labelledby="chat-title">
       <header className={scss.header}>
         <span className={scss.headerIcon} aria-hidden="true">
           <PiChatsCircleFill />

@@ -6,6 +6,9 @@ import type { IconType } from "react-icons";
 import {
   PiDevicesBold,
   PiEnvelopeSimple,
+  PiFileTextBold,
+  PiLifebuoyFill,
+  PiMapTrifoldBold,
   PiPaletteFill,
   PiPencilSimpleBold,
   PiShieldCheckFill,
@@ -21,17 +24,19 @@ import ThemeSwitcher from "@/components/ui/themeSwitcher/ThemeSwitcher";
 import { useI18n } from "@/i18n/I18nProvider";
 import { getErrorMessage } from "@/lib/api/client";
 import { useLogout, useLogoutAll, useSession } from "@/lib/auth/useSession";
+import { openGuide } from "@/lib/onboarding/onboarding";
 import { toast } from "@/lib/toast";
 import PasswordCard from "./PasswordCard";
 import SettingRow from "./SettingRow";
 import scss from "./settings.module.scss";
 
-type SectionId = "account" | "appearance" | "security";
+type SectionId = "account" | "appearance" | "security" | "help";
 
 const SECTIONS: { id: SectionId; icon: IconType }[] = [
   { id: "account", icon: PiUserCircleFill },
   { id: "appearance", icon: PiPaletteFill },
   { id: "security", icon: PiShieldCheckFill },
+  { id: "help", icon: PiLifebuoyFill },
 ];
 
 interface SectionProps {
@@ -103,6 +108,7 @@ const Settings = () => {
     account: t.account.title,
     appearance: t.appearance.title,
     security: t.sections.security.title,
+    help: t.help.title,
   };
 
   // Same as the sidebar's "Log out": the theme and language on this device are left alone
@@ -198,6 +204,24 @@ const Settings = () => {
               >
                 <PiDevicesBold aria-hidden="true" /> {t.sessions.allButton}
               </ConfirmButton>
+            </SettingRow>
+          </Section>
+
+          <Section id="help" icon={PiLifebuoyFill} title={titles.help} text={t.help.text} index={3}>
+            <SettingRow title={m.onboarding.reopen} text={t.help.guideText}>
+              <button type="button" className={`btn btn-outline ${scss.rowButton}`} onClick={openGuide}>
+                <PiMapTrifoldBold aria-hidden="true" /> {t.help.guideButton}
+              </button>
+            </SettingRow>
+            <SettingRow title={t.help.legalTitle} text={t.help.legalText}>
+              <div className={scss.legalLinks}>
+                <Link href="/terms" className={`btn btn-ghost ${scss.rowButton}`}>
+                  <PiFileTextBold aria-hidden="true" /> {m.footer.terms}
+                </Link>
+                <Link href="/privacy" className={`btn btn-ghost ${scss.rowButton}`}>
+                  <PiShieldCheckFill aria-hidden="true" /> {m.footer.privacy}
+                </Link>
+              </div>
             </SettingRow>
           </Section>
         </div>

@@ -2,6 +2,8 @@
 // and for what's new, winter blue-grey for everyone else. No festive clutter.
 
 .chat {
+  // Reached from a notice (#event-chat): clear the sticky top bar on phones
+  scroll-margin-top: 80px;
   display: grid;
   gap: 14px;
   padding: 22px;

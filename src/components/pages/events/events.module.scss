@@ -1286,6 +1286,88 @@
   line-height: 1.2;
 }
 
+// A match card is one big link (stretched from its call to action) with the
+// Secret Santa chat button on top of it
+article.matchCard {
+  position: relative;
+
+  &:has(.matchCardLink:focus-visible) {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+}
+
+.matchCardLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: inherit;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.matchChat {
+  position: relative; // above the stretched card link
+  z-index: 1;
+  gap: 8px;
+  width: 100%;
+}
+
+// ---------- Secret Santa chat ----------
+
+/** "Write about the gift" on the recipient's own page */
+.santaChatButton {
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.santaChatBadge {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+
+  border-radius: 999px;
+  background: var(--color-crimson);
+  color: var(--color-snow);
+  font-size: 12px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/** The anonymous Santa: a gift instead of a face */
+.santaMark {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--color-crimson-light), var(--color-crimson-deep));
+  color: var(--color-snow);
+  font-size: 28px;
+  box-shadow: inset 0 0 0 3px rgb(var(--rgb-gold) / 0.55);
+}
+
+.inboxText {
+  margin: -8px 0 16px;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
 // ===================== Motion =====================
 
 @keyframes pulse {

@@ -20,10 +20,13 @@ export const REALTIME_EVENTS = [
 export type RealtimeEventName = (typeof REALTIME_EVENTS)[number];
 
 /**
- * The single message that carries data (backend ChatRealtimeEvent): a new chat message,
- * exactly as GET /events/:id/messages returns it. Merged into the chat cache, nothing else.
+ * A message that carries data (backend ChatRealtimeEvent): a new chat message, exactly as
+ * GET /events/:id/messages returns it. Merged into the chat cache, nothing else.
+ * The other one is the anonymous Secret Santa chat (lib/santaChat/messages.ts).
  */
 export const CHAT_MESSAGE_EVENT = "chat:message";
+/** To my own tabs: I read this event's chat — { eventId } */
+export const CHAT_READ_EVENT = "chat:read";
 
 export interface RealtimePayload {
   eventId: string;

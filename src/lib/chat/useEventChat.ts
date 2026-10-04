@@ -1,7 +1,14 @@
 "use client";
 import { useCallback, useSyncExternalStore } from "react";
-import { type InfiniteData, useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { chatApi, type ChatPage } from "@/lib/api/chat";
+import {
+  type InfiniteData,
+  type QueryClient,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { chatApi, type ChatPage, type ChatUnread } from "@/lib/api/chat";
 import { addChatMessage, type ChatMessage } from "./messages";
 
 /** Its own key (not under ["events", id]): event mutations don't need to refetch the chat */
@@ -40,7 +47,49 @@ export function useSendChatMessage(eventId: string) {
   });
 }
 
+// ─── Unread, kept by the API ────────────────────────────────────────
+// The badge counts: what others wrote since I last read each chat (on any device).
+// A pushed message raises its count at once; reading a chat (here or in another tab,
+// via chat:read) clears it; a reconnect refetches it from REST.
+
+export const chatUnreadKey = ["chatUnread"] as const;
+
+export function useChatUnread() {
+  return useQuery({ queryKey: chatUnreadKey, queryFn: chatApi.unread, staleTime: 60_000, retry: 1 });
+}
+
+/** Unread across all my event chats — the menu badge */
+export const totalChatUnread = (chats: ChatUnread[] | undefined) =>
+  (chats ?? []).reduce((sum, chat) => sum + chat.unread, 0);
+
+/** Someone else wrote in this event's chat */
+export function bumpChatUnread(queryClient: QueryClient, eventId: string) {
+  const chats = queryClient.getQueryData<ChatUnread[]>(chatUnreadKey);
+  if (!chats?.some((chat) => chat.eventId === eventId)) {
+    // Not in the list yet: the API adds it (with the event's name)
+    void queryClient.invalidateQueries({ queryKey: chatUnreadKey, exact: true });
+    return;
+  }
+  queryClient.setQueryData<ChatUnread[]>(chatUnreadKey, (list) =>
+    list?.map((chat) => (chat.eventId === eventId ? { ...chat, unread: chat.unread + 1 } : chat)),
+  );
+}
+
+export function clearChatUnread(queryClient: QueryClient, eventId: string) {
+  queryClient.setQueryData<ChatUnread[]>(chatUnreadKey, (chats) => chats?.filter((chat) => chat.eventId !== eventId));
+}
+
+/** Tell the API this chat is read up to now */
+export function useMarkChatReadOnServer(eventId: string) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: () => chatApi.read(eventId),
+    onSuccess: () => clearChatUnread(queryClient, eventId),
+  });
+}
+
 // ─── "Read up to" — per event, on this device ───────────────────────
+// Where the "New messages" divider goes when the chat opens.
 
 const readKey = (eventId: string) => `chat-read:${eventId}`;
 const readListeners = new Set<() => void>();

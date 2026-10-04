@@ -1,0 +1,76 @@
+// The Secret Santa chat page. The card itself is the event chat's (eventChat.module.scss);
+// this only adds the page width, the anonymous Santa's mark and a few notes.
+
+.page {
+  max-width: 760px;
+}
+
+// "Your Secret Santa": a gift instead of a face — the same for every Santa
+.anonymousAvatar {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--color-crimson-light), var(--color-crimson-deep));
+  color: var(--color-snow);
+  font-size: 17px;
+  box-shadow: inset 0 0 0 2px rgb(var(--rgb-gold) / 0.55);
+}
+
+.anonymousLarge {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+}
+
+// "Write to your recipient" — the empty chat's heading
+.emptyTitle {
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.interests {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.interestsLabel {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.offline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+
+  border-radius: var(--radius-md);
+  background: rgb(var(--rgb-gold) / 0.14);
+  color: var(--color-text);
+  font-size: 13px;
+  line-height: 1.45;
+
+  svg {
+    flex-shrink: 0;
+    color: var(--color-accent-text);
+  }
+}
+
+// Instead of the field: read-only (event finished) or nothing to answer yet
+.closedNote {
+  padding: 12px 14px;
+
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}

@@ -3,7 +3,16 @@ import { io, type Socket } from "socket.io-client";
 import { api } from "@/lib/api/client";
 import { isChatMessagePayload, type ChatMessage } from "@/lib/chat/messages";
 import {
+  parseSantaChatPayload,
+  parseSantaChatRead,
+  SANTA_CHAT_MESSAGE_EVENT,
+  SANTA_CHAT_READ_EVENT,
+  type SantaChatPayload,
+  type SantaChatReadPayload,
+} from "@/lib/santaChat/messages";
+import {
   CHAT_MESSAGE_EVENT,
+  CHAT_READ_EVENT,
   isRealtimeEvent,
   isRealtimePayload,
   type RealtimeEventName,
@@ -32,6 +41,9 @@ const statusListeners = new Set<() => void>();
 const eventListeners = new Set<Listener>();
 const reconnectListeners = new Set<() => void>();
 const chatListeners = new Set<(message: ChatMessage) => void>();
+const chatReadListeners = new Set<(eventId: string) => void>();
+const santaChatListeners = new Set<(payload: SantaChatPayload) => void>();
+const santaReadListeners = new Set<(payload: SantaChatReadPayload) => void>();
 let everConnected = false;
 let retryTimer: ReturnType<typeof setTimeout> | undefined;
 let retryAttempt = 0;
@@ -122,6 +134,21 @@ export function connectRealtime() {
       if (isChatMessagePayload(payload)) for (const listener of chatListeners) listener(payload.message);
       return;
     }
+    if (name === CHAT_READ_EVENT) {
+      if (isRealtimePayload(payload)) for (const listener of chatReadListeners) listener(payload.eventId);
+      return;
+    }
+    // The anonymous Secret Santa chat: my own copy, through my user room (copied field by field)
+    if (name === SANTA_CHAT_MESSAGE_EVENT) {
+      const parsed = parseSantaChatPayload(payload);
+      if (parsed) for (const listener of santaChatListeners) listener(parsed);
+      return;
+    }
+    if (name === SANTA_CHAT_READ_EVENT) {
+      const parsed = parseSantaChatRead(payload);
+      if (parsed) for (const listener of santaReadListeners) listener(parsed);
+      return;
+    }
     if (!isRealtimeEvent(name) || !isRealtimePayload(payload)) return;
     for (const listener of eventListeners) listener(name, payload.eventId);
   });
@@ -177,6 +204,24 @@ export function onRealtimeEvent(listener: Listener): () => void {
 export function onChatMessage(listener: (message: ChatMessage) => void): () => void {
   chatListeners.add(listener);
   return () => void chatListeners.delete(listener);
+}
+
+/** I read an event chat in another tab */
+export function onChatRead(listener: (eventId: string) => void): () => void {
+  chatReadListeners.add(listener);
+  return () => void chatReadListeners.delete(listener);
+}
+
+/** New messages in my Secret Santa chats — whichever side of them I'm on */
+export function onSantaChatMessage(listener: (payload: SantaChatPayload) => void): () => void {
+  santaChatListeners.add(listener);
+  return () => void santaChatListeners.delete(listener);
+}
+
+/** I read a Secret Santa chat in another tab */
+export function onSantaChatRead(listener: (payload: SantaChatReadPayload) => void): () => void {
+  santaReadListeners.add(listener);
+  return () => void santaReadListeners.delete(listener);
 }
 
 export function onRealtimeReconnect(listener: () => void): () => void {

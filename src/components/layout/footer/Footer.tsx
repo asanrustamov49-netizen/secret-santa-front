@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { PiArrowUpRight, PiHeartFill } from "react-icons/pi";
 import GiftBox from "@/components/ui/giftBox/GiftBox";
+import GuideButton from "@/components/ui/guideButton/GuideButton";
 import { getI18n } from "@/i18n/server";
 import scss from "./footer.module.scss";
 
@@ -9,9 +10,11 @@ const Footer = async () => {
   const t = m.footer;
   const year = new Date().getFullYear();
 
-  const columns = [
+  const columns: { title: string; links: { href: string; label: string }[]; guide?: boolean }[] = [
     {
       title: t.product,
+      // + "How Secret Santa works": the product tour, reopened in place
+      guide: true,
       links: [
         { href: "/#how-it-works", label: t.howItWorks },
         { href: "/#features", label: t.features },
@@ -68,6 +71,13 @@ const Footer = async () => {
                     </Link>
                   </li>
                 ))}
+                {column.guide && (
+                  <li>
+                    <GuideButton className={scss.link}>
+                      <span>{m.onboarding.reopen}</span>
+                    </GuideButton>
+                  </li>
+                )}
               </ul>
             </div>
           ))}

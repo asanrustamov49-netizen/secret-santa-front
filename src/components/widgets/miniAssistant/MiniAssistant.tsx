@@ -5,6 +5,7 @@ import { PiSparkleFill, PiXBold } from "react-icons/pi";
 import GiftBox from "@/components/ui/giftBox/GiftBox";
 import type { AiPage } from "@/lib/ai/pages";
 import { useMiniOnboarded } from "@/lib/ai/miniStore";
+import { readOnboardingSeen } from "@/lib/onboarding/onboarding";
 import { useI18n } from "@/i18n/I18nProvider";
 import scss from "./miniLauncher.module.scss";
 
@@ -36,6 +37,8 @@ const MiniAssistant = ({ userId, page, eventId }: MiniAssistantProps) => {
   const [welcome, setWelcome] = useState(false);
   const [onboarded, markOnboarded] = useMiniOnboarded(userId);
   const [teaserReady, setTeaserReady] = useState(false);
+  // One welcome at a time: the product tour comes first; this bubble only on a later visit
+  const [tourSeenBefore] = useState(readOnboardingSeen);
   const launcherRef = useRef<HTMLButtonElement>(null);
 
   // First visit on this device: a small bubble after a moment — once, never again
@@ -44,7 +47,7 @@ const MiniAssistant = ({ userId, page, eventId }: MiniAssistantProps) => {
     const timer = setTimeout(() => setTeaserReady(true), TEASER_DELAY_MS);
     return () => clearTimeout(timer);
   }, [onboarded]);
-  const showTeaser = teaserReady && !onboarded && !open;
+  const showTeaser = teaserReady && tourSeenBefore && !onboarded && !open;
 
   const openPanel = (withWelcome: boolean) => {
     setWelcome(withWelcome);

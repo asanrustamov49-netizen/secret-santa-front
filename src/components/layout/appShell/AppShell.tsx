@@ -27,6 +27,9 @@ import { useEvents } from "@/lib/events/useEvents";
 import { aiPageOf, eventIdOf } from "@/lib/ai/pages";
 import MiniAssistant from "@/components/widgets/miniAssistant/MiniAssistant";
 import RealtimeProvider from "@/lib/realtime/RealtimeProvider";
+import ChatNotices from "@/components/ui/chatNotices/ChatNotices";
+import { totalUnread, useSantaChats } from "@/lib/santaChat/useSantaChat";
+import { totalChatUnread, useChatUnread } from "@/lib/chat/useEventChat";
 import { useMediaQuery } from "@/lib/ui/useMediaQuery";
 import { useSidebarCollapsed } from "@/lib/ui/useSidebarCollapsed";
 import scss from "./appShell.module.scss";
@@ -79,6 +82,25 @@ const AppShell = ({ children }: { children: ReactNode }) => {
   // Drawn but not opened yet — worth a badge in the menu
   const unopened =
     events.data?.filter((e) => e.status === "drawn" && !e.revealed).length ?? 0;
+  // Unread Secret Santa chat messages, either side — the same badge, kept live by the socket
+  const santaUnread = totalUnread(useSantaChats().data);
+  // Unread event chat messages — on My Events (a REST count, raised live by the socket)
+  const chatUnread = totalChatUnread(useChatUnread().data);
+  const badges: Partial<Record<string, { count: number; label: string }>> = {};
+  if (unopened + santaUnread > 0) {
+    badges["/my-santa"] = {
+      count: unopened + santaUnread,
+      label: [
+        unopened > 0 ? m.nav.toOpen(unopened) : null,
+        santaUnread > 0 ? m.santaChat.unreadMessages(santaUnread) : null,
+      ]
+        .filter(Boolean)
+        .join(", "),
+    };
+  }
+  if (chatUnread > 0) {
+    badges["/events"] = { count: chatUnread, label: m.notices.unreadInChats(chatUnread) };
+  }
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   // The sidebar is an off-canvas drawer only below this width; on desktop it's always visible
   const isMobile = useMediaQuery("(max-width: 960px)");
@@ -164,7 +186,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
 
   return (
     // Live updates for everything below: one Socket.IO connection per tab
-    <RealtimeProvider>
+    <RealtimeProvider userId={user.id}>
       <div className={`${scss.shell} ${collapsed ? scss.collapsed : ""}`}>
         <WinterBackdrop />
 
@@ -243,6 +265,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
                 {NAV.filter((item) => item.group === group).map(
                   ({ href, key, icon: Icon }) => {
                     const isActive = isActiveIn(pathname, href);
+                    const badge = badges[href];
                     return (
                       <Link
                         key={href}
@@ -261,17 +284,17 @@ const AppShell = ({ children }: { children: ReactNode }) => {
                           ) : (
                             <Icon className={NAV_MOTION[key]} />
                           )}
-                          {href === "/my-santa" && unopened > 0 && (
+                          {badge && (
                             <span className={scss.dot} />
                           )}
                         </span>
                         <span className={scss.label}>{m.nav[key]}</span>
-                        {href === "/my-santa" && unopened > 0 && (
+                        {badge && (
                           <span
                             className={`${scss.badge} icon-pop`}
-                            aria-label={m.nav.toOpen(unopened)}
+                            aria-label={badge.label}
                           >
-                            {unopened}
+                            {badge.count}
                           </span>
                         )}
                       </Link>
@@ -314,6 +337,11 @@ const AppShell = ({ children }: { children: ReactNode }) => {
           {children}
         </main>
 
+        {/* New messages (Secret Santa chat, event chats) — on every page but that chat itself */}
+        <div inert={menuOpen}>
+          <ChatNotices />
+        </div>
+
         {showMiniAi && (
           <div inert={menuOpen}>
             <MiniAssistant userId={user.id} page={aiPage} eventId={eventIdOf(pathname)} />
@@ -323,6 +351,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
         <nav className={scss.tabbar} aria-label={m.nav.app} inert={menuOpen}>
           {NAV.map(({ href, key, icon: Icon }) => {
             const active = isActiveIn(pathname, href);
+            const badge = badges[href];
             return (
               <Link
                 key={href}
@@ -332,12 +361,12 @@ const AppShell = ({ children }: { children: ReactNode }) => {
               >
                 <span className={scss.tabIcon}>
                   <Icon className={NAV_MOTION[key]} aria-hidden="true" />
-                  {href === "/my-santa" && unopened > 0 && (
+                  {badge && (
                     <span
                       className={`${scss.tabBadge} icon-pop`}
-                      aria-label={m.nav.toOpen(unopened)}
+                      aria-label={badge.label}
                     >
-                      {unopened}
+                      {badge.count}
                     </span>
                   )}
                 </span>

@@ -470,6 +470,11 @@ $tabbar-height: 64px;
   font-size: 24px;
 }
 
+// The first-visit welcome (rendered outside the shell) sits above the assistant button
+:global(body):has(.shell) {
+  --onboarding-bottom: calc(24px + 56px + 14px);
+}
+
 @media (max-width: 960px) {
   .shell {
     grid-template-columns: 1fr;
@@ -532,6 +537,8 @@ $tabbar-height: 64px;
   // Toasts (rendered outside the shell) float above the tab bar instead of covering it
   :global(body):has(.tabbar) {
     --toast-bottom: calc(#{$tabbar-height} + 16px + env(safe-area-inset-bottom));
+    // The first-visit welcome: above the tab bar and the assistant button (52px)
+    --onboarding-bottom: calc(#{$tabbar-height} + 14px + 52px + 14px + env(safe-area-inset-bottom));
   }
 
   .tabbar {

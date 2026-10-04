@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import scss from "./layout.module.scss";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Toaster from "@/components/ui/toast/Toaster";
+import Onboarding from "@/components/widgets/onboarding/Onboarding";
 import { useServerThemeSync } from "@/lib/theme/useTheme";
 import type { Locale } from "@/i18n/config";
 import { I18nProvider } from "@/i18n/I18nProvider";
@@ -29,6 +30,8 @@ const LayoutClient = ({ children, locale }: IChildrenProps) => {
         <ServerThemeSync />
         <div className={scss.layout}>{children}</div>
         <Toaster />
+        {/* First visit anywhere on the site: the welcome and the product tour */}
+        <Onboarding />
       </I18nProvider>
     </QueryClientProvider>
   );

@@ -264,6 +264,12 @@
   white-space: nowrap;
 }
 
+.legalLinks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .switcher {
   max-width: 460px;
 }
@@ -450,6 +456,10 @@
 
   .rowButton,
   .rowControl :global(.btn) {
+    width: 100%;
+  }
+
+  .legalLinks {
     width: 100%;
   }
 

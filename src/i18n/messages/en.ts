@@ -1,4 +1,5 @@
 import { plural } from "../plural";
+import { legalSection } from "./legal";
 
 // English — the reference dictionary. ru.ts and ky.ts must have exactly this shape
 // (the Messages type checks it), so a missing translation fails the build instead
@@ -26,6 +27,7 @@ export const en = {
     signup: "Create account",
     joinStart: "Join a Secret Santa",
     invited: "You're invited",
+    santaChat: "Secret Santa chat",
   },
 
   common: {
@@ -859,6 +861,14 @@ export const en = {
     subtitle: "Your account and how Secret Santa looks for you.",
     heroText: "Make Secret Santa feel like yours.",
     sectionsLabel: "Settings sections",
+    help: {
+      title: "Help",
+      text: "How Secret Santa works, and the rules.",
+      guideText: "The short tour of every feature — open it any time.",
+      guideButton: "Show the tour",
+      legalTitle: "Terms and privacy",
+      legalText: "The rules of the service and how your data is handled.",
+    },
     sections: {
       account: "Who you are in Secret Santa.",
       appearance: "How Secret Santa looks and which language it speaks.",
@@ -950,6 +960,194 @@ export const en = {
     newMessages: "New messages",
     unread: (count: number) => `${count} new`,
     you: "You",
+  },
+
+  santaChat: {
+    write: "Write about the gift",
+    yourSanta: "Your Secret Santa",
+    senderSubtitle: (event: string) => `You're their Secret Santa · ${event}`,
+    recipientSubtitle: (event: string) => `Anonymous · ${event}`,
+    senderPrivacy: "They see “Your Secret Santa” — never your name.",
+    recipientPrivacy: "Your Santa reads your answers, but you won't find out who it is.",
+    emptySenderTitle: (name: string) => `Write to ${name}`,
+    emptySender:
+      "Ask about size, colour, style or wishes for the gift. They'll see the message from their Secret Santa — never your name.",
+    emptyRecipient:
+      "Your Secret Santa hasn't written yet. When they ask about the gift, you can answer here.",
+    placeholderSender: "Ask about the gift…",
+    placeholderRecipient: "Answer your Secret Santa…",
+    inputLabelSender: (name: string) => `Message to ${name}`,
+    inputLabelRecipient: "Message to your Secret Santa",
+    messagesLabel: "Secret Santa messages",
+    loading: "Loading the chat",
+    loadError: "Couldn't load the chat.",
+    noAccess: "You can't open this chat: you're not in this event or its draw.",
+    notOnServer: "The Secret Santa chat isn't available on the server right now. Please try again later.",
+    openMatchFirst: "Open your Secret Santa first — then you can write to them.",
+    openMatch: "Open my Secret Santa",
+    finished: "This Secret Santa is finished. The chat is read-only now.",
+    waitingForSanta: "You can answer once your Secret Santa writes.",
+    offline: "No connection. New messages will arrive once it's back.",
+    backToRecipient: "Back to my giftee",
+    backToMySanta: "Back to My Secret Santa",
+    unreadMessages: (count: number) =>
+      `${count} unread ${n(count, "message", "messages")}`,
+    notice: {
+      fromSanta: "Your Secret Santa wrote to you about the gift",
+      fromRecipient: (name: string) => `${name} answered you about the gift`,
+      fromRecipientGeneric: "Your giftee answered you about the gift",
+      reply: "Reply",
+    },
+    inbox: {
+      title: "Your Secret Santa wrote to you",
+      text: "Someone is getting a gift ready for you. Answer their questions — they stay anonymous.",
+      open: "Open chat",
+    },
+  },
+
+  notices: {
+    label: "New messages",
+    close: "Close",
+    count: (count: number) => `${count} new ${n(count, "message", "messages")}`,
+    openChat: "Open chat",
+    eventChat: (event: string) => `New message in “${event}”`,
+    eventChatGeneric: "New message in your event chat",
+    unreadInChats: (count: number) =>
+      `${count} unread ${n(count, "message", "messages")} in event chats`,
+  },
+
+  onboarding: {
+    teaserTitle: "New here?",
+    teaserText: "Let us show you how Secret Santa works — it takes a minute.",
+    show: "Show me",
+    close: "Close",
+    reopen: "How Secret Santa works",
+    dialogLabel: "How Secret Santa works",
+    progress: (step: number, total: number) => `${step} / ${total}`,
+    stepLabel: (step: number, title: string) => `Step ${step}: ${title}`,
+    back: "Back",
+    next: "Next",
+    skip: "Skip",
+    start: "Get started",
+    startSignedIn: "Go to Secret Santa",
+    steps: {
+      welcome: {
+        title: "Welcome to Secret Santa",
+        text: [
+          "Secret Santa helps you organize a secret gift exchange with friends, classmates or colleagues.",
+          "Here is how it works, step by step.",
+        ],
+      },
+      create: {
+        title: "Create an event",
+        text: [
+          "Give your event a name, pick the gift exchange day and set a budget.",
+          "Then invite the people taking part.",
+        ],
+      },
+      invite: {
+        title: "Invite your friends",
+        text: [
+          "Share the event's invite link. People join with it and fill in their profile.",
+          "Until the draw, people can still leave, and the organizer can remove participants.",
+        ],
+      },
+      wishlist: {
+        title: "Share your wishes",
+        text: [
+          "Add your interests and a wishlist — with approximate prices and links if you like.",
+          "That's what your Secret Santa will see when choosing your gift.",
+        ],
+      },
+      draw: {
+        title: "The draw",
+        text: [
+          "When everyone is in, the organizer draws names — at least three people are needed.",
+          "Each participant learns only who they give a gift to. Nobody sees the full list of pairs — not even the organizer.",
+        ],
+      },
+      mySanta: {
+        title: "My Secret Santa",
+        text: [
+          "After the draw, “My Secret Santa” shows the person you're gifting: their name, interests, wishlist and the event's budget.",
+          "From there, the AI assistant can suggest gift ideas.",
+        ],
+      },
+      santaChat: {
+        title: "Questions about the gift",
+        text: [
+          "Not sure which colour, size or style they like? Ask them directly — your identity stays secret.",
+          "You know who you're writing to. They only see a message from “Your Secret Santa”, and can answer you.",
+        ],
+      },
+      eventChat: {
+        title: "The event chat",
+        text: [
+          "After the draw, everyone in the event can talk in a shared chat — agree on the day, the place and the wrapping.",
+          "The event chat is seen by all participants. The gift chat is private, and anonymous for the recipient.",
+        ],
+      },
+      ai: {
+        title: "AI gift ideas",
+        text: [
+          "The AI assistant suggests gift ideas from your recipient's interests, wishlist and the budget.",
+          "Its ideas are suggestions — you decide what to give.",
+        ],
+      },
+      notifications: {
+        title: "Notifications",
+        text: [
+          "When someone writes to you, a notification appears on whatever page you're on — just press “Reply”.",
+          "Unread messages are also marked in the menu.",
+        ],
+      },
+      done: {
+        title: "Ready for a real Secret Santa?",
+        text: ["Create your first event or join one with an invite link."],
+      },
+    },
+    demo: {
+      groups: ["Friends", "Classmates", "Colleagues"],
+      newEvent: "New event",
+      eventName: "New Year Party 2026",
+      eventDate: "Fri, 25 Dec",
+      budget: "1,000–3,000 som",
+      people: "8 people",
+      inviteFriends: "Invite friends",
+      organizer: "Organizer",
+      organizerName: "Timur",
+      link: "Invite link",
+      participants: "Participants",
+      friends: ["Aida", "Bakyt", "Dana"],
+      interestsLabel: "Interests",
+      interests: ["Coffee", "Books", "Hiking"],
+      wishlistLabel: "Wishlist",
+      wishes: [
+        { title: "Warm scarf", price: "≈ 1,500 som" },
+        { title: "Coffee beans", price: "≈ 900 som" },
+      ],
+      drawDone: "Names drawn",
+      you: "You",
+      recipientName: "Aida",
+      onlyYours: "You see only your own pair",
+      youGiveTo: "You're gifting",
+      aiIdeas: "AI gift ideas",
+      youSee: "You see",
+      theySee: "Aida sees",
+      santaQuestion: "Which T-shirt colour do you like?",
+      recipientAnswer: "Black or navy, I think",
+      eventChatTitle: "Event chat",
+      eventChatWho: "Everyone in the event reads it",
+      giftChatTitle: "Gift chat",
+      giftChatWho: "Just the two of you — your name stays hidden",
+      ideas: [
+        { title: "Pour-over coffee set", why: "Loves coffee", price: "≈ 2,500 som" },
+        { title: "A novel by her favourite author", why: "Reads a lot", price: "≈ 1,200 som" },
+        { title: "Trail thermos", why: "Goes hiking", price: "≈ 1,800 som" },
+      ],
+      noticePreview: "Which size do you wear — M or L?",
+      noticeNote: "Even when you're on another page",
+    },
   },
 
   miniAi: {
@@ -1179,263 +1377,275 @@ export const en = {
       tooMany: "That's a lot of messages at once. Wait a moment and try again.",
     },
   },
+  legal: {
+    updated: (date: string) => `Last updated: ${date}`,
+    toc: "On this page",
+    summary: "In short",
+    backHome: "Back to home",
+    readAlso: "Read also",
+  },
+
   privacy: {
     title: "Privacy Policy",
-    lastUpdated: "Last updated: September 30, 2026",
-
-    introduction: {
-      title: "1. Introduction",
-      text: [
-        "Secret Santa is a service that helps friends, families, students, teams, and other groups organize Secret Santa gift exchanges.",
-        "This Privacy Policy explains what information we collect, how we use it, and how we protect it when you use the Secret Santa website and application.",
-      ],
-    },
-
-    information: {
-      title: "2. Information We Collect",
-      intro: "Depending on how you use the service, we may collect:",
-      items: {
-        account: "Account information: name and email address.",
-        authentication:
-          "Authentication information: information necessary to authenticate your account.",
-        profile:
-          "Profile information: avatar, interests, and wishlist information that you choose to provide.",
-        events:
-          "Event information: event names, dates, budgets, participants, and related event settings.",
-        messages:
-          "Messages: messages you send through available event chat or AI assistant features.",
-        technical:
-          "Technical information: information necessary to keep the service secure and functioning properly.",
-      },
-    },
-
-    google: {
-      title: "3. Google Sign-In",
-      text: [
-        "You may create or access your Secret Santa account using Google Sign-In.",
-        "When you use Google Sign-In, we may receive information provided by Google according to the permissions you authorize, such as your name, email address, profile picture, and Google account identifier.",
-        "We use this information to create and authenticate your Secret Santa account.",
-      ],
-    },
-
-    usage: {
-      title: "4. How We Use Your Information",
-      intro: "We use collected information to:",
-      items: {
-        account: "create and manage your account;",
-        authentication: "authenticate you securely;",
-        events: "create and manage Secret Santa events;",
-        participants: "allow participants to join events;",
-        matching: "perform Secret Santa participant matching;",
-        recipient: "display the recipient information available to you;",
-        wishlist: "provide wishlist and gift suggestion features;",
-        chat: "provide event chat functionality;",
-        ai: "provide the AI assistant when you choose to use it;",
-        security:
-          "maintain and improve the security and reliability of the service.",
-      },
-    },
-
-    secretSantaPrivacy: {
-      title: "5. Secret Santa Privacy",
-      text: [
-        "Secret Santa is designed so that participants do not receive the complete list of gift assignments.",
-        "A participant can see the recipient assigned to them when the Secret Santa draw has been revealed. Information about other assignments is not intentionally exposed through the normal user interface.",
-      ],
-    },
-
-    ai: {
-      title: "6. AI Assistant",
-      text: [
-        "Secret Santa may provide AI-powered features such as gift ideas and assistance with using the service.",
-        "When you use these features, relevant information may be processed to generate a response. The application is designed to provide the AI assistant only with the information necessary for the requested feature.",
-        "You should avoid sending passwords, payment information, or other highly sensitive personal information to the AI assistant.",
-      ],
-    },
-
-    cookies: {
-      title: "7. Cookies and Local Storage",
-      text: [
-        "The service may use cookies and browser storage to maintain authentication, language preferences, interface preferences, and other functionality required by the application.",
-        "Some cookies are necessary for the service to operate securely, including authentication and session management.",
-      ],
-    },
-
-    security: {
-      title: "8. Data Security",
-      text: [
-        "We use reasonable technical and organizational measures designed to protect account information and application data against unauthorized access, alteration, disclosure, or destruction.",
-        "No internet service can guarantee absolute security, so users should also take reasonable steps to protect their accounts and credentials.",
-      ],
-    },
-
-    retention: {
-      title: "9. Data Retention and Deletion",
-      text: [
-        "We retain information for as long as reasonably necessary to provide the service, maintain accounts, operate events, and meet legitimate technical and security requirements.",
-        "If account deletion functionality is available in your account settings, you may use it to request deletion of your account and associated information.",
-      ],
-    },
-
-    thirdParty: {
-      title: "10. Third-Party Services",
-      text: [
-        "The service may rely on third-party providers for services such as authentication, hosting, databases, and AI processing.",
-        "Such providers may process information as necessary to provide their services and are subject to their own terms and privacy policies.",
-      ],
-    },
-
-    children: {
-      title: "11. Children's Privacy",
-      text: [
-        "Secret Santa is intended to be used with appropriate permission and supervision where required by applicable law or by the rules of a school, organization, or event.",
-        "We do not knowingly collect personal information from children in circumstances where such collection is prohibited by applicable law.",
-      ],
-    },
-
-    changes: {
-      title: "12. Changes to This Policy",
-      text: [
-        "We may update this Privacy Policy when the service or applicable requirements change.",
-        "The updated version will be published on this page together with its updated date.",
-      ],
-    },
-
-    contact: {
-      title: "13. Contact",
-      text: "If you have questions about this Privacy Policy or the handling of your information, please contact the Secret Santa service administrator through the contact method provided on the website.",
-    },
+    description:
+      "What Secret Santa stores about you, why, who can see it, and how long it is kept.",
+    date: "4 October 2026",
+    intro: [
+      "Secret Santa is a web app for organizing gift exchanges: events, invite links, a random draw, wishlists, chats and an AI gift assistant.",
+      "This policy describes the data the app actually uses today — what it is, why it's needed and who can see it.",
+    ],
+    highlights: [
+      "We store only what the app needs to work: your account, profile, events, messages and sessions.",
+      "Your email is never shown to other participants.",
+      "Each participant sees only their own pair. Not even the organizer sees who gives to whom.",
+      "In the gift chat, your recipient never receives your name, picture or ID.",
+      "There are no advertising or analytics trackers, and the app doesn't send you emails.",
+    ],
+    sections: [
+      legalSection("data", "What we store", {
+        text: ["Depending on what you use, the app stores:"],
+        defs: [
+          {
+            term: "Account",
+            text: "your name and email address. If you sign up with email, your password is stored only as a one-way hash (scrypt) — never as text.",
+          },
+          {
+            term: "Google Sign-In",
+            text: "your Google account ID, name, email address, whether Google has verified it, and a link to your profile picture. We don't receive your Google password and don't keep Google's access tokens.",
+          },
+          {
+            term: "Profile",
+            text: "your interests and your wishlist: gift names, approximate prices and optional links.",
+          },
+          {
+            term: "Preferences",
+            text: "your colour theme, saved to your account so all your devices use it. Your language is kept in a cookie (see below).",
+          },
+          {
+            term: "Events",
+            text: "events you create or join: name, description, date, budget, participant limit, invite link code, who takes part and when they joined.",
+          },
+          {
+            term: "The draw",
+            text: "who gives a gift to whom, and when you opened your own pair.",
+          },
+          {
+            term: "Messages",
+            text: "what you write in event chats and in the anonymous gift chat, with when it was sent, and when you last read each chat.",
+          },
+          {
+            term: "AI assistant",
+            text: "your conversations with the assistant.",
+          },
+          {
+            term: "Sessions",
+            text: "for each sign-in: a hashed session token, its expiry date and your browser's user-agent string, so you can recognise your devices.",
+          },
+        ],
+        after: [
+          "The app contains no advertising or analytics trackers.",
+        ],
+      }),
+      legalSection("use", "How the data is used", {
+        items: [
+          "to sign you in and keep your session;",
+          "to run events, invite links and the draw;",
+          "to show your Secret Santa your name, interests and wishlist after the draw;",
+          "to deliver chat messages and notifications in real time;",
+          "to answer you with the AI assistant when you ask it;",
+          "to protect the service — for example, to limit repeated requests and to end sessions.",
+        ],
+        after: ["The app doesn't send you emails, and your data isn't used for advertising."],
+      }),
+      legalSection("visibility", "Who sees what", {
+        items: [
+          "Participants of an event see your name, picture, whether you've filled in your profile, and your messages in the event chat.",
+          "Your email address is never shown to other participants.",
+          "Your interests and wishlist are shown to your Secret Santa — the one person who gives you a gift — after the draw.",
+          "Each participant sees only their own recipient. The organizer doesn't see the pairs either.",
+          "In the gift chat, your recipient sees your messages as coming from “Your Secret Santa”: the app never sends them your name, picture or ID. You see your recipient's name, because you already know who you're gifting.",
+          "Anyone with an event's invite link sees a preview: the event's name, description, date and budget, the organizer's name, the number of participants, and the first names and pictures of up to six of them.",
+        ],
+      }),
+      legalSection("google", "Google Sign-In", {
+        text: [
+          "You can sign up and sign in with Google. Google then tells us your account ID, name, email address, whether the address is verified, and a link to your profile picture.",
+          "We use this only to create your account and sign you in. Google's own privacy policy applies to your Google account.",
+        ],
+      }),
+      legalSection("ai", "AI assistant", {
+        text: [
+          "When you write to the AI assistant, your message and the earlier messages of that conversation are sent to an external AI model provider to generate the answer. The app supports Google Gemini and Anthropic Claude; which one is used depends on the service's configuration.",
+          "For gift ideas in an event, the assistant also receives the event's name, date and budget, your name and interests, and your recipient's name, interests and wishlist. It doesn't receive email addresses, passwords or other people's pairs.",
+          "Conversations are stored so you can return to them, and you can delete them. Please don't share passwords, payment details or other sensitive information with the assistant.",
+        ],
+      }),
+      legalSection("cookies", "Cookies and browser storage", {
+        text: ["The app uses only the cookies it needs to work:"],
+        defs: [
+          {
+            term: "access_token",
+            text: "keeps you signed in; lives 15 minutes and renews automatically. Not readable by page scripts (httpOnly).",
+          },
+          {
+            term: "refresh_token",
+            text: "renews your session for up to 30 days. Not readable by page scripts (httpOnly).",
+          },
+          {
+            term: "has_session",
+            text: "a hint without any secret that tells the site you're signed in.",
+          },
+          { term: "locale", text: "the language you chose." },
+        ],
+        after: [
+          "Your browser's storage also keeps a few things that stay on your device: the colour theme, the menu's state, whether you've seen the welcome tour, the mini assistant's current conversation, your private gift checklist, where you stopped reading an event chat, and an unsaved draft of a new event.",
+          "There are no third-party or advertising cookies.",
+        ],
+      }),
+      legalSection("security", "Security", {
+        items: [
+          "Passwords and session tokens are stored only as hashes.",
+          "Sign-in cookies can't be read by scripts on the page.",
+          "Every request checks that you may see the data: that you're in the event, that it's your pair, that it's your chat.",
+          "The database isn't reachable through any public interface — only through the app's API.",
+          "In Settings you can log out of all devices at once.",
+        ],
+        after: ["No online service can be perfectly secure, so please keep your password to yourself."],
+      }),
+      legalSection("retention", "Keeping and deleting data", {
+        items: [
+          "You can change your profile and interests and delete wishlist items at any time.",
+          "You can delete conversations with the AI assistant.",
+          "An organizer can delete an event; this removes its participants, pairs, event chat and gift chats.",
+          "Sessions end when you log out, after 30 days without renewal, or when you log out of all devices.",
+          "When an account is deleted, everything linked to it is deleted too: profile, wishlist, sessions, events it organized, its messages and AI conversations.",
+        ],
+        after: ["The app doesn't yet have a button to delete your account yourself."],
+      }),
+      legalSection("services", "Services we rely on", {
+        items: [
+          "Google — for Google Sign-In and, when configured, for AI answers (Gemini).",
+          "Anthropic — for AI answers, when configured instead of Gemini.",
+          "Supabase — the managed PostgreSQL database where the app's data is stored.",
+          "Hosting providers that run the website and the API.",
+        ],
+        after: ["Each of them processes data under its own terms and privacy policy."],
+      }),
+      legalSection("children", "Children", {
+        text: [
+          "The app has no age check. If Secret Santa is used at a school or within an organization, it should be used with the permission required by its rules and by applicable law.",
+        ],
+      }),
+      legalSection("changes", "Changes to this policy", {
+        text: [
+          "When the app changes, we update this page. The date at the top shows the current version.",
+        ],
+      }),
+    ],
   },
 
   terms: {
     title: "Terms of Service",
-    lastUpdated: "Last updated: September 30, 2026",
-
-    acceptance: {
-      title: "1. Acceptance of Terms",
-      text: [
-        "By accessing or using Secret Santa, you agree to these Terms of Service and to use the service in accordance with applicable laws and regulations.",
-        "If you do not agree with these Terms, please do not use the service.",
-      ],
-    },
-
-    service: {
-      title: "2. About the Service",
-      text: [
-        "Secret Santa provides tools for organizing gift exchanges between groups of people.",
-        "Depending on the available features, the service may include event creation, participant invitations, Secret Santa matching, wishlists, event chat, and AI-powered gift suggestions.",
-      ],
-    },
-
-    accounts: {
-      title: "3. Accounts",
-      text: [
-        "Some features require you to create an account.",
-        "You are responsible for providing accurate information and for keeping your account credentials secure.",
-        "You should not share your password or authentication credentials with other people.",
-      ],
-    },
-
-    events: {
-      title: "4. Secret Santa Events",
-      text: [
-        "Event organizers are responsible for creating and managing their events, including selecting appropriate dates, budgets, and participant settings.",
-        "Participants are responsible for providing accurate profile, interest, and wishlist information when they choose to provide it.",
-        "Once a Secret Santa draw has been performed, some event settings may become restricted in order to preserve the integrity of the existing assignments.",
-      ],
-    },
-
-    assignments: {
-      title: "5. Gift Assignments",
-      text: [
-        "Secret Santa uses an automated process to create gift assignments between event participants.",
-        "The service is designed to prevent participants from being matched with themselves and to keep other participants' assignments private.",
-        "Users are responsible for keeping their own recipient information private and should not intentionally attempt to discover another participant's assignment.",
-      ],
-    },
-
-    userContent: {
-      title: "6. User Content",
-      text: [
-        "You may provide information such as your name, interests, wishlist, messages, and other content while using the service.",
-        "You are responsible for the content you submit and should not submit content that is illegal, threatening, abusive, deceptive, or that violates another person's rights.",
-      ],
-    },
-
-    chat: {
-      title: "7. Event Chat",
-      text: [
-        "Some Secret Santa events may include a group chat that becomes available after the Secret Santa draw.",
-        "Messages in event chat should be respectful and appropriate for the participants of the event.",
-        "Do not use event chat to share passwords, payment credentials, or other highly sensitive information.",
-      ],
-    },
-
-    ai: {
-      title: "8. AI Features",
-      text: [
-        "Secret Santa may provide AI-powered features for gift ideas, wishlist assistance, and questions about the service.",
-        "AI-generated suggestions are provided for informational purposes. They may be incomplete, inaccurate, or unsuitable for a particular situation.",
-        "You remain responsible for deciding whether and how to use any suggestion provided by the AI assistant.",
-      ],
-    },
-
-    prohibited: {
-      title: "9. Prohibited Use",
-      intro: "You agree not to:",
-      items: {
-        unlawful: "use the service for unlawful purposes;",
-        account: "attempt to access another user's account;",
-        assignments: "attempt to reveal private Secret Santa assignments;",
-        security: "interfere with the security or operation of the service;",
-        malicious: "send malicious code or automated abusive requests;",
-        impersonate: "impersonate another person or organization;",
-        harassment: "use the service to harass or threaten other participants.",
-      },
-    },
-
-    availability: {
-      title: "10. Availability",
-      text: [
-        "We aim to keep Secret Santa available and reliable, but we cannot guarantee uninterrupted access to the service.",
-        "The service may occasionally be unavailable because of maintenance, updates, technical problems, or circumstances outside our control.",
-      ],
-    },
-
-    thirdParty: {
-      title: "11. Third-Party Services",
-      text: [
-        "Secret Santa may integrate with third-party services such as Google authentication, hosting providers, databases, and AI providers.",
-        "Your use of third-party services may also be subject to their own terms and policies.",
-      ],
-    },
-
-    changes: {
-      title: "12. Changes to the Service",
-      text: [
-        "We may add, modify, or remove features from Secret Santa as the service develops.",
-        "We may also update these Terms when necessary. The latest version will be published on this page.",
-      ],
-    },
-
-    termination: {
-      title: "13. Account Suspension or Termination",
-      text: [
-        "Access to an account may be restricted or terminated if the account is used in violation of these Terms or in a way that threatens the security or operation of the service.",
-        "You may stop using the service at any time.",
-      ],
-    },
-
-    disclaimer: {
-      title: "14. Disclaimer",
-      text: "Secret Santa is provided on an “as available” basis. To the extent permitted by applicable law, we do not guarantee that the service will always be error-free, uninterrupted, or suitable for every particular purpose.",
-    },
-
-    contact: {
-      title: "15. Contact",
-      text: "If you have questions about these Terms of Service, please contact the Secret Santa service administrator through the contact method provided on the website.",
-    },
+    description: "The rules for using Secret Santa: accounts, events, the draw, chats and AI.",
+    date: "4 October 2026",
+    intro: [
+      "These terms describe the rules for using Secret Santa — the website and the app for organizing gift exchanges.",
+      "By using Secret Santa, you agree to them. If you don't agree, please don't use the service.",
+    ],
+    highlights: [
+      "Keep your account secure and the information you share accurate.",
+      "Keep the secret: don't try to find out other people's pairs or unmask your Secret Santa.",
+      "Be respectful in chats.",
+      "AI ideas are suggestions — the decision is yours.",
+    ],
+    sections: [
+      legalSection("service", "The service", {
+        text: [
+          "Secret Santa provides tools for organizing gift exchanges: creating events, inviting participants by link, a random draw, profiles with interests and wishlists, an event chat, an anonymous gift chat between a Secret Santa and their recipient, and an AI gift assistant.",
+          "Features may change as the service develops.",
+        ],
+      }),
+      legalSection("accounts", "Your account", {
+        items: [
+          "You can sign up with an email and password or with Google.",
+          "Provide accurate information and keep your password to yourself.",
+          "You're responsible for what happens in your account. If you think someone else has access, change your password and log out of all devices in Settings.",
+        ],
+      }),
+      legalSection("events", "Events", {
+        items: [
+          "The organizer creates the event and is responsible for its name, date, budget and participant limit.",
+          "The organizer can edit the event until it is completed. Until the draw, they can also replace the invite link and remove participants, and participants can leave.",
+          "After the draw, nobody can join or leave, so the pairs stay intact.",
+          "The organizer can mark the event as completed, or delete it for everyone.",
+        ],
+      }),
+      legalSection("draw", "The draw", {
+        items: [
+          "Names are drawn randomly; nobody draws themselves, and everyone gives and receives exactly one gift.",
+          "Each participant sees only their own recipient. Not even the organizer sees the pairs.",
+          "Keep your recipient private, and don't try to find out other people's pairs.",
+        ],
+      }),
+      legalSection("content", "What you share", {
+        text: [
+          "Your name, interests, wishlist and messages are your content, and you're responsible for them.",
+          "Don't post content that is illegal, threatening, abusive or deceptive, or that violates someone else's rights.",
+        ],
+      }),
+      legalSection("chats", "Chats", {
+        items: [
+          "The event chat is visible to everyone in the event; it opens after the draw.",
+          "The gift chat connects a Secret Santa with their recipient. The recipient doesn't see who writes — don't try to unmask your Secret Santa, and don't use the chat to reveal pairs.",
+          "Be respectful. Don't share passwords, payment details or other sensitive information in chats.",
+          "When an event is completed, its gift chats become read-only.",
+        ],
+      }),
+      legalSection("ai", "AI features", {
+        text: [
+          "The AI assistant suggests gift ideas and answers questions about the service. Its answers may be incomplete or inaccurate.",
+          "You decide whether and how to use its suggestions.",
+        ],
+      }),
+      legalSection("prohibited", "Not allowed", {
+        items: [
+          "using the service for anything unlawful;",
+          "trying to access another person's account;",
+          "trying to reveal other people's pairs or the identity of a Secret Santa;",
+          "interfering with the service's security or operation, sending malicious code or automated abusive requests;",
+          "impersonating another person or organization;",
+          "harassing or threatening other participants.",
+        ],
+      }),
+      legalSection("availability", "Availability", {
+        text: [
+          "We aim to keep Secret Santa available, but can't guarantee uninterrupted access: maintenance, updates or technical problems may interrupt it.",
+        ],
+      }),
+      legalSection("third-party", "Third-party services", {
+        text: [
+          "Secret Santa relies on third-party services — Google Sign-In, hosting, the database and an AI model provider. Their own terms and policies also apply.",
+        ],
+      }),
+      legalSection("termination", "Suspension and ending use", {
+        text: [
+          "Access may be restricted if an account is used against these terms or threatens the security of the service.",
+          "You can stop using the service at any time.",
+        ],
+      }),
+      legalSection("disclaimer", "No guarantees", {
+        text: [
+          "Secret Santa is provided “as is” and “as available”. To the extent permitted by law, we don't guarantee that it will be error-free, uninterrupted or suitable for every purpose.",
+        ],
+      }),
+      legalSection("changes", "Changes to these terms", {
+        text: [
+          "We may update these terms as the service changes. The date at the top shows the current version.",
+        ],
+      }),
+    ],
   },
+
 };
 
 // The shape every language must match: same keys, same function signatures

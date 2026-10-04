@@ -3,7 +3,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { AxiosError } from "axios";
-import { PiArrowLeftBold, PiArrowSquareOutBold, PiCheckCircleFill, PiLockKeyFill, PiSparkleFill } from "react-icons/pi";
+import {
+  PiArrowLeftBold,
+  PiArrowSquareOutBold,
+  PiChatCircleDotsFill,
+  PiCheckCircleFill,
+  PiLockKeyFill,
+  PiSparkleFill,
+} from "react-icons/pi";
 import Avatar from "@/components/ui/avatar/Avatar";
 import Confetti from "@/components/ui/confetti/Confetti";
 import GiftBox from "@/components/ui/giftBox/GiftBox";
@@ -18,6 +25,8 @@ import GiftChecklist from "./GiftChecklist";
 import pscss from "../profile/profile.module.scss";
 import { useI18n } from "@/i18n/I18nProvider";
 import { useEventRealtime } from "@/lib/realtime/useRealtime";
+import { santaChatPath } from "@/lib/santaChat/messages";
+import { useSantaChats } from "@/lib/santaChat/useSantaChat";
 import scss from "./events.module.scss";
 
 const OPENING_MS = 1300;
@@ -32,6 +41,9 @@ const RecipientCard = ({ event, recipient, celebrate }: { event: SantaEvent; rec
   const t = m.santa;
   const budget = formatBudget(event.budgetMin, event.budgetMax, locale);
   const firstName = recipient.name.split(" ")[0];
+  // Their answers I haven't read yet
+  const unread =
+    useSantaChats().data?.find((chat) => chat.eventId === event.id && chat.role === "sender")?.unread ?? 0;
 
   return (
     <>
@@ -59,6 +71,16 @@ const RecipientCard = ({ event, recipient, celebrate }: { event: SantaEvent; rec
               </>
             )}
           </p>
+          {/* Only on my own revealed recipient — and the API checks the pair again */}
+          <Link href={santaChatPath(event.id, "sender")} className={`btn btn-primary btn-glow ${scss.santaChatButton}`}>
+            <PiChatCircleDotsFill aria-hidden="true" />
+            {m.santaChat.write}
+            {unread > 0 && (
+              <span className={scss.santaChatBadge} aria-label={m.santaChat.unreadMessages(unread)}>
+                {unread}
+              </span>
+            )}
+          </Link>
           <p className={scss.recipientPrivate}>
             <PiLockKeyFill aria-hidden="true" /> {t.onlyYou}
           </p>

@@ -13,13 +13,20 @@ export interface ChatMessage {
   author: { id: string; name: string; avatarUrl: string | null };
 }
 
-export interface ChatPageLike {
-  messages: ChatMessage[];
+/** What the cache helpers need of a message — shared with the Secret Santa chat */
+export interface TimedMessage {
+  id: string;
+  /** ISO timestamp */
+  createdAt: string;
+}
+
+export interface ChatPageLike<Message extends TimedMessage = ChatMessage> {
+  messages: Message[];
   hasMore: boolean;
 }
 
 /** React Query's infinite data: pages[0] is the newest page, each page oldest first */
-export interface ChatPages<Page extends ChatPageLike = ChatPageLike> {
+export interface ChatPages<Page extends ChatPageLike<TimedMessage> = ChatPageLike> {
   pages: Page[];
   pageParams: unknown[];
 }
@@ -43,7 +50,10 @@ export function isChatMessagePayload(payload: unknown): payload is { eventId: st
 }
 
 /** The newest page with this message added in order — unchanged if it's already there */
-export function addChatMessage<Data extends ChatPages>(data: Data | undefined, message: ChatMessage): Data | undefined {
+export function addChatMessage<Message extends TimedMessage, Data extends ChatPages<ChatPageLike<Message>>>(
+  data: Data | undefined,
+  message: Message,
+): Data | undefined {
   if (!data || data.pages.length === 0) return data;
   if (data.pages.some((page) => page.messages.some((known) => known.id === message.id))) return data;
   const [newest, ...older] = data.pages;
@@ -52,12 +62,14 @@ export function addChatMessage<Data extends ChatPages>(data: Data | undefined, m
 }
 
 /** All loaded messages, oldest first */
-export function flattenChat(data: ChatPages | undefined): ChatMessage[] {
+export function flattenChat<Message extends TimedMessage = ChatMessage>(
+  data: ChatPages<ChatPageLike<Message>> | undefined,
+): Message[] {
   if (!data) return [];
   return [...data.pages].reverse().flatMap((page) => page.messages);
 }
 
-const byTime = (a: ChatMessage, b: ChatMessage) =>
+const byTime = (a: TimedMessage, b: TimedMessage) =>
   a.createdAt === b.createdAt ? 0 : a.createdAt < b.createdAt ? -1 : 1;
 
 /**
