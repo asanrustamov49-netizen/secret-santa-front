@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import TextField from "@/components/ui/textField/TextField";
 import { getErrorMessage } from "@/lib/api/client";
 import { googleErrorMessage } from "@/lib/auth/google";
-import { fieldMessages, loginSchema, safeNextPath } from "@/lib/auth/schemas";
+import { safeNextPath } from "@/lib/auth/safeNextPath";
+import { fieldMessages, loginSchema } from "@/lib/auth/schemas";
 import { useLogin } from "@/lib/auth/useSession";
 import { useFieldMessages, useI18n } from "@/i18n/I18nProvider";
 import { focusFirstInvalid } from "@/lib/ui/focusFirstInvalid";
@@ -44,7 +45,9 @@ const LoginForm = () => {
   };
 
   return (
-    <form className={scss.form} onSubmit={onSubmit} noValidate>
+    // method="post": submitted before the page is interactive, the browser must not put
+    // the password into the URL (history, logs) — it just reloads this page instead
+    <form method="post" className={scss.form} onSubmit={onSubmit} noValidate>
       <div className={scss.header}>
         <h1 className={scss.title}>{t.title}</h1>
         <p className={scss.subtitle}>{t.subtitle}</p>

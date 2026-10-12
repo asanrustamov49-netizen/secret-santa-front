@@ -5,7 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { PiGiftFill } from "react-icons/pi";
 import TextField from "@/components/ui/textField/TextField";
 import { getErrorMessage } from "@/lib/api/client";
-import { fieldMessages, registerSchema, safeNextPath } from "@/lib/auth/schemas";
+import { safeNextPath } from "@/lib/auth/safeNextPath";
+import { fieldMessages, registerSchema } from "@/lib/auth/schemas";
 import { focusFirstInvalid } from "@/lib/ui/focusFirstInvalid";
 import { useRegister } from "@/lib/auth/useSession";
 import { useFieldMessages, useI18n } from "@/i18n/I18nProvider";
@@ -41,7 +42,9 @@ const SignupForm = () => {
   };
 
   return (
-    <form className={scss.form} onSubmit={onSubmit} noValidate>
+    // method="post": submitted before the page is interactive, the browser must not put
+    // the password into the URL (history, logs) — it just reloads this page instead
+    <form method="post" className={scss.form} onSubmit={onSubmit} noValidate>
       <div className={scss.header}>
         <h1 className={scss.title}>{t.title}</h1>
         <p className={scss.subtitle}>{t.subtitle}</p>

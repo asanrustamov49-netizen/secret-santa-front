@@ -1,20 +1,12 @@
 import type { Messages } from "@/i18n/messages/en";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-if (!API_URL) {
-  throw new Error("NEXT_PUBLIC_API_URL is not configured");
-}
-
-/** Start URL; `next` is where the user lands afterwards */
+/**
+ * Start URL; `next` is where the user lands afterwards. Relative (same origin, through
+ * the /api rewrite) — so it renders on the server as well, where there is no window.
+ */
 export function googleSignInUrl(next: string): string {
-  const url = new URL("/api/auth/google", window.location.origin);
-
-  if (next !== "/dashboard") {
-    url.searchParams.set("next", next);
-  }
-
-  return url.toString();
+  const start = "/api/auth/google";
+  return next === "/dashboard" ? start : `${start}?${new URLSearchParams({ next })}`;
 }
 
 /** Message for a /login?error= code the API redirected with, or null for anything we don't know */

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { safeNextPath } from "@/lib/auth/schemas";
+import { safeNextPath } from "@/lib/auth/safeNextPath";
 import { useSession } from "@/lib/auth/useSession";
 import { useI18n } from "@/i18n/I18nProvider";
 import BrandLoader from "@/components/ui/brandLoader/BrandLoader";

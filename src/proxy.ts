@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { safeNextPath } from "@/lib/auth/schemas";
+import { safeNextPath } from "@/lib/auth/safeNextPath";
 
 // Cheap routing decision only — the API still validates every request.
 // "has_session" is a non-secret hint cookie set by the backend with the auth cookies.

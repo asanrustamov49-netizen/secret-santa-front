@@ -155,7 +155,7 @@ const PasswordCard = ({ user }: { user: User }) => {
           )}
         </SettingRow>
       ) : (
-        <form ref={formRef} className={scss.passwordForm} onSubmit={onSubmit} noValidate aria-labelledby="password-form-title">
+        <form ref={formRef} method="post" className={scss.passwordForm} onSubmit={onSubmit} noValidate aria-labelledby="password-form-title">
           <h3 id="password-form-title" className={scss.rowTitle}>
             {isSetting ? t.set : t.change}
           </h3>
