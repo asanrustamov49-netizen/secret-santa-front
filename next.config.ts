@@ -1,4 +1,9 @@
 import type { NextConfig } from "next";
+import { assertSigningSecretForBuild } from "./src/lib/security/clientIp";
+
+// Vercel production builds stop on a missing or weak CLIENT_IP_SIGNING_SECRET (preview
+// builds warn, local builds aren't checked) — see src/lib/security/clientIp.ts
+assertSigningSecretForBuild(process.env);
 
 // Where the NestJS API runs. The browser only ever talks to this Next app:
 // /api/* is forwarded to the backend, so auth cookies are first-party and no CORS is involved.
