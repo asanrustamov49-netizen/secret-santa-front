@@ -6,6 +6,7 @@ import {
   PiArrowLeftBold,
   PiArrowRightBold,
   PiCalendarBlank,
+  PiCalendarPlus,
   PiConfettiFill,
   PiCrownSimpleFill,
   PiLockKeyFill,
@@ -21,6 +22,7 @@ import GiftBox from "@/components/ui/giftBox/GiftBox";
 import Snowfall from "@/components/ui/snowfall/Snowfall";
 import type { Participant, SantaEvent } from "@/lib/api/events";
 import { getErrorMessage } from "@/lib/api/client";
+import { calendarFileName, downloadCalendarFile } from "@/lib/events/calendar";
 import { daysUntil, formatBudget, formatDay, relativeDay } from "@/lib/events/format";
 import { useDrawNames, useEventDetails } from "@/lib/events/useEvents";
 import { useEventRealtime } from "@/lib/realtime/useRealtime";
@@ -203,6 +205,30 @@ const EventPage = () => {
                     <em> · {relativeDay(event.eventDate, m)}</em>
                   )}
                 </span>
+              </li>
+            )}
+            {event.eventDate && event.status !== "completed" && (
+              <li className={scss.heroMetaAction}>
+                <button
+                  type="button"
+                  className="touch-target"
+                  onClick={() =>
+                    downloadCalendarFile(
+                      {
+                        id: event.id,
+                        date: event.eventDate!,
+                        summary: t.calendarSummary(event.name),
+                        description: t.calendarDescription(budget),
+                        url: `${window.location.origin}/events/${event.id}`,
+                        reminder: t.calendarReminder,
+                      },
+                      calendarFileName(event.name),
+                    )
+                  }
+                >
+                  <PiCalendarPlus aria-hidden="true" />
+                  {t.addToCalendar}
+                </button>
               </li>
             )}
             {budget && (
