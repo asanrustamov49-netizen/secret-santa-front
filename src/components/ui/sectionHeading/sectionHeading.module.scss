@@ -7,7 +7,8 @@
 .center {
   align-items: center;
   margin-inline: auto;
-  max-width: 760px;
+  // Room for a two-line 60px title ("…для идеального Тайного Санты." wrapped to three)
+  max-width: 880px;
   text-align: center;
 }
 

@@ -12,7 +12,8 @@
   transform: none;
 }
 
-@media (prefers-reduced-motion: reduce) {
+// Without JavaScript nothing would ever reveal it: show the content as is
+@media (prefers-reduced-motion: reduce), (scripting: none) {
   .reveal {
     opacity: 1;
     transform: none;

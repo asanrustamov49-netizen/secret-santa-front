@@ -40,9 +40,7 @@ const Features = async () => {
           id="features-title"
           title={
             <>
-              {t.title1}
-              <br />
-              {t.title2}
+              {t.title1} {t.title2}
             </>
           }
           subtitle={t.subtitle}

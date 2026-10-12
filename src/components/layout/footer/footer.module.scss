@@ -93,10 +93,12 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
+/* The same wordmark as the header: Playfair, bold */
 .logoText {
-  font-size: 20px;
+  font-family: var(--font-display);
+  font-size: 22px;
   font-weight: 700;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.01em;
 }
 
 .tagline {
@@ -147,18 +149,23 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-focus);
     outline-offset: 3px;
   }
 }
 
+/* Each column shares the title and list rows (subgrid): a title that wraps to two lines
+   ("Правовая информация") no longer pushes its links below the neighbours' */
 .columns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 32px;
+  column-gap: 32px;
 }
 
 .column {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
   min-width: 0;
 }
 
@@ -190,6 +197,11 @@
   gap: 5px;
 
   width: fit-content;
+  padding: 0;
+
+  // Also a <button> (reopens the tour): no browser grey box
+  background: none;
+  text-align: left;
 
   color: var(--color-text-on-dark-secondary);
   font-size: 14px;
@@ -211,7 +223,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-focus);
     outline-offset: 4px;
     border-radius: 3px;
   }
@@ -242,8 +254,8 @@
 
   border-top: 1px solid rgba(255, 255, 255, 0.07);
 
-  color: var(--color-text-light);
-  font-size: 12px;
+  color: var(--color-text-on-dark-secondary);
+  font-size: 13px;
   line-height: 1.5;
 }
 
@@ -305,7 +317,15 @@
 
   .columns {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 36px 28px;
+    column-gap: 28px;
+  }
+
+  .column {
+    margin-bottom: 36px;
+  }
+
+  .column:last-child {
+    margin-bottom: 0;
   }
 
   .column:last-child {
@@ -329,7 +349,10 @@
 @media (max-width: 400px) {
   .columns {
     grid-template-columns: 1fr;
-    gap: 30px;
+  }
+
+  .column {
+    margin-bottom: 30px;
   }
 
   .column:last-child {

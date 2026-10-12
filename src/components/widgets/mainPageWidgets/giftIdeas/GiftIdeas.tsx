@@ -33,9 +33,7 @@ const GiftIdeas = async () => {
               {t.badge}
             </p>
             <h2 id="ai-title" className={scss.title}>
-              {t.title1}
-              <br />
-              {t.title2}
+              {t.title1} {t.title2}
             </h2>
             <p className={scss.text}>
               {t.text}
