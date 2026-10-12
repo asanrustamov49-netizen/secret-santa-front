@@ -5,6 +5,7 @@ import LayoutClient from "./layout.c";
 import { themeInitScript } from "@/lib/theme/theme";
 import { getI18n } from "@/i18n/server";
 import { LOCALES, type Locale } from "@/i18n/config";
+import { siteUrl } from "@/lib/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -16,21 +17,6 @@ const playfair = Playfair_Display({
   subsets: ["latin", "cyrillic"],
   style: ["normal", "italic"],
 });
-
-/**
- * Public address of the site: metadataBase, so social previews get absolute links
- * (og:image must be reachable by a crawler — never localhost in production).
- *   NEXT_PUBLIC_SITE_URL / SITE_URL — set explicitly (e.g. a custom domain)
- *   VERCEL_PROJECT_PRODUCTION_URL   — set by Vercel on every deployment: the production domain, no protocol
- *   http://localhost:3000           — local development
- */
-function siteUrl(): string {
-  const explicit = (process.env.NEXT_PUBLIC_SITE_URL ?? process.env.SITE_URL)?.trim();
-  if (explicit) return explicit;
-  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
-  if (vercel) return `https://${vercel}`;
-  return "http://localhost:3000";
-}
 
 const SITE_URL = siteUrl();
 
@@ -50,7 +36,6 @@ export const viewport: Viewport = {
 export async function generateMetadata(): Promise<Metadata> {
   const { m, locale } = await getI18n();
   const brand = m.common.logo;
-  const preview = { url: "/icons/512.png", width: 512, height: 512, alt: brand };
 
   return {
     metadataBase: new URL(SITE_URL),
@@ -65,13 +50,12 @@ export async function generateMetadata(): Promise<Metadata> {
       description: m.meta.siteDescription,
       locale: OG_LOCALE[locale],
       alternateLocale: LOCALES.filter((other) => other !== locale).map((other) => OG_LOCALE[other]),
-      images: [preview],
     },
+    // The images come from opengraph-image.tsx / twitter-image.tsx (1200×630 cards)
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: m.meta.siteTitle,
       description: m.meta.siteDescription,
-      images: [preview],
     },
   };
 }

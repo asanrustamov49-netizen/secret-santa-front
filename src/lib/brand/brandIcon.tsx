@@ -31,7 +31,8 @@ export function brandMarkSvg(): string {
   return resolveTokens(giftBoxSvg({ uid: "mark", viewBox: GIFT_BOX_MARK_VIEWBOX }));
 }
 
-const markDataUri = () => `data:image/svg+xml;base64,${Buffer.from(brandMarkSvg()).toString("base64")}`;
+/** The mark as a data: URI, for <img> inside an ImageResponse (icons, social cards) */
+export const markDataUri = () => `data:image/svg+xml;base64,${Buffer.from(brandMarkSvg()).toString("base64")}`;
 
 interface IconOptions {
   size: number;
