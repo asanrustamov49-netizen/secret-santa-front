@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
 import LegalPage from "@/components/pages/legal/LegalPage";
 import { getI18n } from "@/i18n/server";
+import { getLegal } from "@/i18n/legal";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { m } = await getI18n();
+  const [{ m }, legal] = await Promise.all([getI18n(), getLegal()]);
   return {
-    title: m.meta.title(m.privacy.title),
-    description: m.privacy.description,
+    title: m.meta.title(legal.privacy.title),
+    description: legal.privacy.description,
     robots: { index: true, follow: true },
   };
 }
 
 export default async function PrivacyPolicyPage() {
-  const { m } = await getI18n();
-  return <LegalPage doc={m.privacy} other={{ href: "/terms", label: m.terms.title }} />;
+  const legal = await getLegal();
+  return <LegalPage doc={legal.privacy} other={{ href: "/terms", label: legal.terms.title }} />;
 }
