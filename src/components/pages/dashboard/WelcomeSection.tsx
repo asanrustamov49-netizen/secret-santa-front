@@ -21,8 +21,12 @@ const WelcomeSection = ({ name }: { name: string | undefined }) => {
       <p className={scss.date}>{today}</p>
       <h1 className={scss.title}>
         {m.dashboard.greeting[partOfDay(now.getHours())]}
-        {firstName ? `, ${firstName}` : ""}
-        <PiHandWavingFill className={scss.wave} aria-hidden="true" />
+        {firstName ? ", " : ""}
+        {/* The wave stays with the name: it never drops to a line of its own */}
+        <span className={scss.titleEnd}>
+          {firstName}
+          <PiHandWavingFill className={scss.wave} aria-hidden="true" />
+        </span>
       </h1>
       <p className={scss.subtitle}>{m.dashboard.subtitle}</p>
     </header>

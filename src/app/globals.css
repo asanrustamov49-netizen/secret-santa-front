@@ -109,6 +109,8 @@
   /* ---------- Layout ---------- */
   --container-width: 1240px;
   --container-padding: 24px;
+  /* Signed-in pages share one frame: the right edge no longer jumps between pages */
+  --app-page-width: 1180px;
 
   /* ---------- Radius ---------- */
   --radius-sm: 8px;

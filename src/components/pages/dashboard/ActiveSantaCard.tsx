@@ -84,10 +84,10 @@ const ActiveSantaCard = ({
         </h2>
         <p className={scss.heroText}>{t.emptyText}</p>
         <div className={scss.heroActions}>
-          <Link href="/events/new" className="btn btn-primary btn-lg btn-glow">
+          <Link href="/events/new" className="btn btn-primary btn-glow">
             <PiPlusBold aria-hidden="true" /> {t.create}
           </Link>
-          <button type="button" className="btn btn-glass btn-lg" onClick={onJoin}>
+          <button type="button" className="btn btn-glass" onClick={onJoin}>
             <PiLinkBold aria-hidden="true" /> {t.joinWithLink}
           </button>
         </div>
@@ -115,10 +115,10 @@ const ActiveSantaCard = ({
           ]}
         />
         <div className={scss.heroActions}>
-          <Link href={`/events/${event.id}/santa`} className="btn btn-primary btn-lg btn-glow">
+          <Link href={`/events/${event.id}/santa`} className="btn btn-primary btn-glow">
             <PiSparkleFill aria-hidden="true" /> {t.reveal}
           </Link>
-          <Link href={`/events/${event.id}`} className="btn btn-glass btn-lg">
+          <Link href={`/events/${event.id}`} className="btn btn-glass">
             {t.openEvent}
           </Link>
         </div>
@@ -143,10 +143,10 @@ const ActiveSantaCard = ({
           ]}
         />
         <div className={scss.heroActions}>
-          <Link href={`/events/${event.id}/santa`} className="btn btn-primary btn-lg">
+          <Link href={`/events/${event.id}/santa`} className="btn btn-primary">
             {t.viewWishlist} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
           </Link>
-          <Link href={`/events/${event.id}`} className="btn btn-glass btn-lg">
+          <Link href={`/events/${event.id}`} className="btn btn-glass">
             {t.openEvent}
           </Link>
         </div>
@@ -178,7 +178,7 @@ const ActiveSantaCard = ({
         </div>
         <p className={scss.heroText}>{next}</p>
         <div className={scss.heroActions}>
-          <Link href={`/events/${event.id}`} className="btn btn-primary btn-lg">
+          <Link href={`/events/${event.id}`} className="btn btn-primary">
             {event.isOwner ? (missing > 0 ? t.inviteFriends : t.drawNames) : t.openEvent}
             <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
           </Link>

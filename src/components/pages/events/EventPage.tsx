@@ -176,7 +176,7 @@ const EventPage = () => {
         <Snowfall bokeh={false} className={scss.heroSnow} />
 
         <div className={scss.eventHeroMain}>
-          <div className={scss.eventCardTop}>
+          <div className={`${scss.eventCardTop} ${scss.heroTop}`}>
             <span className={scss.status} data-status={event.status}>
               {m.events.status[event.status]}
             </span>
@@ -187,7 +187,7 @@ const EventPage = () => {
             ) : (
               <span className={scss.ownerTag}>{t.organizedBy(event.ownerName)}</span>
             )}
-            <RealtimeStatus />
+            <RealtimeStatus className={scss.heroLive} />
           </div>
 
           <h1 id="event-name" className={scss.eventTitle}>

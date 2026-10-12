@@ -25,7 +25,7 @@ const JoinStart = async () => {
         <p className={scss.kicker}>{t.kicker}</p>
         <h1 className={scss.title}>{t.title}</h1>
         <p className={scss.text}>{t.text}</p>
-        <JoinWithLink className={scss.joinForm} autoFocus />
+        <JoinWithLink className={scss.joinForm} autoFocus hideLabel />
         <p className={scss.private}>
           {t.noInvite} <Link href="/signup">{t.startOwn}</Link> {t.andInvite}
         </p>

@@ -7,7 +7,7 @@
   container-type: inline-size;
   display: grid;
   gap: 28px;
-  max-width: 1180px;
+  max-width: var(--app-page-width);
   min-width: 0;
 
   // Soft rise-in, a touch staggered
@@ -42,11 +42,6 @@
 }
 
 .title {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 12px;
-
   color: var(--color-text);
   font-family: var(--font-display);
   font-size: clamp(30px, 4vw, 44px);
@@ -55,7 +50,14 @@
   overflow-wrap: anywhere;
 }
 
+.titleEnd {
+  white-space: nowrap;
+}
+
 .wave {
+  display: inline-block;
+  margin-left: 0.28em;
+  vertical-align: -0.06em;
   color: var(--color-gold);
   font-size: 0.78em;
   transform-origin: 70% 80%;
@@ -71,7 +73,7 @@
 
 .topGrid {
   display: grid;
-  grid-template-columns: minmax(0, 1.75fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   gap: 20px;
 }
 
@@ -204,11 +206,17 @@
   }
 }
 
+// Card-sized actions (the page-hero 60px buttons stacked in a column here)
 .heroActions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 6px;
+
+  > :global(.btn) {
+    min-height: 52px;
+    padding: 0 24px;
+  }
 }
 
 .heroArt {
@@ -246,9 +254,11 @@
   gap: 14px;
   padding: 26px;
 
-  // The card stretches to the Santa card's height: share the spare room above the
-  // content and above the footer, so the countdown sits centred instead of top-heavy
-  > :first-child {
+  // The card stretches to the Santa card's height. The label stays on top like every
+  // other card title; the countdown itself takes the middle, the New Year line the bottom
+  > .digits,
+  > .countdownEmpty,
+  > .giftDay {
     margin-top: auto;
   }
 }
@@ -519,6 +529,7 @@
   gap: 10px;
   color: var(--color-text);
   font-size: 20px;
+  letter-spacing: -0.01em;
 }
 
 .count {

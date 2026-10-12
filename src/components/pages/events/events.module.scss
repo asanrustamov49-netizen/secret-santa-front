@@ -5,7 +5,7 @@
 .page {
   display: grid;
   gap: 28px;
-  max-width: 1080px;
+  max-width: var(--app-page-width);
 }
 
 .pageHeader {
@@ -38,6 +38,7 @@
 
   color: var(--color-text);
   font-size: 20px;
+  letter-spacing: -0.01em;
 }
 
 .count {
@@ -272,6 +273,16 @@
   gap: 8px;
 }
 
+// Event page hero: status and role read together on the left, the live dot sits apart
+.heroTop {
+  justify-content: flex-start;
+  gap: 8px 14px;
+}
+
+.heroLive {
+  margin-left: auto;
+}
+
 .eventCardName {
   color: var(--color-text);
   font-family: var(--font-display);
@@ -479,10 +490,18 @@
 
 // ===================== Wizard =====================
 
+// A focused task: the steps and the form sit centred in the page frame (they used to
+// hug the left and leave half the screen empty); the back link keeps the page's left edge
 .wizard {
   display: grid;
   gap: 22px;
-  max-width: 680px;
+  max-width: var(--app-page-width);
+
+  > :not(.backLink) {
+    justify-self: center;
+    width: 100%;
+    max-width: 680px;
+  }
 }
 
 .stepper {
@@ -824,7 +843,7 @@
     }
 
     &:focus-visible {
-      outline: 2px solid var(--color-gold);
+      outline: 2px solid var(--color-focus);
       outline-offset: 2px;
     }
   }
@@ -958,6 +977,7 @@
   gap: 10px;
   color: var(--color-text);
   font-size: 18px;
+  letter-spacing: -0.01em;
 }
 
 .panelHint {
@@ -1311,11 +1331,14 @@
   font-size: 13px;
 }
 
+// A <p>, so the weight is set here: bold like every other card title (event cards are h3)
 .matchName {
   color: var(--color-text);
   font-family: var(--font-display);
   font-size: 24px;
+  font-weight: 700;
   line-height: 1.2;
+  text-wrap: balance;
 }
 
 // A match card is one big link (stretched from its call to action) with the
@@ -1324,7 +1347,7 @@ article.matchCard {
   position: relative;
 
   &:has(.matchCardLink:focus-visible) {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-focus);
     outline-offset: 3px;
   }
 }

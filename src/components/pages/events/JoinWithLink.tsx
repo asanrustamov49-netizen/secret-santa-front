@@ -6,8 +6,15 @@ import { extractInviteCode } from "@/lib/events/format";
 import { useI18n, useMessage } from "@/i18n/I18nProvider";
 import scss from "./events.module.scss";
 
+interface JoinWithLinkProps {
+  className?: string;
+  autoFocus?: boolean;
+  /** The page's own heading already asks the question: keep the label for screen readers only */
+  hideLabel?: boolean;
+}
+
 /** Got an invite in a chat? Paste the link (or just the code) here. */
-const JoinWithLink = ({ className, autoFocus }: { className?: string; autoFocus?: boolean }) => {
+const JoinWithLink = ({ className, autoFocus, hideLabel }: JoinWithLinkProps) => {
   const router = useRouter();
   const [value, setValue] = useState("");
   const [error, setError] = useMessage();
@@ -23,7 +30,7 @@ const JoinWithLink = ({ className, autoFocus }: { className?: string; autoFocus?
 
   return (
     <form className={`${scss.joinForm} ${className ?? ""}`} onSubmit={onSubmit} noValidate>
-      <label htmlFor="join-link" className={scss.joinLabel}>
+      <label htmlFor="join-link" className={hideLabel ? "visually-hidden" : scss.joinLabel}>
         <PiLinkBold aria-hidden="true" /> {t.label}
       </label>
       <div className={scss.joinRow}>

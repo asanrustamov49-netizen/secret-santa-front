@@ -17,9 +17,7 @@ import {
 } from "react-icons/pi";
 import Avatar from "@/components/ui/avatar/Avatar";
 import ConfirmButton from "@/components/ui/confirmButton/ConfirmButton";
-import GiftBox from "@/components/ui/giftBox/GiftBox";
 import LanguageSwitcher from "@/components/ui/languageSwitcher/LanguageSwitcher";
-import Snowfall from "@/components/ui/snowfall/Snowfall";
 import ThemeSwitcher from "@/components/ui/themeSwitcher/ThemeSwitcher";
 import { useI18n } from "@/i18n/I18nProvider";
 import { getErrorMessage } from "@/lib/api/client";
@@ -123,13 +121,9 @@ const Settings = () => {
 
   return (
     <div className={scss.page}>
-      <header className={scss.hero} data-theme="dark">
-        <Snowfall bokeh={false} className={scss.heroSnow} />
-        <div className={scss.heroCopy}>
-          <h1 className={scss.title}>{t.title}</h1>
-          <p className={scss.heroText}>{t.heroText}</p>
-        </div>
-        <GiftBox size={76} glow sparkles className={scss.heroGift} />
+      <header className={scss.header}>
+        <h1 className={scss.title}>{t.title}</h1>
+        <p className={scss.subtitle}>{t.heroText}</p>
       </header>
 
       <div className={scss.layout}>

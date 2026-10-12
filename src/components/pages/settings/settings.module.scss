@@ -1,68 +1,30 @@
-// Settings — a small night banner, then the settings themselves on calm themed cards.
+// Settings — the same page header as Profile and Events, then the settings on calm themed cards.
+// (Night cards are kept for each page's main object: the Santa card, the event, the profile.)
 // One page with a section list (few settings: no tabs to hunt through).
 
 .page {
   display: grid;
   gap: 24px;
-  max-width: 1040px;
+  max-width: var(--app-page-width);
 }
 
-// ---------- Hero: compact, it's a working page ----------
+// ---------- Header ----------
 
-.hero {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 26px 32px;
-
-  border: 1px solid rgb(var(--rgb-gold) / 0.2);
-  border-radius: var(--radius-2xl);
-  background:
-    radial-gradient(34% 90% at 88% 50%, rgb(var(--rgb-gold) / 0.16), transparent 72%),
-    radial-gradient(44% 120% at 4% -10%, rgb(var(--rgb-blue) / 0.26), transparent 70%),
-    radial-gradient(40% 110% at 52% 120%, rgb(var(--rgb-purple) / 0.2), transparent 72%),
-    linear-gradient(180deg, var(--color-navy-900), var(--color-navy-1000));
-  box-shadow: 0 28px 56px -34px rgb(var(--rgb-navy) / 0.7);
-  color: var(--color-text);
+.header {
   animation: rise 0.6s var(--ease-out-expo) both;
-
-  > :not(.heroSnow) {
-    position: relative;
-    z-index: 1;
-  }
-}
-
-.heroSnow {
-  opacity: 0.45;
-}
-
-.heroCopy {
-  min-width: 0;
 }
 
 .title {
   color: var(--color-text);
   font-family: var(--font-display);
-  font-size: clamp(30px, 3.4vw, 42px);
-  line-height: 1.1;
+  font-size: clamp(32px, 4vw, 48px);
   letter-spacing: -0.02em;
-  text-shadow: var(--glow-heading);
 }
 
-.heroText {
+.subtitle {
   margin-top: 6px;
   color: var(--color-text-secondary);
   font-size: 16px;
-}
-
-.heroGift {
-  flex-shrink: 0;
-  margin-right: 8px;
 }
 
 // ---------- Layout: section list | sections ----------
@@ -120,7 +82,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-focus);
     outline-offset: 2px;
   }
 }
@@ -373,7 +335,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero,
+  .header,
   .section {
     animation: none;
   }
@@ -432,15 +394,6 @@
 }
 
 @media (max-width: 640px) {
-  .hero {
-    padding: 20px;
-    border-radius: var(--radius-xl);
-  }
-
-  .heroGift {
-    display: none;
-  }
-
   .section {
     padding: 20px 18px 6px;
   }
