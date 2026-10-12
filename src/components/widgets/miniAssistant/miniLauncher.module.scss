@@ -46,7 +46,7 @@ $tabbar-height: 64px; // AppShell's mobile tab bar
   }
 
   &:focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-focus);
     outline-offset: 4px;
   }
 }

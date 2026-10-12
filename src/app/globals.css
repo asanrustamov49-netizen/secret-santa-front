@@ -165,6 +165,8 @@
   --color-danger-text: var(--color-crimson);
   --color-header-glass: rgb(255 255 255 / 0.78);
   --glow-heading: none;
+  /* Focus ring: deep gold, 4.8:1 on the snow page (bright gold is only ~1.6:1) */
+  --color-focus: #a8740a;
 }
 
 [data-theme="dark"] {
@@ -215,6 +217,7 @@
   --color-surface-sunken: rgb(var(--rgb-navy) / 0.55);
   --color-ghost: rgb(255 255 255 / 0.05);
   --color-accent-text: var(--color-gold);
+  --color-focus: var(--color-gold);
   --color-success-text: var(--color-green-bright);
   --color-danger-text: #ff8a9b;
   --color-header-glass: rgb(var(--rgb-navy) / 0.72);
@@ -326,16 +329,18 @@ h6 {
   font-weight: 700;
 }
 
+/* Tracking in em: it scales with each heading's own size (a card title at 18px used to
+   inherit the -1.5px meant for 52px section titles and looked squeezed) */
 h1 {
   font-size: clamp(40px, 5vw, 72px);
   line-height: 1.05;
-  letter-spacing: -2px;
+  letter-spacing: -0.028em;
 }
 
 h2 {
   font-size: clamp(32px, 4vw, 52px);
   line-height: 1.1;
-  letter-spacing: -1.5px;
+  letter-spacing: -0.026em;
 }
 
 h3 {
@@ -350,6 +355,20 @@ h4 {
 
 p {
   margin: 0;
+}
+
+/* No lone last word under a heading; fewer ragged short last lines in body text */
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+p,
+li,
+figcaption {
+  text-wrap: pretty;
 }
 
 /* =========================================
@@ -640,7 +659,7 @@ p {
 }
 
 .link:hover {
-  color: var(--color-gold);
+  color: var(--color-accent-text);
 }
 
 /* =========================================
@@ -731,7 +750,7 @@ p {
    ========================================= */
 
 :focus-visible {
-  outline: 2px solid var(--color-gold);
+  outline: 2px solid var(--color-focus);
   outline-offset: 3px;
 }
 
@@ -776,14 +795,6 @@ p {
 
   .section {
     padding: 72px 0;
-  }
-
-  h1 {
-    letter-spacing: -1.5px;
-  }
-
-  h2 {
-    letter-spacing: -1px;
   }
 }
 

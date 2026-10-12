@@ -57,7 +57,7 @@ $tabbar-height: 64px;
 .historyItem,
 .sendButton {
   &:focus-visible {
-    outline: 2px solid var(--color-gold);
+    outline: 2px solid var(--color-focus);
     outline-offset: 2px;
   }
 }
