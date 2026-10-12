@@ -57,7 +57,8 @@
   --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", sans-serif;
 
   /* ---------- Accent ---------- */
-  --color-blue: #5277c7;
+  /* Text-safe on every light surface (WCAG AA 4.5:1); dark values below */
+  --color-blue: #4a6bb3;
   --color-blue-soft: #eaf0ff;
 
   --color-purple: #7561d8;
@@ -88,19 +89,21 @@
   /* ---------- Text ---------- */
   --color-text: #101827;
   --color-text-secondary: #536075;
-  --color-text-muted: #7d8798;
+  /* 4.7:1 or more on every light surface (was #7d8798, 3.4:1) */
+  --color-text-muted: #646d7e;
 
   --color-text-on-dark: #f7f9fc;
   --color-text-on-dark-secondary: #aeb8c8;
 
   /* ---------- Status ---------- */
-  --color-success: #2e9b68;
+  /* Status colours double as text: each is 4.6:1 or more on light surfaces */
+  --color-success: #257c53;
   --color-success-soft: #e8f7ef;
 
-  --color-warning: #d99a25;
+  --color-warning: #8f6618;
   --color-warning-soft: #fff5dd;
 
-  --color-error: #d84d4d;
+  --color-error: #be4444;
   --color-error-soft: #fdeaea;
 
   /* ---------- Layout ---------- */
@@ -165,6 +168,12 @@
 }
 
 [data-theme="dark"] {
+  /* Lighter on night surfaces, 4.6:1 or more on navy-800 */
+  --color-error: #dc5d5d;
+  --color-success: #3ccf7f;
+  --color-warning: #f0b445;
+  --color-blue: #6385cd;
+
   color-scheme: dark;
   color: var(--color-text);
 
