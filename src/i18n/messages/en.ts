@@ -27,6 +27,7 @@ export const en = {
     joinStart: "Join a Secret Santa",
     invited: "You're invited",
     santaChat: "Secret Santa chat",
+    notFound: "Page not found",
   },
 
   common: {
@@ -614,6 +615,11 @@ export const en = {
         "Pairs are private: everyone sees only their own recipient — the organizer too.",
       nudgeTitle: "Your Santa knows nothing about you yet.",
       nudgeText: "Add a few interests or a wishlist.",
+      addToCalendar: "Add to calendar",
+      calendarSummary: (name: string) => `Secret Santa: ${name}`,
+      calendarDescription: (budget: string | null) =>
+        `Gift exchange day${budget ? ` · budget ${budget}` : ""}. Your recipient and wishlist are in the app.`,
+      calendarReminder: "Secret Santa in 3 days — time to get the gift",
     },
     next: {
       completeTitle: "This Secret Santa is complete",
@@ -748,6 +754,10 @@ export const en = {
   },
 
   join: {
+    shareTitle: (event: string) => `You're invited to “${event}”`,
+    shareDescription: (owner: string) =>
+      `${owner} invites you to a Secret Santa gift exchange. Join in one click.`,
+    shareInvite: "Secret Santa invitation",
     loading: "Loading invite",
     invalidTitle: "This invite link doesn't work",
     errorTitle: "Something went wrong",
@@ -935,6 +945,17 @@ export const en = {
   loader: {
     app: "Loading Secret Santa",
     page: "Loading the page",
+  },
+
+  status: {
+    notFoundTitle: "This page got lost in the snow",
+    notFoundText: "The link may be outdated or mistyped. Let's get you back to the celebration.",
+    home: "Go to the home page",
+    dashboard: "Open my events",
+    errorTitle: "Something went wrong",
+    errorText: "We couldn't show this page. Try again — that usually helps.",
+    retry: "Try again",
+    errorCode: (digest: string) => `Error code: ${digest}`,
   },
 
   chat: {

@@ -104,3 +104,8 @@
     width: auto;
   }
 }
+
+// Not on a 404 or error page (StatusScene marks itself): there the way back comes first
+:global(body:has([data-status-scene])) .teaser {
+  display: none;
+}

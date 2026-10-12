@@ -26,6 +26,7 @@ export const ru: Messages = {
     joinStart: "Присоединиться",
     invited: "Вас пригласили",
     santaChat: "Чат с Тайным Сантой",
+    notFound: "Страница не найдена",
   },
 
   common: {
@@ -719,6 +720,11 @@ export const ru: Messages = {
         "Пары тайные: каждый видит только своего получателя — организатор тоже.",
       nudgeTitle: "Ваш Санта пока ничего о вас не знает.",
       nudgeText: "Добавьте пару интересов или список желаний.",
+      addToCalendar: "В календарь",
+      calendarSummary: (name) => `Тайный Санта: ${name}`,
+      calendarDescription: (budget) =>
+        `День обмена подарками${budget ? ` · бюджет ${budget}` : ""}. Ваш получатель и его список желаний — в приложении.`,
+      calendarReminder: "Тайный Санта через 3 дня — пора купить подарок",
     },
     next: {
       completeTitle: "Этот Тайный Санта завершён",
@@ -852,6 +858,10 @@ export const ru: Messages = {
   },
 
   join: {
+    shareTitle: (event) => `Вас пригласили в «${event}»`,
+    shareDescription: (owner) =>
+      `${owner} приглашает вас в Тайного Санту. Присоединяйтесь в один клик.`,
+    shareInvite: "Приглашение в Тайного Санту",
     loading: "Загружаем приглашение",
     invalidTitle: "Эта ссылка-приглашение не работает",
     errorTitle: "Что-то пошло не так",
@@ -1041,6 +1051,17 @@ export const ru: Messages = {
   loader: {
     app: "Загружаем Тайного Санту",
     page: "Загружаем страницу",
+  },
+
+  status: {
+    notFoundTitle: "Эта страница затерялась в снегу",
+    notFoundText: "Возможно, ссылка устарела или в ней опечатка. Вернёмся к празднику.",
+    home: "На главную",
+    dashboard: "К моим событиям",
+    errorTitle: "Что-то пошло не так",
+    errorText: "Не удалось показать эту страницу. Попробуйте ещё раз — обычно это помогает.",
+    retry: "Попробовать снова",
+    errorCode: (digest) => `Код ошибки: ${digest}`,
   },
 
   chat: {

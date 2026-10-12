@@ -1,0 +1,172 @@
+// Not found / error: the hero's night sky, one gift, one sentence, a way back.
+
+.scene {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  display: grid;
+  place-items: center;
+  padding: 96px var(--container-padding) 64px;
+
+  background: var(--color-navy-1000);
+  color: var(--color-text);
+}
+
+// A page of its own
+.full {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+// Inside the app shell: rounded like the app's other surfaces, sidebar stays
+.inline {
+  min-height: min(640px, calc(100svh - 160px));
+  margin: 8px 0 24px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  padding-top: 64px;
+}
+
+.logo {
+  position: absolute;
+  z-index: 2;
+  top: 28px;
+  left: max(var(--container-padding), calc((100% - var(--container-width)) / 2));
+
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+
+  &:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 4px;
+  }
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 560px;
+
+  text-align: center;
+}
+
+// The numeral sits behind the gift like a constellation
+.visual {
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin-bottom: 28px;
+}
+
+// The numeral is taller than the gift: room for it above and below
+.visual:has(.code) {
+  margin: clamp(16px, 4vw, 40px) 0 clamp(36px, 7vw, 64px);
+}
+
+.code {
+  position: absolute;
+  z-index: -1;
+
+  font-family: var(--font-display);
+  font-size: clamp(120px, 26vw, 220px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+
+  background: linear-gradient(180deg, rgb(var(--rgb-gold) / 0.55) 0%, rgb(var(--rgb-gold) / 0.04) 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  user-select: none;
+}
+
+.gift {
+  animation: drift 7s ease-in-out infinite;
+}
+
+.title {
+  margin: 0 0 14px;
+
+  font-family: var(--font-display);
+  font-size: clamp(30px, 5vw, 46px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+.text {
+  margin: 0 0 32px;
+  max-width: 46ch;
+
+  color: var(--color-text-secondary);
+  font-size: 17px;
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.footnote {
+  margin: 24px 0 0;
+
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gift {
+    animation: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .scene {
+    padding-top: 88px;
+  }
+
+  .inline {
+    margin-top: 0;
+    border-radius: var(--radius-xl);
+  }
+
+  // Full-width, thumb-sized buttons on phones
+  .actions {
+    flex-direction: column;
+    align-self: stretch;
+
+    > :global(.btn) {
+      width: 100%;
+    }
+  }
+}
