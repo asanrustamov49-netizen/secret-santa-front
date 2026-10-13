@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { NAV_BACK, NAV_FORWARD } from "@/lib/ui/pageTransition";
 import { useParams } from "next/navigation";
@@ -30,12 +30,36 @@ import { santaChatPath } from "@/lib/santaChat/messages";
 import { useSantaChats } from "@/lib/santaChat/useSantaChat";
 import scss from "./events.module.scss";
 
-const OPENING_MS = 1300;
+/**
+ * The unwrapping takes at least this long, counted from the click: a fast API must not
+ * skip the moment. Beat 1 (0–45%) the box shakes harder, beat 2 it squashes, jumps and
+ * dissolves into gold light (confetti at BURST_MS), beat 3 the name appears.
+ */
+const OPENING_MS = 1700;
+const BURST_MS = 900;
 
 function fitsBudget(price: number | null, event: SantaEvent) {
   if (price == null || (event.budgetMin == null && event.budgetMax == null)) return false;
   return (event.budgetMin == null || price >= event.budgetMin) && (event.budgetMax == null || price <= event.budgetMax);
 }
+
+/** Letters rise in one after another; words stay whole so a long name still wraps between them */
+const LetterByLetter = ({ text }: { text: string }) => {
+  const words = text.trim().split(/\s+/);
+  const starts = words.map((_, w) => words.slice(0, w).reduce((sum, word) => sum + word.length + 1, 0));
+  return words.map((word, w) => (
+    <span key={w} aria-hidden="true">
+      {w > 0 && " "}
+      <span className={scss.nameWord}>
+        {[...word].map((char, i) => (
+          <span key={i} className={scss.nameLetter} style={{ animationDelay: `${180 + (starts[w] + i) * 38}ms` }}>
+            {char}
+          </span>
+        ))}
+      </span>
+    </span>
+  ));
+};
 
 const RecipientCard = ({ event, recipient, celebrate }: { event: SantaEvent; recipient: Recipient; celebrate: boolean }) => {
   const { m, locale } = useI18n();
@@ -57,9 +81,12 @@ const RecipientCard = ({ event, recipient, celebrate }: { event: SantaEvent; rec
           <p className={scss.recipientKicker}>
             <PiSparkleFill aria-hidden="true" /> {t.youAreSantaFor}
           </p>
-          <Avatar name={recipient.name} src={recipient.avatarUrl} size={112} className={scss.recipientAvatar} />
-          <h1 id="recipient-name" className={scss.recipientName}>
-            {recipient.name}
+          <span className={`${scss.recipientAvatarWrap} ${celebrate ? scss.recipientAvatarFresh : ""}`}>
+            <Avatar name={recipient.name} src={recipient.avatarUrl} size={112} className={scss.recipientAvatar} />
+          </span>
+          {/* Just opened: the name writes itself in, letter by letter (read as one word) */}
+          <h1 id="recipient-name" className={scss.recipientName} aria-label={celebrate ? recipient.name : undefined}>
+            {celebrate ? <LetterByLetter text={recipient.name} /> : recipient.name}
           </h1>
           <p className={scss.recipientMeta}>
             {event.name}
@@ -161,13 +188,22 @@ const SantaReveal = () => {
   useEventRealtime(id);
   const reveal = useReveal(id);
   const [phase, setPhase] = useState<"idle" | "opening" | "open">("idle");
+  const [burst, setBurst] = useState(false);
+  const openedAt = useRef(0);
   const { m } = useI18n();
   const t = m.santa;
 
-  // Box pops open, then the name appears
+  // The box bursts open midway, the name appears once both the moment and the answer are in
+  useEffect(() => {
+    if (phase !== "opening") return;
+    const burstTimer = setTimeout(() => setBurst(true), BURST_MS);
+    return () => clearTimeout(burstTimer);
+  }, [phase]);
+
   useEffect(() => {
     if (phase !== "opening" || !reveal.isSuccess) return;
-    const timer = setTimeout(() => setPhase("open"), OPENING_MS);
+    const left = Math.max(0, OPENING_MS - (performance.now() - openedAt.current));
+    const timer = setTimeout(() => setPhase("open"), left);
     return () => clearTimeout(timer);
   }, [phase, reveal.isSuccess]);
 
@@ -223,12 +259,15 @@ const SantaReveal = () => {
         <div className={scss.revealInner}>
           <p className={scss.recipientKicker}>{event.name}</p>
           <div className={`${scss.revealGift} ${opening ? scss.revealGiftOpening : ""}`}>
-            <GiftBox size={200} glow sparkles />
-            {opening && <Confetti burst={1} pieces={40} />}
+            {opening && <span className={scss.revealBurst} aria-hidden="true" />}
+            <span className={scss.revealBox}>
+              <GiftBox size={200} glow sparkles />
+            </span>
+            {burst && <Confetti burst={1} pieces={70} />}
           </div>
 
           {opening ? (
-            <p className={scss.revealTitle}>{t.unwrapping}</p>
+            <p className={`${scss.revealTitle} ${scss.revealTitleOpening}`}>{t.unwrapping}</p>
           ) : (
             <>
               <h1 className={scss.revealTitle}>{t.readyTitle}</h1>
@@ -238,6 +277,8 @@ const SantaReveal = () => {
                 className="btn btn-primary btn-lg btn-glow"
                 disabled={reveal.isPending}
                 onClick={() => {
+                  openedAt.current = performance.now();
+                  setBurst(false);
                   setPhase("opening");
                   reveal.mutate(undefined, { onError: () => setPhase("idle") });
                 }}
