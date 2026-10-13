@@ -328,7 +328,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
         </aside>
 
         {/* While the drawer is open, the page behind it is out of reach */}
-        <main className={scss.main} inert={menuOpen}>
+        <main id="main" tabIndex={-1} className={scss.main} inert={menuOpen}>
           {children}
         </main>
 

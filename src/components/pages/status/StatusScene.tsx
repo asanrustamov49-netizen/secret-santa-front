@@ -31,6 +31,8 @@ const StatusScene = ({ code, title, text, actions, footnote, layout = "full", lo
   const Wrapper = layout === "full" ? "main" : "section";
   return (
     <Wrapper
+      id={layout === "full" ? "main" : undefined}
+      tabIndex={layout === "full" ? -1 : undefined}
       className={`${scss.scene} ${scss[layout]}`}
       data-theme="dark"
       // The first-visit teaser (widgets/onboarding) stays away from 404 and error pages

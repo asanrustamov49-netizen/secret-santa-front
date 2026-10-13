@@ -28,6 +28,7 @@ export const ky: Messages = {
   },
 
   common: {
+    skipToContent: "Мазмунга өтүү",
     tryAgain: "Кайра аракет кылуу",
     cancel: "Жокко чыгаруу",
     save: "Сактоо",

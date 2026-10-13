@@ -30,6 +30,7 @@ export const ru: Messages = {
   },
 
   common: {
+    skipToContent: "Перейти к содержимому",
     tryAgain: "Попробовать снова",
     cancel: "Отмена",
     save: "Сохранить",

@@ -11,7 +11,9 @@ export default function HomeLayout({ children }: LayoutProps<"/">) {
     <div className={scss.home}>
       <WinterBackdrop />
       <Header />
-      <main>{children}</main>
+      <main id="main" tabIndex={-1}>
+        {children}
+      </main>
       <Footer />
       <SpotlightTracker />
     </div>

@@ -31,6 +31,7 @@ export const en = {
   },
 
   common: {
+    skipToContent: "Skip to content",
     tryAgain: "Try again",
     cancel: "Cancel",
     save: "Save",

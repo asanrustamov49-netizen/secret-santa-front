@@ -13,7 +13,7 @@ const JoinStart = async () => {
   const t = m.join.start;
 
   return (
-    <main className={scss.page} data-theme="dark">
+    <main id="main" tabIndex={-1} className={scss.page} data-theme="dark">
       <NightSky variant="hero" />
       <Snowfall />
       <Link href="/" className={scss.logo}>

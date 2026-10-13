@@ -722,6 +722,36 @@ figcaption {
   color: var(--color-purple);
 }
 
+/* Skip link: hidden until a keyboard reaches it, then it drops in at the top */
+.skip-link {
+  position: fixed;
+  z-index: 1000;
+  top: 12px;
+  left: 12px;
+
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  background: var(--color-gold);
+  box-shadow: var(--shadow-md);
+  color: #101522;
+  font-size: 14px;
+  font-weight: 700;
+
+  translate: 0 calc(-100% - 24px);
+  transition: translate 0.25s var(--ease-out-expo);
+
+  &:focus-visible {
+    translate: 0 0;
+    outline: 2px solid #101522;
+    outline-offset: 2px;
+  }
+}
+
+/* The skip link's target takes focus without drawing a ring around the whole page */
+main[tabindex="-1"]:focus {
+  outline: none;
+}
+
 /* Readable by screen readers only */
 
 .visually-hidden {

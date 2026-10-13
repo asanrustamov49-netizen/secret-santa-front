@@ -6,7 +6,7 @@ import Toaster from "@/components/ui/toast/Toaster";
 import Onboarding from "@/components/widgets/onboarding/Onboarding";
 import { useServerThemeSync } from "@/lib/theme/useTheme";
 import type { Locale } from "@/i18n/config";
-import { I18nProvider } from "@/i18n/I18nProvider";
+import { I18nProvider, useI18n } from "@/i18n/I18nProvider";
 
 interface IChildrenProps {
   children: React.ReactNode;
@@ -20,6 +20,16 @@ const ServerThemeSync = () => {
   return null;
 };
 
+/** First stop for keyboard and screen reader users: past the header straight to the page */
+const SkipLink = () => {
+  const { m } = useI18n();
+  return (
+    <a href="#main" className="skip-link">
+      {m.common.skipToContent}
+    </a>
+  );
+};
+
 const LayoutClient = ({ children, locale }: IChildrenProps) => {
   // One client per browser session — not re-created on every render
   const [qc] = useState(() => new QueryClient());
@@ -28,6 +38,7 @@ const LayoutClient = ({ children, locale }: IChildrenProps) => {
     <QueryClientProvider client={qc}>
       <I18nProvider locale={locale}>
         <ServerThemeSync />
+        <SkipLink />
         <div className={scss.layout}>{children}</div>
         <Toaster />
         {/* First visit anywhere on the site: the welcome and the product tour */}

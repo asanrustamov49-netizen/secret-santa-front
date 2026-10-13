@@ -63,7 +63,7 @@ const LegalPage = async ({ doc, other }: LegalPageProps) => {
         </div>
       </header>
 
-      <div className={scss.layout}>
+      <main id="main" tabIndex={-1} className={scss.layout}>
         {/* Wide screens: always open, sticky beside the text. Phones: folded above it */}
         <nav className={scss.toc} aria-labelledby="legal-toc">
           <p id="legal-toc" className={scss.tocTitle}>
@@ -141,7 +141,7 @@ const LegalPage = async ({ doc, other }: LegalPageProps) => {
             </div>
           </footer>
         </article>
-      </div>
+      </main>
     </div>
   );
 };

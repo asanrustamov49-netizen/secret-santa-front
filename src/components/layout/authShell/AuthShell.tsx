@@ -29,7 +29,7 @@ const AuthShell = async ({ aside, children }: AuthShellProps) => {
         </div>
       </aside>
 
-      <main className={scss.main}>
+      <main id="main" tabIndex={-1} className={scss.main}>
         <div className={scss.top}>
           <Link href="/" className={scss.logo}>
             <GiftBox size={28} />
