@@ -1,0 +1,223 @@
+// The invite QR dialog. The code area is always white with navy ink — cameras need the
+// contrast in both themes; the card around it follows the theme.
+
+.dialog {
+  --modal-width: min(420px, calc(100% - 24px));
+}
+
+.card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 30px 28px 26px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  background: var(--color-surface);
+  box-shadow:
+    0 32px 80px -24px rgb(var(--rgb-navy) / 0.55),
+    0 12px 28px -12px rgb(var(--rgb-navy) / 0.25);
+  text-align: center;
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+  background: var(--color-ghost);
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover {
+    background: var(--color-glass-bg-strong);
+    color: var(--color-text);
+  }
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  letter-spacing: -0.01em;
+}
+
+.event {
+  max-width: 100%;
+  overflow: hidden;
+  color: var(--color-text-secondary);
+  font-size: 15px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// ---------- The code ----------
+
+.frame {
+  position: relative;
+  width: min(100%, 300px);
+  margin-top: 18px;
+  // The quiet zone is drawn inside the code itself
+  padding: 4px;
+  overflow: hidden;
+
+  border-radius: var(--radius-xl);
+  background: #ffffff;
+  box-shadow:
+    inset 0 0 0 1px rgb(10 20 38 / 0.08),
+    0 18px 40px -24px rgb(var(--rgb-gold) / 0.6);
+}
+
+.code {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+// The data dots appear from the centre outwards
+.dots {
+  animation: qr-reveal 900ms var(--ease-out-expo) 160ms both;
+}
+
+// Each finder square pops in with a small spring
+.finder {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: finder-pop 560ms var(--ease-spring) both;
+}
+
+.logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  display: grid;
+  place-items: center;
+  // The plate is a little smaller than the cleared spot: a ring of white around it
+  scale: 0.84;
+  translate: -50% -50%;
+
+  border-radius: 24%;
+  background: #ffffff;
+  box-shadow: 0 2px 10px rgb(10 20 38 / 0.12);
+  animation: logo-in 700ms var(--ease-spring) 520ms both;
+}
+
+.gift {
+  width: 78% !important;
+  height: 78% !important;
+  animation: logo-wiggle 900ms ease-in-out 1200ms both;
+}
+
+// One pass of a scanner line, then it's gone
+.scan {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  left: 10px;
+  height: 36px;
+
+  background: linear-gradient(180deg, transparent, rgb(var(--rgb-gold) / 0.35) 70%, rgb(var(--rgb-gold) / 0.9) 96%, transparent);
+  border-radius: 8px;
+  opacity: 0;
+  pointer-events: none;
+  animation: scan-pass 1300ms var(--ease-in-out-quart) 700ms both;
+}
+
+.hint {
+  max-width: 300px;
+  margin-top: 14px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.save {
+  width: 100%;
+  margin-top: 18px;
+}
+
+@keyframes qr-reveal {
+  from {
+    clip-path: circle(0% at 50% 50%);
+    opacity: 0.3;
+  }
+
+  to {
+    clip-path: circle(75% at 50% 50%);
+    opacity: 1;
+  }
+}
+
+@keyframes finder-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+}
+
+@keyframes logo-in {
+  from {
+    opacity: 0;
+    scale: 0.3;
+    rotate: -20deg;
+  }
+}
+
+@keyframes logo-wiggle {
+  25% {
+    rotate: -8deg;
+  }
+
+  55% {
+    rotate: 6deg;
+  }
+
+  80% {
+    rotate: -2deg;
+  }
+}
+
+@keyframes scan-pass {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px);
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  85% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(300px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dots,
+  .finder,
+  .logo,
+  .gift,
+  .scan {
+    animation: none;
+  }
+
+  .scan {
+    display: none;
+  }
+}

@@ -1,9 +1,10 @@
 "use client";
-import { useSyncExternalStore } from "react";
-import { PiCopyBold, PiShareNetworkBold, PiTelegramLogoFill, PiWhatsappLogoFill } from "react-icons/pi";
+import { useState, useSyncExternalStore } from "react";
+import { PiCopyBold, PiQrCodeBold, PiShareNetworkBold, PiTelegramLogoFill, PiWhatsappLogoFill } from "react-icons/pi";
 import { inviteUrl } from "@/lib/events/format";
 import { toast } from "@/lib/toast";
 import { useI18n } from "@/i18n/I18nProvider";
+import InviteQrDialog from "./InviteQrDialog";
 import scss from "./events.module.scss";
 
 const noopSubscribe = () => () => {};
@@ -14,11 +15,12 @@ interface InviteShareProps {
   eventName: string;
 }
 
-/** The invite link with every way to send it: copy, the phone's share sheet, Telegram, WhatsApp */
+/** The invite link with every way to send it: copy, the phone's share sheet, Telegram, WhatsApp, a QR code */
 const InviteShare = ({ code, eventName }: InviteShareProps) => {
   // window.location is only known in the browser — "" during SSR, filled in right after
   const url = useSyncExternalStore(noopSubscribe, () => inviteUrl(code), () => "");
   const hasShareSheet = useSyncExternalStore(noopSubscribe, canNativeShare, () => false);
+  const [qrOpen, setQrOpen] = useState(false);
   const { m } = useI18n();
   const t = m.events.invite;
   const message = t.message(eventName);
@@ -60,6 +62,9 @@ const InviteShare = ({ code, eventName }: InviteShareProps) => {
       </div>
 
       <div className={scss.shareRow}>
+        <button type="button" className={scss.shareButton} onClick={() => setQrOpen(true)} disabled={!url}>
+          <PiQrCodeBold aria-hidden="true" /> {t.qr}
+        </button>
         {hasShareSheet && (
           <button type="button" className={scss.shareButton} onClick={share}>
             <PiShareNetworkBold aria-hidden="true" /> {t.share}
@@ -82,6 +87,8 @@ const InviteShare = ({ code, eventName }: InviteShareProps) => {
           <PiWhatsappLogoFill aria-hidden="true" /> WhatsApp
         </a>
       </div>
+
+      <InviteQrDialog open={qrOpen} onClose={() => setQrOpen(false)} url={url} eventName={eventName} />
     </div>
   );
 };
