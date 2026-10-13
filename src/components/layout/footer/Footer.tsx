@@ -19,6 +19,7 @@ const Footer = async () => {
         { href: "/#how-it-works", label: t.howItWorks },
         { href: "/#features", label: t.features },
         { href: "/#gift-ideas", label: t.giftIdeas },
+        { href: "/#faq", label: t.faq },
       ],
     },
     {

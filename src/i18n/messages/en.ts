@@ -201,6 +201,7 @@ export const en = {
     features: "Features",
     giftIdeas: "Gift ideas",
     about: "About",
+    faq: "FAQ",
     contact: "Contact",
     privacy: "Privacy",
     terms: "Terms",
@@ -345,6 +346,42 @@ export const en = {
         {
           title: "AI gift ideas",
           text: "Smart suggestions based on wishlist & budget.",
+        },
+      ],
+    },
+    faq: {
+      eyebrow: "Before your first draw",
+      title: "Questions, answered",
+      subtitle: "The short answers. Anything else — the AI assistant knows the app inside out.",
+      askAi: "Ask the AI assistant",
+      items: [
+        {
+          q: "How does the draw work?",
+          a: "The organizer draws names once at least 3 people have joined. Pairs are random and nobody gets themselves. After the draw nobody can join or leave, so the pairs stay intact.",
+        },
+        {
+          q: "Can the organizer see who gives to whom?",
+          a: "No. Everyone sees only their own recipient — the organizer included. The pairs aren't shown to anyone else.",
+        },
+        {
+          q: "Do participants need an account?",
+          a: "Yes, it takes a minute: email and password, or Continue with Google. The invite link shows the event before anyone signs up.",
+        },
+        {
+          q: "Is it free?",
+          a: "Yes. Events, invite links, the draw, chats and the AI assistant cost nothing.",
+        },
+        {
+          q: "Can I ask my recipient about the gift?",
+          a: "Yes, anonymously. Once you've opened your Secret Santa, press \"Write about the gift\": your recipient sees only \"Your Secret Santa\" and can answer.",
+        },
+        {
+          q: "How does the AI come up with gift ideas?",
+          a: "It looks at your recipient's interests and wishlist and the event budget. They're suggestions — check prices before you buy.",
+        },
+        {
+          q: "Someone missed the invite. What now?",
+          a: "Until names are drawn, anyone with the link can join. The organizer can also replace the link or remove a participant before the draw.",
         },
       ],
     },

@@ -5,6 +5,7 @@ import Features from "@/components/widgets/mainPageWidgets/features/Features";
 import RecipientPreview from "@/components/widgets/mainPageWidgets/recipientPreview/RecipientPreview";
 import GiftIdeas from "@/components/widgets/mainPageWidgets/giftIdeas/GiftIdeas";
 import About from "@/components/widgets/mainPageWidgets/about/About";
+import Faq from "@/components/widgets/mainPageWidgets/faq/Faq";
 import FinalCta from "@/components/widgets/mainPageWidgets/finalCta/FinalCta";
 
 const Main = () => {
@@ -17,6 +18,7 @@ const Main = () => {
       <RecipientPreview />
       <GiftIdeas />
       <About />
+      <Faq />
       <FinalCta />
     </>
   );

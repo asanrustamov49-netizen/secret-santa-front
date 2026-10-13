@@ -1,0 +1,230 @@
+// FAQ — a calm two-column block: the heading stays in view on the left while the
+// questions open on the right. Each answer eases open (height to "auto"), its text
+// rises in, and the + turns into a −.
+
+.section {
+  scroll-margin-top: 40px;
+  // Lets the browser animate the answers' height between 0 and "auto" (opt-in, this block only)
+  interpolate-size: allow-keywords;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+  align-items: start;
+  gap: 64px;
+}
+
+.intro {
+  position: sticky;
+  top: calc(var(--header-height) + 32px);
+  display: grid;
+  justify-items: start;
+  gap: 28px;
+}
+
+.list {
+  display: grid;
+  gap: 12px;
+}
+
+.item {
+  overflow: hidden;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--surface-card-bg);
+  box-shadow: var(--shadow-card);
+
+  transition:
+    border-color var(--duration-base) ease,
+    box-shadow var(--duration-slow) var(--ease-out-expo);
+
+  &:hover {
+    border-color: var(--color-input-hover);
+  }
+
+  &[open] {
+    border-color: rgb(var(--rgb-gold) / 0.45);
+    box-shadow:
+      0 22px 44px -28px rgb(var(--rgb-gold) / 0.55),
+      var(--shadow-card);
+  }
+
+  // The answer's box: from 0 to its natural height and back (Chromium 131+; elsewhere it
+  // simply opens). content-visibility keeps the closing half visible until it's done.
+  &::details-content {
+    block-size: 0;
+    overflow-y: clip;
+    transition:
+      block-size 420ms var(--ease-out-expo),
+      content-visibility 420ms allow-discrete;
+  }
+
+  &[open]::details-content {
+    block-size: auto;
+  }
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 20px 20px 22px;
+
+  color: var(--color-text);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
+    border-radius: var(--radius-lg);
+  }
+}
+
+.number {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  transition: color var(--duration-base) ease;
+}
+
+.questionText {
+  flex: 1;
+  min-width: 0;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-wrap: balance;
+}
+
+// + drawn from two bars; opening turns it half a circle and folds it into −
+.toggle {
+  position: relative;
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid var(--color-border-light);
+  border-radius: 50%;
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+
+  transition:
+    background var(--duration-base) ease,
+    border-color var(--duration-base) ease,
+    color var(--duration-base) ease,
+    rotate var(--duration-slow) var(--ease-out-expo);
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 2px;
+
+    border-radius: 2px;
+    background: currentColor;
+    translate: -50% -50%;
+    transition: rotate var(--duration-slow) var(--ease-out-expo);
+  }
+
+  &::after {
+    rotate: 90deg;
+  }
+}
+
+.question:hover .toggle {
+  border-color: rgb(var(--rgb-gold) / 0.4);
+  color: var(--color-accent-text);
+}
+
+.item[open] {
+  .number {
+    color: var(--color-accent-text);
+  }
+
+  .toggle {
+    border-color: transparent;
+    background: var(--color-gold);
+    color: #101522;
+    rotate: 180deg;
+
+    &::after {
+      rotate: 0deg;
+    }
+  }
+
+  .answer {
+    animation: answer-in 520ms var(--ease-out-expo) 60ms both;
+  }
+}
+
+.answer {
+  // Lines up with the question text, past the number
+  padding: 0 24px 24px 61px;
+  color: var(--color-text-secondary);
+  font-size: 15.5px;
+  line-height: 1.7;
+
+  p {
+    max-width: 62ch;
+  }
+}
+
+@keyframes answer-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+  }
+
+  .intro {
+    position: static;
+  }
+}
+
+@media (max-width: 560px) {
+  .question {
+    gap: 12px;
+    padding: 18px 16px;
+  }
+
+  .questionText {
+    font-size: 16px;
+  }
+
+  .answer {
+    padding: 0 18px 20px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .item,
+  .item::details-content,
+  .toggle,
+  .toggle::before,
+  .toggle::after {
+    transition: none;
+  }
+
+  .item[open] .answer {
+    animation: none;
+  }
+}
