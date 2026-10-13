@@ -1,6 +1,7 @@
 import Hero from "@/components/widgets/mainPageWidgets/hero/Hero";
 import TrustStrip from "@/components/widgets/mainPageWidgets/trustStrip/TrustStrip";
 import HowItWorks from "@/components/widgets/mainPageWidgets/howItWorks/HowItWorks";
+import TryDraw from "@/components/widgets/mainPageWidgets/tryDraw/TryDraw";
 import Features from "@/components/widgets/mainPageWidgets/features/Features";
 import RecipientPreview from "@/components/widgets/mainPageWidgets/recipientPreview/RecipientPreview";
 import GiftIdeas from "@/components/widgets/mainPageWidgets/giftIdeas/GiftIdeas";
@@ -14,6 +15,7 @@ const Main = () => {
       <Hero />
       <TrustStrip />
       <HowItWorks />
+      <TryDraw />
       <Features />
       <RecipientPreview />
       <GiftIdeas />

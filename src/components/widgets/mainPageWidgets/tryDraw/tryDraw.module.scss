@@ -1,0 +1,417 @@
+// "Try it" — the demo draw. Names on the left, the stage on the right: name cards turn
+// into gift boxes, tumble, and come back as pairs joined by a ribbon.
+
+.section {
+  scroll-margin-top: 40px;
+}
+
+.stage {
+  margin-top: 48px;
+}
+
+.playground {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr);
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+}
+
+// ---------- Names ----------
+
+.names {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px;
+  border-right: 1px solid var(--color-border-light);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 8px;
+  min-height: 92px;
+  list-style: none;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 6px 5px 5px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface);
+  font-size: 14px;
+  font-weight: 600;
+  animation: chip-in 380ms var(--ease-spring) both;
+}
+
+.chipName {
+  max-width: 14ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.remove {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  transition:
+    background var(--transition-fast),
+    color var(--transition-fast);
+
+  &:hover:not(:disabled) {
+    background: var(--color-error-soft);
+    color: var(--color-danger-text);
+  }
+}
+
+.initial {
+  display: inline-grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.initialLarge {
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+}
+
+// The same tones as the avatar stacks elsewhere on the page
+.blue { background: linear-gradient(135deg, #6f8fd8, #4a6bb3); }
+.purple { background: linear-gradient(135deg, #9a86f0, #6e59d6); }
+.crimson { background: linear-gradient(135deg, #e2475f, #a8283d); }
+.green { background: linear-gradient(135deg, #3ccf7f, #1f8a57); }
+.amber { background: linear-gradient(135deg, #f5c63d, #b8861c); color: #101522; }
+.teal { background: linear-gradient(135deg, #3fb3c0, #2a8f9b); }
+.red { background: linear-gradient(135deg, #e66a6a, #be4444); }
+.snow { background: linear-gradient(135deg, #8a96ad, #536075); }
+
+.addRow {
+  display: flex;
+  gap: 8px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+}
+
+.hint {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.hintError {
+  color: var(--color-danger-text);
+}
+
+// ---------- Stage ----------
+
+.board {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  min-height: 380px;
+  padding: 32px;
+
+  background:
+    radial-gradient(70% 60% at 50% 0%, rgb(var(--rgb-gold) / 0.1), transparent 70%),
+    var(--color-surface-sunken);
+}
+
+.boxes {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  list-style: none;
+}
+
+.box {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 8px;
+  width: 92px;
+  height: 104px;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  animation: box-in 420ms var(--ease-out-expo) both;
+}
+
+.boxName {
+  max-width: 80px;
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 13px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Shuffling: every name is wrapped, and the boxes tumble around
+.board[data-phase="shuffling"] .box {
+  border-color: rgb(var(--rgb-gold) / 0.35);
+  background: radial-gradient(circle at 50% 40%, rgb(var(--rgb-gold) / 0.16), transparent 70%), var(--color-surface);
+  animation: box-tumble 1100ms var(--ease-in-out-quart) both;
+}
+
+// ---------- Pairs ----------
+
+.pairs {
+  display: grid;
+  flex: 1;
+  align-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 520px;
+  list-style: none;
+}
+
+.pair {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(70px, 120px) minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  animation: pair-in 520ms var(--ease-out-expo) both;
+  animation-delay: calc(var(--i) * 110ms);
+}
+
+.person {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.receiver {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.personName {
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// The ribbon draws from giver to receiver, the gift rides along it
+.ribbon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 30px;
+}
+
+.ribbonLine {
+  flex: 1;
+  height: 3px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, rgb(var(--rgb-gold) / 0.25), var(--color-gold));
+  transform-origin: left center;
+  animation: ribbon-draw 620ms var(--ease-out-expo) both;
+  animation-delay: calc(var(--i) * 110ms + 180ms);
+}
+
+.ribbonArrow {
+  flex-shrink: 0;
+  margin-left: -4px;
+  color: var(--color-accent-text);
+  font-size: 15px;
+  animation: arrow-in 300ms var(--ease-out-quart) both;
+  animation-delay: calc(var(--i) * 110ms + 640ms);
+}
+
+.ribbonGift {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: grid;
+  translate: 0 -50%;
+  animation: gift-ride 900ms var(--ease-in-out-quart) both;
+  animation-delay: calc(var(--i) * 110ms + 120ms);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.note {
+  max-width: 420px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  line-height: 1.55;
+  text-align: center;
+}
+
+@keyframes chip-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+
+@keyframes box-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.92);
+  }
+}
+
+@keyframes box-tumble {
+  0% {
+    transform: none;
+  }
+
+  18% {
+    transform: translate(var(--dx), var(--dy)) rotate(var(--r)) scale(0.96);
+  }
+
+  38% {
+    transform: translate(calc(var(--dx) * -0.8), calc(var(--dy) * -1)) rotate(calc(var(--r) * -1)) scale(1.04);
+  }
+
+  58% {
+    transform: translate(calc(var(--dx) * 0.5), calc(var(--dy) * 0.6)) rotate(calc(var(--r) * 0.6));
+  }
+
+  78% {
+    transform: translate(calc(var(--dx) * -0.25), 0) rotate(calc(var(--r) * -0.3)) scale(1.02);
+  }
+
+  100% {
+    transform: none;
+  }
+}
+
+@keyframes pair-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.98);
+  }
+}
+
+@keyframes ribbon-draw {
+  from {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes arrow-in {
+  from {
+    opacity: 0;
+    translate: -6px 0;
+  }
+}
+
+@keyframes gift-ride {
+  0% {
+    left: 0;
+    opacity: 0;
+    scale: 0.6;
+  }
+
+  20% {
+    opacity: 1;
+    scale: 1;
+  }
+
+  100% {
+    left: calc(50% - 13px);
+  }
+}
+
+@media (max-width: 860px) {
+  .playground {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .names {
+    border-right: 0;
+    border-bottom: 1px solid var(--color-border-light);
+  }
+}
+
+@media (max-width: 560px) {
+  .names,
+  .board {
+    padding: 22px 16px;
+  }
+
+  .box {
+    width: 78px;
+    height: 92px;
+  }
+
+  .pair {
+    grid-template-columns: minmax(0, 1fr) 56px minmax(0, 1fr);
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .personName {
+    font-size: 14px;
+  }
+
+  .initial {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip,
+  .box,
+  .board[data-phase="shuffling"] .box,
+  .pair,
+  .ribbonLine,
+  .ribbonArrow,
+  .ribbonGift {
+    animation: none;
+  }
+
+  .ribbonGift {
+    left: calc(50% - 13px);
+  }
+}
