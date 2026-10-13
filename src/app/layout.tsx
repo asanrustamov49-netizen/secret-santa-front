@@ -12,10 +12,10 @@ const inter = Inter({
   subsets: ["latin", "cyrillic"],
 });
 
+// Upright only: nothing on the site is set in italic, and each style is two more preloaded files
 const playfair = Playfair_Display({
   variable: "--font-playfair",
   subsets: ["latin", "cyrillic"],
-  style: ["normal", "italic"],
 });
 
 const SITE_URL = siteUrl();

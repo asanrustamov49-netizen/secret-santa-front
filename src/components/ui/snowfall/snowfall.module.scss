@@ -238,7 +238,8 @@ $tile: 1400px;
     display: none;
   }
 
-  .bokeh:nth-child(n + 4) {
+  // Blurred moving layers are the costliest part of the snow on a phone's GPU
+  .bokeh {
     display: none;
   }
 }

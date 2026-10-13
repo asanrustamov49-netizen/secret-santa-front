@@ -23,28 +23,28 @@ const Hero = async () => {
 
       <div className={`container ${scss.inner}`}>
         <div className={scss.content}>
-          <p className={`${scss.badge} ${scss.reveal}`} style={delay(100)}>
+          <p className={`${scss.badge} ${scss.reveal}`} style={delay(60)}>
             <PiSparkleFill aria-hidden="true" />
             {t.badge}
           </p>
 
           <h1 id="hero-title" className={scss.title}>
-            <span className={`${scss.line} ${scss.white} ${scss.reveal}`} style={delay(200)}>
+            <span className={`${scss.line} ${scss.white} ${scss.reveal}`} style={delay(100)}>
               {t.line1}
             </span>
-            <span className={`${scss.line} ${scss.gold} ${scss.reveal}`} style={delay(380)}>
+            <span className={`${scss.line} ${scss.gold} ${scss.reveal}`} style={delay(180)}>
               {t.line2}
             </span>
-            <span className={`${scss.line} ${scss.white} ${scss.reveal}`} style={delay(560)}>
+            <span className={`${scss.line} ${scss.white} ${scss.reveal}`} style={delay(260)}>
               {t.line3}
             </span>
           </h1>
 
-          <p className={`${scss.subtitle} ${scss.reveal}`} style={delay(760)}>
+          <p className={`${scss.subtitle} ${scss.reveal}`} style={delay(380)}>
             {t.subtitle}
           </p>
 
-          <div className={`${scss.actions} ${scss.reveal}`} style={delay(900)}>
+          <div className={`${scss.actions} ${scss.reveal}`} style={delay(480)}>
             <StartLink className="btn btn-primary btn-lg btn-glow">
               <PiGiftFill aria-hidden="true" />
               {t.create}
@@ -55,7 +55,7 @@ const Hero = async () => {
           </div>
         </div>
 
-        <div className={`${scss.visual} ${scss.revealVisual}`} style={delay(700)}>
+        <div className={`${scss.visual} ${scss.revealVisual}`} style={delay(360)}>
           <div className={scss.bigGift}>
             <GiftBox size={250} glow sparkles />
           </div>
@@ -63,7 +63,7 @@ const Hero = async () => {
         </div>
       </div>
 
-      <a href="#how-it-works" className={`${scss.scrollHint} ${scss.reveal}`} style={delay(1300)}>
+      <a href="#how-it-works" className={`${scss.scrollHint} ${scss.reveal}`} style={delay(900)}>
         <span>{t.scroll}</span>
         <span className={scss.scrollLine} aria-hidden="true" />
       </a>

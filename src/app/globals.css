@@ -368,18 +368,13 @@ p {
   margin: 0;
 }
 
-/* No lone last word under a heading; fewer ragged short last lines in body text */
+/* No lone last word under a heading. (Not "pretty" on every paragraph: on a long page
+   it is a costly layout pass on phones — Lighthouse counted it in seconds of main thread) */
 h1,
 h2,
 h3,
 h4 {
   text-wrap: balance;
-}
-
-p,
-li,
-figcaption {
-  text-wrap: pretty;
 }
 
 /* =========================================
