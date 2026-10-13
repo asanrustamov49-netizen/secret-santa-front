@@ -17,6 +17,7 @@ import {
   PiTreeEvergreen,
 } from "react-icons/pi";
 import Flag from "@/components/ui/languageSwitcher/Flag";
+import Modal from "@/components/ui/modal/Modal";
 import { NAV, isActiveIn, navHref } from "@/components/layout/appShell/nav";
 import { LOCALES } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -57,12 +58,11 @@ const THEMES: { value: ThemePreference; icon: ReactNode }[] = [
 /**
  * Ctrl/⌘ K anywhere in the app: jump to a page or one of your events, run an action
  * (new event, join, the tour), switch theme or language — or hand the question to the
- * AI assistant. A native modal <dialog>: focus stays inside, Esc closes, the page behind
- * is inert. The body remounts on every opening, so each search starts fresh.
+ * AI assistant. In the app's Modal (focus stays inside, Esc closes, the page behind is
+ * inert). The body remounts on every opening, so each search starts fresh.
  */
 const CommandPalette = () => {
   const { open, session, instant } = useCommandPalette();
-  const dialogRef = useRef<HTMLDialogElement>(null);
   const { m } = useI18n();
 
   // The shortcut — by key position, so it also works on a Cyrillic layout (where K is "Л")
@@ -77,30 +77,17 @@ const CommandPalette = () => {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (open && !dialog.open) {
-      dialog.showModal();
-      dialog.querySelector("input")?.focus();
-    } else if (!open && dialog.open) {
-      dialog.close();
-    }
-  }, [open]);
-
   return (
-    <dialog
-      ref={dialogRef}
+    <Modal
+      open={open}
+      onClose={closeCommandPalette}
+      label={m.command.dialogLabel}
       className={scss.dialog}
-      aria-label={m.command.dialogLabel}
-      data-instant={instant || undefined}
-      // Esc (or anything else) closed it: the store follows
-      onClose={() => useCommandPalette.getState().open && closeCommandPalette()}
-      // A click on the dim backdrop lands on the dialog itself
-      onClick={(event) => event.target === event.currentTarget && closeCommandPalette()}
+      instant={instant}
+      initialFocus="input"
     >
       <PaletteBody key={session} />
-    </dialog>
+    </Modal>
   );
 };
 

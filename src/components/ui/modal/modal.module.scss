@@ -1,0 +1,78 @@
+// The app's modal (Modal.tsx): a native <dialog>. The box itself is transparent — what's
+// inside draws the surface. The caller's className sets --modal-width / --modal-margin
+// (variables, so it works whatever order the stylesheets load in).
+
+// The page behind doesn't scroll while a modal is open
+:global(html):has(.dialog[open]) {
+  overflow: hidden;
+}
+
+.dialog {
+  width: var(--modal-width, min(480px, calc(100% - 24px)));
+  max-width: none;
+  max-height: none;
+  margin: var(--modal-margin, auto);
+  padding: 0;
+  overflow: visible;
+
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+
+  // Closed (and leaving): fades up and out quickly
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transition:
+    opacity 140ms var(--ease-in-quart),
+    transform 140ms var(--ease-in-quart),
+    overlay 140ms allow-discrete,
+    display 140ms allow-discrete;
+
+  &[open] {
+    opacity: 1;
+    transform: none;
+    transition-duration: 320ms;
+    transition-timing-function: var(--ease-out-expo);
+
+    @starting-style {
+      opacity: 0;
+      transform: translateY(-14px) scale(0.96);
+    }
+  }
+
+  &::backdrop {
+    background: rgb(var(--rgb-navy) / 0);
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+    transition:
+      background 200ms ease,
+      backdrop-filter 200ms ease,
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+
+  &[open]::backdrop {
+    background: rgb(var(--rgb-navy) / 0.46);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+
+    @starting-style {
+      background: rgb(var(--rgb-navy) / 0);
+      -webkit-backdrop-filter: blur(0);
+      backdrop-filter: blur(0);
+    }
+  }
+
+  &[data-instant],
+  &[data-instant]::backdrop {
+    transition: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog,
+  .dialog[open],
+  .dialog::backdrop {
+    transition: none;
+  }
+}
