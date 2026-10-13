@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, ViewTransition, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { IconType } from "react-icons";
@@ -54,6 +54,16 @@ const NAV: NavItem[] = [
 ];
 
 const GROUPS = ["main", "account"] as const;
+
+/**
+ * The "you are here" highlight. Only the active item renders it, under one name: when the
+ * page changes, React pairs the old and the new one and the browser glides it across.
+ */
+const ActivePill = ({ name, className }: { name: string; className: string }) => (
+  <ViewTransition name={name} share="nav-pill" default="none">
+    <span className={className} aria-hidden="true" />
+  </ViewTransition>
+);
 
 /** A little life where it means something: the assistant breathes, the gift shakes on hover */
 const NAV_MOTION: Partial<Record<NavItem["key"], string>> = {
@@ -274,6 +284,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
                         aria-current={isActive ? "page" : undefined}
                         onClick={() => setIsMenuOpen(false)}
                       >
+                        {isActive && <ActivePill name="nav-active" className={scss.activePill} />}
                         <span className={scss.navIcon} aria-hidden="true">
                           {key === "profile" ? (
                             <Avatar
@@ -360,6 +371,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
                 aria-current={active ? "page" : undefined}
               >
                 <span className={scss.tabIcon}>
+                  {active && <ActivePill name="tab-active" className={scss.tabPill} />}
                   <Icon className={NAV_MOTION[key]} aria-hidden="true" />
                   {badge && (
                     <span

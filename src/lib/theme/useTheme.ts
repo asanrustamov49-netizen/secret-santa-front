@@ -2,7 +2,13 @@
 import { useEffect, useSyncExternalStore } from "react";
 import { useUpdatePreferences } from "@/lib/account/usePreferences";
 import { useSession, useSessionHint } from "@/lib/auth/useSession";
-import { readPreference, setPreference as applyPreference, subscribe, type ThemePreference } from "./theme";
+import {
+  readPreference,
+  setPreference as applyPreference,
+  subscribe,
+  type ThemeOrigin,
+  type ThemePreference,
+} from "./theme";
 
 // Server render always assumes "system"; the real value is read right after hydration.
 const getServerSnapshot = (): ThemePreference => "system";
@@ -17,8 +23,9 @@ export function useTheme() {
   const { data: user } = useSession({ enabled: useSessionHint() });
   const save = useUpdatePreferences();
 
-  const setPreference = (next: ThemePreference) => {
-    applyPreference(next);
+  /** origin: the click that asked for it — the new theme spreads from there */
+  const setPreference = (next: ThemePreference, origin?: ThemeOrigin) => {
+    applyPreference(next, origin);
     if (user) save.mutate({ themePreference: next });
   };
 

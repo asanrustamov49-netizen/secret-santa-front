@@ -36,7 +36,7 @@ const HowItWorks = async () => {
           {t.steps.map((step, i) => {
             const number = String(i + 1).padStart(2, "0");
             return (
-              <Reveal as="li" key={step.title} delay={i * 120} className={`surface-card ${scss.step}`}>
+              <Reveal as="li" key={step.title} delay={i * 120} className={`surface-card spotlight ${scss.step}`}>
                 <span className={scss.number} aria-hidden="true">
                   {number}
                 </span>

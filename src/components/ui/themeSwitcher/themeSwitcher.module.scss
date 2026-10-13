@@ -1,4 +1,6 @@
 .switcher {
+  position: relative;
+  isolation: isolate;
   display: inline-flex;
   gap: 2px;
   padding: 3px;
@@ -38,6 +40,42 @@
 
   &:hover {
     color: var(--color-accent-text);
+  }
+}
+
+// The gliding highlight (useSlidingIndicator). Once it's placed, the active option
+// hands its own background over to it
+.indicator {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+
+  border-radius: 999px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 360ms var(--ease-out-expo),
+    width 360ms var(--ease-out-expo),
+    height 360ms var(--ease-out-expo);
+}
+
+.switcher[data-ready] {
+  .indicator {
+    opacity: 1;
+  }
+
+  .active {
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicator {
+    transition: none;
   }
 }
 

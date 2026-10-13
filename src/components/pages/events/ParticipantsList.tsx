@@ -40,7 +40,7 @@ const ParticipantsList = ({ event, participants }: ParticipantsListProps) => {
         )}
       </header>
 
-      <ul className={scss.people}>
+      <ul className={`${scss.people} stagger`}>
         {participants.map((person) => (
           <li key={person.id} className={scss.person}>
             <Avatar name={person.name} src={person.avatarUrl} size={40} />

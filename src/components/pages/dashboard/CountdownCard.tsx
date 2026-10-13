@@ -92,7 +92,12 @@ const CountdownCard = ({ events, isPending, isError }: CountdownCardProps) => {
                 { key: "minutes", value: left.minutes, unit: t.minutes(left.minutes) },
               ].map(({ key, value, unit }) => (
                 <div key={key} className={scss.digit}>
-                  <span className={scss.digitValue}>{pad(value)}</span>
+                  {/* Keyed by the value: each new number rolls up into the window */}
+                  <span className={scss.digitWindow}>
+                    <span key={value} className={scss.digitValue}>
+                      {pad(value)}
+                    </span>
+                  </span>
                   <span className={scss.digitUnit}>{unit}</span>
                 </div>
               ))}

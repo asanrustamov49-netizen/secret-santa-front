@@ -473,6 +473,40 @@
   animation: visualIn 1.6s var(--ease-out-expo) var(--delay, 0ms) forwards;
 }
 
+// Scrolling away: the copy drifts up and dims faster than the page, the match card a
+// little slower — depth without a single listener (scroll-driven, where supported).
+// translate (not transform) so it stacks with the entrance and the idle float.
+@supports (animation-timeline: scroll()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .content {
+      animation: hero-copy-drift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 80vh;
+    }
+
+    .cardStage {
+      animation:
+        float 9s ease-in-out -2s infinite,
+        hero-card-drift linear both;
+      animation-timeline: auto, scroll(root);
+      animation-range: normal, 0 90vh;
+    }
+  }
+}
+
+@keyframes hero-copy-drift {
+  to {
+    opacity: 0.25;
+    translate: 0 -56px;
+  }
+}
+
+@keyframes hero-card-drift {
+  to {
+    translate: 0 -28px;
+  }
+}
+
 @keyframes rise {
   from {
     opacity: 0;

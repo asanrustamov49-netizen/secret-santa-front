@@ -69,6 +69,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang={locale}
       className={`${inter.variable} ${playfair.variable}`}
+      // globals.css scrolls smoothly for in-page anchors; this tells Next to jump (not glide)
+      // to the top when the route changes, so a page transition never starts mid-scroll
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
     >
       <head>

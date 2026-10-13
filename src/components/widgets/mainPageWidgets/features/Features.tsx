@@ -48,7 +48,7 @@ const Features = async () => {
 
         <div className={scss.bento}>
           {/* Events — the big card */}
-          <Reveal as="article" className={`surface-card ${scss.card} ${scss.events}`}>
+          <Reveal as="article" className={`surface-card spotlight ${scss.card} ${scss.events}`}>
             <p className={scss.eyebrow}>{t.eventsEyebrow}</p>
             <h3 className={scss.title}>
               <PiTreeEvergreenFill className={scss.tree} aria-hidden="true" />
@@ -94,7 +94,7 @@ const Features = async () => {
           </Reveal>
 
           {/* Private matching */}
-          <Reveal as="article" delay={120} className={`surface-card ${scss.card}`}>
+          <Reveal as="article" delay={120} className={`surface-card spotlight ${scss.card}`}>
             <h3 className={scss.title}>
               <GiftBox size={26} />
               {t.privateTitle}
@@ -109,7 +109,7 @@ const Features = async () => {
           </Reveal>
 
           {/* Wishlists */}
-          <Reveal as="article" delay={240} className={`surface-card ${scss.card}`}>
+          <Reveal as="article" delay={240} className={`surface-card spotlight ${scss.card}`}>
             <h3 className={scss.title}>
               <PiHeartFill className={scss.heart} aria-hidden="true" />
               {t.wishlistsTitle}

@@ -130,6 +130,15 @@
   --transition-normal: 0.25s ease;
   --transition-slow: 0.4s ease;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Motion system: things arrive fast and settle softly (ease-out), leave quickly (ease-in),
+     and only small things that "pop" get the spring — its overshoot is under 2% */
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-quart: cubic-bezier(0.5, 0, 0.75, 0);
+  --ease-in-out-quart: cubic-bezier(0.76, 0, 0.24, 1);
+  --ease-spring: linear(0, 0.006, 0.025 2.8%, 0.101 6.1%, 0.539 18.9%, 0.721 25.3%, 0.849 31.5%, 0.937 38.1%, 0.968 41.8%, 0.991 45.7%, 1.006 50.1%, 1.015 55%, 1.017 63.9%, 1.001);
+  --duration-quick: 180ms;
+  --duration-base: 300ms;
+  --duration-slow: 480ms;
 
   /* ---------- Layers ---------- */
   --header-height: 88px;
@@ -959,6 +968,195 @@ figcaption {
   :is(.icon-nudge, .icon-nudge-back, .icon-lift, .icon-tilt) {
     translate: none !important;
     rotate: none !important;
+  }
+}
+
+/* =========================================
+   POINTER SPOTLIGHT
+   A soft warm light that follows the cursor inside a card (SpotlightTracker feeds
+   --mx / --my). Under the content, over the card's own background; mouse only.
+   ========================================= */
+
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 0%),
+    rgb(var(--rgb-gold) / 0.11),
+    transparent 62%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s var(--ease-out-quart);
+}
+
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+[data-theme="dark"] .spotlight::before {
+  background: radial-gradient(
+    420px circle at var(--mx, 50%) var(--my, 0%),
+    rgb(var(--rgb-gold) / 0.09),
+    transparent 62%
+  );
+}
+
+@media (hover: none) {
+  .spotlight::before {
+    display: none;
+  }
+}
+
+/* =========================================
+   STAGGERED ENTRANCE
+   For lists that appear with their data: items rise in one after another (the first
+   eight; the rest arrive together). New items added later rise in on their own.
+   ========================================= */
+
+.stagger > * {
+  animation: stagger-in 560ms var(--ease-out-expo) both;
+}
+
+.stagger > :nth-child(2) { animation-delay: 45ms; }
+.stagger > :nth-child(3) { animation-delay: 90ms; }
+.stagger > :nth-child(4) { animation-delay: 135ms; }
+.stagger > :nth-child(5) { animation-delay: 180ms; }
+.stagger > :nth-child(6) { animation-delay: 225ms; }
+.stagger > :nth-child(7) { animation-delay: 270ms; }
+.stagger > :nth-child(n + 8) { animation-delay: 315ms; }
+
+@keyframes stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stagger > * {
+    animation: none;
+  }
+}
+
+/* =========================================
+   PAGE TRANSITIONS
+   React <ViewTransition> (app/(app)/template.tsx) names the page content; the browser
+   animates the swap. Old content leaves fast so it never competes with the new one,
+   new content arrives a beat later and settles. Directions follow reading order:
+   deeper (nav-forward) comes in from the right, back (nav-back) from the left.
+   ========================================= */
+
+/* Clicks during the short animation reach the live page */
+::view-transition {
+  pointer-events: none;
+}
+
+::view-transition-old(.vt-page) {
+  animation: vt-fade-out 140ms var(--ease-in-quart) both;
+}
+
+::view-transition-new(.vt-page) {
+  animation:
+    vt-fade-in 260ms var(--ease-out-quart) 90ms both,
+    vt-rise 420ms var(--ease-out-expo) both;
+}
+
+::view-transition-old(.nav-forward),
+::view-transition-old(.nav-back) {
+  animation:
+    vt-fade-out 150ms var(--ease-in-quart) both,
+    vt-slide-out 380ms var(--ease-in-out-quart) both;
+}
+
+::view-transition-new(.nav-forward),
+::view-transition-new(.nav-back) {
+  animation:
+    vt-fade-in 240ms var(--ease-out-quart) 120ms both,
+    vt-slide-in 420ms var(--ease-out-expo) both;
+}
+
+::view-transition-old(.nav-forward) {
+  --vt-offset: -36px;
+}
+
+::view-transition-new(.nav-forward) {
+  --vt-offset: 36px;
+}
+
+::view-transition-old(.nav-back) {
+  --vt-offset: 36px;
+}
+
+::view-transition-new(.nav-back) {
+  --vt-offset: -36px;
+}
+
+/* "You are here": the sidebar / tab bar highlight glides to the new item */
+::view-transition-group(.nav-pill) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--ease-out-expo);
+}
+
+::view-transition-old(.nav-pill),
+::view-transition-new(.nav-pill) {
+  height: 100%;
+}
+
+@keyframes vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes vt-rise {
+  from {
+    transform: translateY(10px);
+  }
+}
+
+@keyframes vt-slide-out {
+  to {
+    translate: var(--vt-offset) 0;
+  }
+}
+
+@keyframes vt-slide-in {
+  from {
+    translate: var(--vt-offset) 0;
+  }
+}
+
+/* Theme switch (lib/theme/theme.ts): the new theme is clipped to a growing circle over
+   the old one — no cross-fade underneath */
+:root.theme-reveal::view-transition-old(root),
+:root.theme-reveal::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* Reduced motion: no travel at all — pages simply swap, the highlight jumps */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
   }
 }
 

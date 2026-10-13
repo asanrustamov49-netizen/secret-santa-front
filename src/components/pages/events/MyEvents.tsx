@@ -65,7 +65,7 @@ const MyEvents = () => {
           <h2 id="active-title" className={scss.sectionTitle}>
             {t.active} <span className={scss.count}>{active.length}</span>
           </h2>
-          <div className={scss.cardGrid}>
+          <div className={`${scss.cardGrid} stagger`}>
             {active.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}
@@ -84,7 +84,7 @@ const MyEvents = () => {
           <h2 id="past-title" className={scss.sectionTitle}>
             {t.past} <span className={scss.count}>{past.length}</span>
           </h2>
-          <div className={scss.cardGrid}>
+          <div className={`${scss.cardGrid} stagger`}>
             {past.map((event) => (
               <EventCard key={event.id} event={event} />
             ))}

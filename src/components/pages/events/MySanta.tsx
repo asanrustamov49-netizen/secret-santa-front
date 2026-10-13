@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { NAV_FORWARD } from "@/lib/ui/pageTransition";
 import {
   PiArrowRightBold,
   PiCalendarBlank,
@@ -46,7 +47,7 @@ const MySanta = () => {
             {s.inbox.title}
           </h2>
           <p className={scss.inboxText}>{s.inbox.text}</p>
-          <div className={scss.cardGrid}>
+          <div className={`${scss.cardGrid} stagger`}>
             {inbox.map((chat) => (
               <Link
                 key={chat.chatId}
@@ -105,7 +106,7 @@ const MySanta = () => {
       )}
 
       {list.length > 0 && (
-        <div className={scss.cardGrid}>
+        <div className={`${scss.cardGrid} stagger`}>
           {list.map((match) => {
             const budget = formatBudget(match.budgetMin, match.budgetMax, locale);
             const revealed = Boolean(match.revealedAt);
@@ -155,7 +156,7 @@ const MySanta = () => {
 
                 <p className={scss.eventCardCta}>
                   {/* Stretched over the whole card; the chat button below sits on top of it */}
-                  <Link href={`/events/${match.eventId}/santa`} className={scss.matchCardLink}>
+                  <Link href={`/events/${match.eventId}/santa`} transitionTypes={NAV_FORWARD} className={scss.matchCardLink}>
                     {revealed ? (
                       <>
                         {t.seeWishlist} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />

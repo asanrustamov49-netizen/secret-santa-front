@@ -299,12 +299,29 @@
   box-shadow: inset 0 0 0 1px rgb(var(--rgb-gold) / 0.16);
 }
 
+// The number's window: a new value rolls up from below and settles
+.digitWindow {
+  display: block;
+  overflow: hidden;
+  padding-block: 2px;
+}
+
 .digitValue {
+  display: block;
   color: var(--color-gold);
   font-family: var(--font-display);
   font-size: clamp(30px, 3.4vw, 40px);
   font-variant-numeric: tabular-nums;
   line-height: 1;
+  animation: digit-roll 700ms var(--ease-out-expo) both;
+}
+
+@keyframes digit-roll {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(75%);
+  }
 }
 
 .digitUnit {
@@ -821,6 +838,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .page > *,
+  .digitValue,
   .wave,
   .joinPanel,
   .skel,

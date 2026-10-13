@@ -1,6 +1,7 @@
 "use client";
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
+import { NAV_BACK } from "@/lib/ui/pageTransition";
 import { AxiosError } from "axios";
 import type { InfiniteData } from "@tanstack/react-query";
 import { PiArrowDownBold, PiArrowLeftBold, PiGiftFill, PiLockKeyFill, PiWifiSlashBold } from "react-icons/pi";
@@ -53,11 +54,11 @@ const SantaChat = ({ eventId, role }: SantaChatProps) => {
 
   const back =
     role === "sender" ? (
-      <Link href={`/events/${eventId}/santa`} className={`touch-target ${eventsScss.backLink}`}>
+      <Link href={`/events/${eventId}/santa`} transitionTypes={NAV_BACK} className={`touch-target ${eventsScss.backLink}`}>
         <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" /> {t.backToRecipient}
       </Link>
     ) : (
-      <Link href="/my-santa" className={`touch-target ${eventsScss.backLink}`}>
+      <Link href="/my-santa" transitionTypes={NAV_BACK} className={`touch-target ${eventsScss.backLink}`}>
         <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" /> {t.backToMySanta}
       </Link>
     );

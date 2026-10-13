@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { NAV_BACK, NAV_FORWARD } from "@/lib/ui/pageTransition";
 import { useParams } from "next/navigation";
 import { AxiosError } from "axios";
 import {
@@ -72,7 +73,7 @@ const RecipientCard = ({ event, recipient, celebrate }: { event: SantaEvent; rec
             )}
           </p>
           {/* Only on my own revealed recipient — and the API checks the pair again */}
-          <Link href={santaChatPath(event.id, "sender")} className={`btn btn-primary btn-glow ${scss.santaChatButton}`}>
+          <Link href={santaChatPath(event.id, "sender")} transitionTypes={NAV_FORWARD} className={`btn btn-primary btn-glow ${scss.santaChatButton}`}>
             <PiChatCircleDotsFill aria-hidden="true" />
             {m.santaChat.write}
             {unread > 0 && (
@@ -171,7 +172,7 @@ const SantaReveal = () => {
   }, [phase, reveal.isSuccess]);
 
   const back = (
-    <Link href={`/events/${id}`} className={`touch-target ${scss.backLink}`}>
+    <Link href={`/events/${id}`} transitionTypes={NAV_BACK} className={`touch-target ${scss.backLink}`}>
       <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" /> {t.back}
     </Link>
   );

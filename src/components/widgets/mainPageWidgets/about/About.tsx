@@ -39,7 +39,7 @@ const About = async () => {
           {PERKS.map(({ icon: Icon, tone }, i) => {
             const { title, text } = t.perks[i];
             return (
-            <Reveal as="li" key={title} delay={(i % 3) * 100} className={`surface-card ${scss.perk}`}>
+            <Reveal as="li" key={title} delay={(i % 3) * 100} className={`surface-card spotlight ${scss.perk}`}>
               <span className={`${scss.icon} ${scss[tone]}`} aria-hidden="true">
                 <Icon />
               </span>

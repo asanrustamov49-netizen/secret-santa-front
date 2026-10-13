@@ -112,7 +112,7 @@ const WishlistCard = ({ items, isLoading, loadError, onRetry }: WishlistCardProp
       )}
 
       {items.length > 0 && (
-        <ul className={scss.gifts}>
+        <ul className={`${scss.gifts} stagger`}>
           {items.map((item, i) =>
             item.id === editingId ? (
               <li key={item.id} className={scss.giftEditing}>

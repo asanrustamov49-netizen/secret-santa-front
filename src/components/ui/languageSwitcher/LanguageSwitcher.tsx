@@ -1,6 +1,7 @@
 "use client";
 import { LOCALES } from "@/i18n/config";
 import { useI18n } from "@/i18n/I18nProvider";
+import { useSlidingIndicator } from "@/lib/ui/useSlidingIndicator";
 import Flag from "./Flag";
 // Same segmented look as the theme switcher — one set of styles for both
 import seg from "../themeSwitcher/themeSwitcher.module.scss";
@@ -21,13 +22,16 @@ interface LanguageSwitcherProps {
 /** 🇷🇺 RU · 🇬🇧 EN · 🇰🇬 KY — switches the whole site and remembers the choice */
 const LanguageSwitcher = ({ variant = "compact", className }: LanguageSwitcherProps) => {
   const { locale, setLocale, m } = useI18n();
+  const { containerRef, indicatorRef, willChange } = useSlidingIndicator(locale);
 
   return (
     <div
+      ref={containerRef}
       role="radiogroup"
       aria-label={m.language.label}
       className={`${seg.switcher} ${variant === "compact" ? scss.compact : seg.full} ${className ?? ""}`}
     >
+      <span ref={indicatorRef} className={seg.indicator} aria-hidden="true" />
       {LOCALES.map((code) => {
         const isActive = locale === code;
         const name = m.language.names[code];
@@ -41,7 +45,11 @@ const LanguageSwitcher = ({ variant = "compact", className }: LanguageSwitcherPr
             title={variant === "names" ? undefined : name}
             lang={code}
             className={`${seg.option} ${scss.option} ${isActive ? seg.active : ""}`}
-            onClick={() => !isActive && setLocale(code)}
+            onClick={() => {
+              if (isActive) return;
+              willChange();
+              setLocale(code);
+            }}
           >
             <Flag locale={code} className={scss.flag} />
             {variant === "names" ? (

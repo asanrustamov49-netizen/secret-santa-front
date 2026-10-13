@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { NAV_BACK, NAV_FORWARD } from "@/lib/ui/pageTransition";
 import { useParams } from "next/navigation";
 import { AxiosError } from "axios";
 import {
@@ -49,7 +50,7 @@ const NextStep = ({ event }: { event: SantaEvent }) => {
         <PiConfettiFill className={scss.nextIcon} aria-hidden="true" />
         <p className={scss.nextTitle}>{t.completeTitle}</p>
         <p className={scss.nextText}>{t.completeText}</p>
-        <Link href={`/events/${event.id}/santa`} className="btn btn-glass">
+        <Link href={`/events/${event.id}/santa`} transitionTypes={NAV_FORWARD} className="btn btn-glass">
           {t.whoDidIGift}
         </Link>
       </div>
@@ -64,7 +65,7 @@ const NextStep = ({ event }: { event: SantaEvent }) => {
         <p className={scss.nextText}>
           {event.revealed ? t.checkWishlist : t.findOut}
         </p>
-        <Link href={`/events/${event.id}/santa`} className="btn btn-primary btn-lg btn-glow">
+        <Link href={`/events/${event.id}/santa`} transitionTypes={NAV_FORWARD} className="btn btn-primary btn-lg btn-glow">
           <PiSparkleFill className="icon-sparkle" aria-hidden="true" />
           {event.revealed ? t.seeRecipient : t.openSanta}
         </Link>
@@ -168,7 +169,7 @@ const EventPage = () => {
 
   return (
     <div className={scss.page}>
-      <Link href="/events" className={`touch-target ${scss.backLink}`}>
+      <Link href="/events" transitionTypes={NAV_BACK} className={`touch-target ${scss.backLink}`}>
         <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" /> {m.common.allEvents}
       </Link>
 

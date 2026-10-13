@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NAV_FORWARD } from "@/lib/ui/pageTransition";
 import { PiArrowRightBold, PiLinkBold, PiLockKeyFill, PiPlusBold, PiSparkleFill } from "react-icons/pi";
 import GiftBox from "@/components/ui/giftBox/GiftBox";
 import Snowfall from "@/components/ui/snowfall/Snowfall";
@@ -115,10 +116,10 @@ const ActiveSantaCard = ({
           ]}
         />
         <div className={scss.heroActions}>
-          <Link href={`/events/${event.id}/santa`} className="btn btn-primary btn-glow">
+          <Link href={`/events/${event.id}/santa`} transitionTypes={NAV_FORWARD} className="btn btn-primary btn-glow">
             <PiSparkleFill aria-hidden="true" /> {t.reveal}
           </Link>
-          <Link href={`/events/${event.id}`} className="btn btn-glass">
+          <Link href={`/events/${event.id}`} transitionTypes={NAV_FORWARD} className="btn btn-glass">
             {t.openEvent}
           </Link>
         </div>
@@ -143,10 +144,10 @@ const ActiveSantaCard = ({
           ]}
         />
         <div className={scss.heroActions}>
-          <Link href={`/events/${event.id}/santa`} className="btn btn-primary">
+          <Link href={`/events/${event.id}/santa`} transitionTypes={NAV_FORWARD} className="btn btn-primary">
             {t.viewWishlist} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
           </Link>
-          <Link href={`/events/${event.id}`} className="btn btn-glass">
+          <Link href={`/events/${event.id}`} transitionTypes={NAV_FORWARD} className="btn btn-glass">
             {t.openEvent}
           </Link>
         </div>
@@ -178,7 +179,7 @@ const ActiveSantaCard = ({
         </div>
         <p className={scss.heroText}>{next}</p>
         <div className={scss.heroActions}>
-          <Link href={`/events/${event.id}`} className="btn btn-primary">
+          <Link href={`/events/${event.id}`} transitionTypes={NAV_FORWARD} className="btn btn-primary">
             {event.isOwner ? (missing > 0 ? t.inviteFriends : t.drawNames) : t.openEvent}
             <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
           </Link>

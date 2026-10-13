@@ -31,7 +31,17 @@ function applyTheme(preference: ThemePreference) {
 
 const listeners = new Set<() => void>();
 
-export function setPreference(preference: ThemePreference) {
+/** Where the user clicked: the new theme spreads from there */
+export interface ThemeOrigin {
+  x: number;
+  y: number;
+}
+
+type ViewTransitionDocument = Document & {
+  startViewTransition?: (update: () => void) => { ready: Promise<void>; finished: Promise<void> };
+};
+
+export function setPreference(preference: ThemePreference, origin?: ThemeOrigin) {
   try {
     if (preference === "system") localStorage.removeItem(THEME_STORAGE_KEY);
     else localStorage.setItem(THEME_STORAGE_KEY, preference);
@@ -40,13 +50,38 @@ export function setPreference(preference: ThemePreference) {
   }
 
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+  const doc = document as ViewTransitionDocument;
+  const root = document.documentElement;
+  // Nothing on screen changes (e.g. "system" while the OS is already dark): no animation
+  const changes = resolve(preference) !== root.dataset.theme;
 
-  // Soft cross-fade between themes where the browser supports it
-  if (doc.startViewTransition && !reduceMotion) {
+  if (!doc.startViewTransition || reduceMotion || !changes) {
+    applyTheme(preference);
+  } else if (!origin) {
+    // From a menu or the command palette: a soft cross-fade
     doc.startViewTransition(() => applyTheme(preference));
   } else {
-    applyTheme(preference);
+    // From a theme switch: the new theme spreads in a circle from the click
+    root.classList.add("theme-reveal");
+    const transition = doc.startViewTransition(() => applyTheme(preference));
+    const radius = Math.hypot(
+      Math.max(origin.x, window.innerWidth - origin.x),
+      Math.max(origin.y, window.innerHeight - origin.y),
+    );
+    transition.ready
+      .then(() =>
+        root.animate(
+          {
+            clipPath: [
+              `circle(0px at ${origin.x}px ${origin.y}px)`,
+              `circle(${radius}px at ${origin.x}px ${origin.y}px)`,
+            ],
+          },
+          { duration: 560, easing: "cubic-bezier(0.16, 1, 0.3, 1)", pseudoElement: "::view-transition-new(root)" },
+        ),
+      )
+      .catch(() => {});
+    transition.finished.finally(() => root.classList.remove("theme-reveal"));
   }
 
   listeners.forEach((listener) => listener());

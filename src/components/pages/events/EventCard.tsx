@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NAV_FORWARD } from "@/lib/ui/pageTransition";
 import { PiCalendarBlank, PiCrownSimpleFill, PiSparkleFill, PiUsersThree, PiWallet } from "react-icons/pi";
 import type { SantaEvent } from "@/lib/api/events";
 import { daysUntil, formatBudget, formatDay, relativeDay } from "@/lib/events/format";
@@ -17,6 +18,7 @@ const EventCard = ({ event }: { event: SantaEvent }) => {
   return (
     <Link
       href={waitingForMe ? `/events/${event.id}/santa` : `/events/${event.id}`}
+      transitionTypes={NAV_FORWARD}
       className={`surface-card ${scss.eventCard} ${waitingForMe ? scss.eventCardGlow : ""}`}
       data-status={event.status}
     >

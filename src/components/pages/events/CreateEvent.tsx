@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { NAV_BACK, NAV_FORWARD } from "@/lib/ui/pageTransition";
 import { useRouter } from "next/navigation";
 import { PiArrowLeftBold, PiArrowRightBold, PiCheckBold, PiGiftFill } from "react-icons/pi";
 import Confetti from "@/components/ui/confetti/Confetti";
@@ -167,7 +168,7 @@ const CreateEvent = () => {
   return (
     <div className={scss.wizard}>
       {step < 3 && (
-        <Link href="/events" className={`touch-target ${scss.backLink}`}>
+        <Link href="/events" transitionTypes={NAV_BACK} className={`touch-target ${scss.backLink}`}>
           <PiArrowLeftBold className="icon-nudge-back" aria-hidden="true" /> {m.common.allEvents}
         </Link>
       )}
@@ -405,7 +406,7 @@ const CreateEvent = () => {
             <InviteShare code={created.inviteCode} eventName={created.name} />
 
             <div className={scss.wizardActions}>
-              <button type="button" className="btn btn-primary btn-lg" onClick={() => router.push(`/events/${created.id}`)}>
+              <button type="button" className="btn btn-primary btn-lg" onClick={() => router.push(`/events/${created.id}`, { transitionTypes: NAV_FORWARD })}>
                 {t.goToEvent} <PiArrowRightBold className="icon-nudge" aria-hidden="true" />
               </button>
             </div>

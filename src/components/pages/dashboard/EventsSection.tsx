@@ -69,7 +69,7 @@ const EventsSection = ({ active, pastCount, isPending, isError, onRetry }: Event
           </Link>
         </div>
       ) : (
-        <div className={scss.eventGrid}>
+        <div className={`${scss.eventGrid} stagger`}>
           {active.slice(0, SHOWN).map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
