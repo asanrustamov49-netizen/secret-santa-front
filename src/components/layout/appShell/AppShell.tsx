@@ -2,19 +2,7 @@
 import { useEffect, useRef, useState, ViewTransition, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import type { IconType } from "react-icons";
-import {
-  PiGearSix,
-  PiGift,
-  PiHouse,
-  PiList,
-  PiSidebarSimple,
-  PiSignOut,
-  PiSparkle,
-  PiTreeEvergreen,
-  PiUserCircle,
-  PiX,
-} from "react-icons/pi";
+import { PiList, PiMagnifyingGlass, PiSidebarSimple, PiSignOut, PiX } from "react-icons/pi";
 import Avatar from "@/components/ui/avatar/Avatar";
 import BrandLoader from "@/components/ui/brandLoader/BrandLoader";
 import GiftBox from "@/components/ui/giftBox/GiftBox";
@@ -25,6 +13,9 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { useLogout, useSession } from "@/lib/auth/useSession";
 import { useEvents } from "@/lib/events/useEvents";
 import { aiPageOf, eventIdOf } from "@/lib/ai/pages";
+import { openCommandPalette, useModifierKey } from "@/lib/ui/commandPalette";
+import CommandPalette from "@/components/widgets/commandPalette/CommandPalette";
+import { GROUPS, NAV, NAV_MOTION, isActiveIn, navHref } from "./nav";
 import MiniAssistant from "@/components/widgets/miniAssistant/MiniAssistant";
 import RealtimeProvider from "@/lib/realtime/RealtimeProvider";
 import ChatNotices from "@/components/ui/chatNotices/ChatNotices";
@@ -33,27 +24,6 @@ import { totalChatUnread, useChatUnread } from "@/lib/chat/useEventChat";
 import { useMediaQuery } from "@/lib/ui/useMediaQuery";
 import { useSidebarCollapsed } from "@/lib/ui/useSidebarCollapsed";
 import scss from "./appShell.module.scss";
-
-interface NavItem {
-  href: string;
-  /** Its labels in m.nav (full) and m.nav.short (mobile tab bar) */
-  key: "dashboard" | "myEvents" | "mySanta" | "ai" | "profile" | "settings";
-  icon: IconType;
-  /** Where it sits in the sidebar: the Secret Santa itself, or the user's account */
-  group: "main" | "account";
-}
-
-// The order people think in: home, my gift, my events, help — then me
-const NAV: NavItem[] = [
-  { href: "/dashboard", key: "dashboard", icon: PiHouse, group: "main" },
-  { href: "/my-santa", key: "mySanta", icon: PiGift, group: "main" },
-  { href: "/events", key: "myEvents", icon: PiTreeEvergreen, group: "main" },
-  { href: "/ai", key: "ai", icon: PiSparkle, group: "main" },
-  { href: "/profile", key: "profile", icon: PiUserCircle, group: "account" },
-  { href: "/settings", key: "settings", icon: PiGearSix, group: "account" },
-];
-
-const GROUPS = ["main", "account"] as const;
 
 /**
  * The "you are here" highlight. Only the active item renders it, under one name: when the
@@ -65,23 +35,6 @@ const ActivePill = ({ name, className }: { name: string; className: string }) =>
   </ViewTransition>
 );
 
-/** A little life where it means something: the assistant breathes, the gift shakes on hover */
-const NAV_MOTION: Partial<Record<NavItem["key"], string>> = {
-  ai: "icon-sparkle",
-  mySanta: "icon-wiggle",
-};
-
-/** A section is active on its own page and every page under it (/events/new, /events/:id/santa…) */
-const isActiveIn = (pathname: string, href: string) =>
-  pathname === href || pathname.startsWith(`${href}/`);
-
-/** The assistant learns which page the user came from — as a page identifier, never the path */
-function navHref(href: string, pathname: string) {
-  if (href !== "/ai") return href;
-  const from = aiPageOf(pathname);
-  return from && from !== "ai" ? `/ai?from=${from}` : href;
-}
-
 const AppShell = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -89,6 +42,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
   const logout = useLogout();
   const events = useEvents();
   const { m } = useI18n();
+  const mod = useModifierKey();
   // Drawn but not opened yet — worth a badge in the menu
   const unopened =
     events.data?.filter((e) => e.status === "drawn" && !e.revealed).length ?? 0;
@@ -207,6 +161,16 @@ const AppShell = ({ children }: { children: ReactNode }) => {
             <GiftBox size={28} />
             {m.common.logo}
           </Link>
+          <div className={scss.topbarActions}>
+          <button
+            type="button"
+            className={scss.menuButton}
+            onClick={openCommandPalette}
+            aria-label={m.command.open}
+            inert={menuOpen}
+          >
+            <PiMagnifyingGlass aria-hidden="true" />
+          </button>
           <button
             ref={menuButtonRef}
             type="button"
@@ -218,6 +182,7 @@ const AppShell = ({ children }: { children: ReactNode }) => {
           >
             {menuOpen ? <PiX /> : <PiList />}
           </button>
+          </div>
         </header>
 
         {menuOpen && (
@@ -260,6 +225,25 @@ const AppShell = ({ children }: { children: ReactNode }) => {
               </span>
             </button>
           </div>
+
+          {/* Ctrl/⌘ K anywhere does the same */}
+          <button
+            type="button"
+            className={`${scss.navItem} ${scss.searchButton}`}
+            onClick={() => {
+              setIsMenuOpen(false);
+              openCommandPalette();
+            }}
+            aria-keyshortcuts="Control+K Meta+K"
+          >
+            <span className={scss.navIcon} aria-hidden="true">
+              <PiMagnifyingGlass />
+            </span>
+            <span className={scss.label}>{m.command.open}</span>
+            <kbd className={scss.searchKbd} aria-hidden="true">
+              {mod} K
+            </kbd>
+          </button>
 
           <nav className={scss.nav} aria-label={m.nav.app}>
             {GROUPS.map((group) => (
@@ -388,6 +372,8 @@ const AppShell = ({ children }: { children: ReactNode }) => {
           })}
         </nav>
       </div>
+
+      <CommandPalette />
     </RealtimeProvider>
   );
 };

@@ -1,0 +1,458 @@
+// Command palette — a quiet, quick surface: it drops in from just above, the page behind
+// dims and softens, the highlight glides from row to row. Native <dialog> in the top layer.
+
+// The page behind doesn't scroll while the palette is open
+:global(html):has(.dialog[open]) {
+  overflow: hidden;
+}
+
+.dialog {
+  width: min(640px, calc(100% - 24px));
+  max-width: none;
+  max-height: none;
+  margin: max(16px, 11vh) auto auto;
+  padding: 0;
+  overflow: visible;
+
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+
+  // Closed (and leaving): fades up and out quickly
+  opacity: 0;
+  transform: translateY(-6px) scale(0.98);
+  transition:
+    opacity 140ms var(--ease-in-quart),
+    transform 140ms var(--ease-in-quart),
+    overlay 140ms allow-discrete,
+    display 140ms allow-discrete;
+
+  &[open] {
+    opacity: 1;
+    transform: none;
+    transition-duration: 320ms;
+    transition-timing-function: var(--ease-out-expo);
+
+    @starting-style {
+      opacity: 0;
+      transform: translateY(-14px) scale(0.96);
+    }
+  }
+
+  &::backdrop {
+    background: rgb(var(--rgb-navy) / 0);
+    -webkit-backdrop-filter: blur(0);
+    backdrop-filter: blur(0);
+    transition:
+      background 200ms ease,
+      backdrop-filter 200ms ease,
+      overlay 200ms allow-discrete,
+      display 200ms allow-discrete;
+  }
+
+  &[open]::backdrop {
+    background: rgb(var(--rgb-navy) / 0.46);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+
+    @starting-style {
+      background: rgb(var(--rgb-navy) / 0);
+      -webkit-backdrop-filter: blur(0);
+      backdrop-filter: blur(0);
+    }
+  }
+
+  // Closing for a navigation: gone at once, so the page transition doesn't freeze it mid-fade
+  &[data-instant],
+  &[data-instant]::backdrop {
+    transition: none;
+  }
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  max-height: min(580px, calc(100dvh - max(16px, 11vh) - 16px));
+  overflow: hidden;
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  background: var(--color-surface);
+  box-shadow:
+    0 1px 0 rgb(255 255 255 / 0.06) inset,
+    0 32px 80px -24px rgb(var(--rgb-navy) / 0.55),
+    0 12px 28px -12px rgb(var(--rgb-navy) / 0.25);
+
+  // A thin line of gold light along the top edge
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 60%;
+    height: 1px;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, transparent, rgb(var(--rgb-gold) / 0.55), transparent);
+    pointer-events: none;
+  }
+}
+
+// ---------- Search ----------
+
+.search {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 12px;
+  padding: 0 14px 0 18px;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.searchIcon {
+  flex-shrink: 0;
+  color: var(--color-text-muted);
+  font-size: 20px;
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  height: 60px;
+
+  border: 0;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 17px;
+
+  &::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  // The whole palette is the focused context; a ring around the field would only add noise
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.esc {
+  flex-shrink: 0;
+  padding: 4px 8px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  background: var(--color-surface-soft);
+  box-shadow: inset 0 -1px 0 var(--color-border);
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition:
+    color var(--transition-fast),
+    border-color var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-input-hover);
+    color: var(--color-text);
+  }
+}
+
+// ---------- Results ----------
+
+.results {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  padding: 6px 8px 8px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: 8px;
+}
+
+// The highlight under the active row: one element that glides, not a background per row
+.indicator {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  left: 8px;
+
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, rgb(var(--rgb-gold) / 0.16), rgb(var(--rgb-gold) / 0.07));
+  box-shadow: inset 0 0 0 1px rgb(var(--rgb-gold) / 0.22);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 220ms var(--ease-out-quart),
+    height 220ms var(--ease-out-quart),
+    opacity 120ms ease;
+}
+
+.group + .group {
+  margin-top: 4px;
+}
+
+.groupLabel {
+  padding: 12px 12px 6px;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 50px;
+  padding: 8px 12px;
+
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  user-select: none;
+
+  animation: option-in 360ms var(--ease-out-expo) both;
+}
+
+.icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+
+  border: 1px solid var(--color-border-light);
+  border-radius: 10px;
+  background: var(--color-surface-sunken);
+  color: var(--color-text-secondary);
+  font-size: 18px;
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    transform 260ms var(--ease-spring);
+}
+
+.flag {
+  width: 20px;
+  height: auto;
+  border-radius: 3px;
+}
+
+.text {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+  gap: 1px;
+}
+
+// Long event names wrap to a second line instead of being cut
+.label {
+  display: -webkit-box;
+  overflow: hidden;
+  color: var(--color-text);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+
+.mark {
+  background: none;
+  color: var(--color-accent-text);
+  font-weight: 700;
+}
+
+.meta {
+  overflow: hidden;
+  color: var(--color-text-muted);
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.here {
+  flex-shrink: 0;
+  padding: 2px 8px;
+
+  border-radius: 999px;
+  background: var(--color-ghost);
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.check {
+  flex-shrink: 0;
+  color: var(--color-success-text);
+  font-size: 15px;
+}
+
+// "Enter" glyph: only on the active row, sliding in
+.enter {
+  flex-shrink: 0;
+  color: var(--color-accent-text);
+  font-size: 15px;
+  opacity: 0;
+  translate: -4px 0;
+  transition:
+    opacity 160ms ease,
+    translate 220ms var(--ease-out-quart);
+}
+
+.optionActive {
+  .icon {
+    border-color: rgb(var(--rgb-gold) / 0.35);
+    background: rgb(var(--rgb-gold) / 0.14);
+    color: var(--color-accent-text);
+    transform: scale(1.06);
+  }
+
+  .enter {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+// "Ask the AI": the assistant's purple
+.optionAi .icon {
+  border-color: rgb(var(--rgb-purple) / 0.3);
+  background: var(--color-purple-soft);
+  color: var(--color-purple);
+}
+
+.optionAi.optionActive .icon {
+  color: var(--color-purple);
+}
+
+// ---------- Empty ----------
+
+.empty {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 24px 24px 18px;
+  text-align: center;
+  animation: option-in 420ms var(--ease-out-expo) both;
+}
+
+.emptyIcon {
+  margin-bottom: 6px;
+  color: var(--color-crimson);
+  font-size: 30px;
+  animation: empty-wobble 1.2s var(--ease-out-expo) 120ms both;
+}
+
+.emptyTitle {
+  color: var(--color-text);
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.emptyText {
+  max-width: 320px;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+// ---------- Footer ----------
+
+.footer {
+  display: flex;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 18px;
+  padding: 10px 18px;
+
+  border-top: 1px solid var(--color-border-light);
+  background: var(--color-surface-soft);
+  color: var(--color-text-muted);
+  font-size: 12px;
+}
+
+.hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.kbd {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-surface);
+  box-shadow: inset 0 -1px 0 var(--color-border);
+  color: var(--color-text-secondary);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+@keyframes option-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes empty-wobble {
+  0% {
+    opacity: 0;
+    transform: scale(0.6) rotate(-12deg);
+  }
+
+  60% {
+    opacity: 1;
+    transform: scale(1.06) rotate(6deg);
+  }
+}
+
+// Phones: a sheet near the top, no keyboard hints (there's no keyboard)
+@media (max-width: 560px) {
+  .dialog {
+    margin-top: 12px;
+  }
+
+  .panel {
+    max-height: calc(100dvh - 24px);
+  }
+
+  .input {
+    height: 56px;
+    font-size: 16px;
+  }
+}
+
+@media (hover: none) {
+  .footer {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog,
+  .dialog[open],
+  .dialog::backdrop,
+  .indicator,
+  .icon,
+  .enter {
+    transition: none;
+  }
+
+  .option,
+  .empty,
+  .emptyIcon {
+    animation: none;
+  }
+}

@@ -68,13 +68,15 @@ interface AiStartProps {
   /** Mobile: opens the history sheet */
   onOpenHistory: () => void;
   historyOpen: boolean;
+  /** A question brought from the command palette (?ask=), waiting in the composer */
+  draft?: string;
 }
 
 /**
  * A new conversation: general, or about one of my events. Gift help is offered only
  * where my Secret Santa is open — the server decides again what the assistant may see.
  */
-const AiStart = ({ page, onStart, busy, error, onOpenHistory, historyOpen }: AiStartProps) => {
+const AiStart = ({ page, onStart, busy, error, onOpenHistory, historyOpen, draft }: AiStartProps) => {
   const events = useEvents();
   const matches = useMyMatches();
   const { m, locale } = useI18n();
@@ -285,7 +287,7 @@ const AiStart = ({ page, onStart, busy, error, onOpenHistory, historyOpen }: AiS
       )}
 
       <div className={scss.composerDock}>
-        <AiComposer busy={busy} onSend={(content) => onStart(contextId, content)} />
+        <AiComposer busy={busy} onSend={(content) => onStart(contextId, content)} initialValue={draft} />
         <p className={scss.disclaimer}>{t.disclaimer}</p>
       </div>
     </div>

@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState, type FormEvent, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { PiArrowUpBold, PiStopFill } from "react-icons/pi";
 import { useI18n } from "@/i18n/I18nProvider";
 import scss from "./ai.module.scss";
@@ -17,14 +17,26 @@ interface AiComposerProps {
   busy: boolean;
   disabled?: boolean;
   autoFocus?: boolean;
+  /** Text to start with (a question typed in the command palette); sent only when the user sends it */
+  initialValue?: string;
 }
 
 /** Enter sends, Shift+Enter adds a line. Starts at two lines, grows with the text up to a limit. */
-const AiComposer = ({ onSend, onStop, busy, disabled, autoFocus }: AiComposerProps) => {
+const AiComposer = ({ onSend, onStop, busy, disabled, autoFocus, initialValue }: AiComposerProps) => {
   const { m } = useI18n();
   const t = m.ai;
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(initialValue ?? "");
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // A prefilled question: grow to fit it and put the caret at its end, ready for Enter
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input || !initialValue) return;
+    input.style.height = "auto";
+    input.style.height = `${input.scrollHeight}px`;
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+  }, [initialValue]);
   const text = value.trim();
   const canSend = Boolean(text) && !busy && !disabled;
 

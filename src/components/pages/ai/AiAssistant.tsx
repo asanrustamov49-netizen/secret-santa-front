@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { getErrorMessage } from "@/lib/api/client";
 import { type AiPage, isAiPage } from "@/lib/ai/pages";
 import { useAiChat, useCreateAiConversation } from "@/lib/ai/useAi";
+import { MAX_MESSAGE_LENGTH } from "./AiComposer";
 import { useMessage } from "@/i18n/I18nProvider";
 import AiChat from "./AiChat";
 import AiHistory, { HISTORY_CLOSE_ID } from "./AiHistory";
@@ -15,6 +16,8 @@ import scss from "./ai.module.scss";
  * reload or a shared tab comes back to it. The chat state sits here, above both views,
  * so the first message keeps streaming while the page switches to the new conversation.
  * ?from=<page> — the app page the menu link was clicked on (see AppShell), kept for the visit.
+ * ?ask=<text> — a question typed in the command palette: it waits in the composer, unsent,
+ * and leaves the URL at once (a reload or a shared link won't bring it back).
  *
  * Desktop: history column | workspace. Mobile: the workspace alone; history is a bottom sheet.
  */
@@ -26,10 +29,18 @@ const AiAssistant = () => {
     const from = params.get("from");
     return isAiPage(from) ? from : "ai";
   });
+  const [draft] = useState(() => params.get("ask")?.trim().slice(0, MAX_MESSAGE_LENGTH) || undefined);
   const chat = useAiChat(page);
   const create = useCreateAiConversation();
   const [startError, setStartError] = useMessage();
   const [historyOpen, setHistoryOpen] = useState(false);
+
+  useEffect(() => {
+    if (!params.has("ask")) return;
+    const rest = new URLSearchParams(params);
+    rest.delete("ask");
+    router.replace(rest.size ? `/ai?${rest}` : "/ai", { scroll: false });
+  }, [params, router]);
 
   // Mobile sheet: Escape closes it, and focus moves into it when it opens
   useEffect(() => {
@@ -89,6 +100,7 @@ const AiAssistant = () => {
             error={startError}
             onOpenHistory={openHistory}
             historyOpen={historyOpen}
+            draft={draft}
           />
         )}
       </section>

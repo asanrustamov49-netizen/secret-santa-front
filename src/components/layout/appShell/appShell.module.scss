@@ -294,6 +294,40 @@ $tabbar-height: 64px;
   display: none;
 }
 
+// Search: looks like a field, opens the command palette
+.searchButton {
+  width: 100%;
+  margin-block: -8px;
+  border: 1px solid var(--color-glass-border);
+  background: var(--color-glass-bg);
+  color: var(--color-text-muted);
+  font-size: 14px;
+  text-align: left;
+
+  &:hover {
+    border-color: var(--color-glass-border-strong);
+  }
+
+  .navIcon {
+    font-size: 18px;
+  }
+}
+
+.searchKbd {
+  margin-left: auto;
+  padding: 2px 7px;
+
+  border: 1px solid var(--color-glass-border-strong);
+  border-radius: 6px;
+  background: rgb(255 255 255 / 0.04);
+  color: var(--color-text-muted);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
 // ---------- Collapsed sidebar (desktop): icons, with the names as tooltips ----------
 
 @media (min-width: 961px) {
@@ -316,8 +350,14 @@ $tabbar-height: 64px;
     .logoText,
     .groupLabel,
     .badge,
-    .prefs {
+    .prefs,
+    .searchKbd {
       display: none;
+    }
+
+    .searchButton {
+      border-color: transparent;
+      background: transparent;
     }
 
     .sidebarLogo {
@@ -379,6 +419,8 @@ $tabbar-height: 64px;
 
     .navItem:hover .label,
     .navItem:focus-visible .label,
+    .searchButton:hover .label,
+    .searchButton:focus-visible .label,
     .logout:hover .label,
     .logout:focus-visible .label,
     .collapseButton:hover .tooltip,
@@ -476,6 +518,12 @@ $tabbar-height: 64px;
   color: var(--color-snow);
   font-size: 10px;
   font-weight: 800;
+}
+
+.topbarActions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
 .menuButton {
