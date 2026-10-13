@@ -583,14 +583,20 @@ figcaption {
 
 /* Magic — AI actions */
 
+/* Deep enough for white text everywhere on it (4.8:1 or more — the light lavender start
+   was 2.3:1); a hairline of light on top keeps it lively */
 .btn-magic {
-  background: linear-gradient(135deg, var(--color-purple-light), var(--color-purple));
+  background: linear-gradient(135deg, #6e59d6, #5440bd);
   color: var(--color-snow);
-  box-shadow: 0 8px 32px -10px rgb(var(--rgb-purple) / 0.7);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.22),
+    0 8px 32px -10px rgb(var(--rgb-purple) / 0.7);
 }
 
 .btn-magic:hover {
-  box-shadow: 0 12px 40px -8px rgb(var(--rgb-purple) / 0.85);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.22),
+    0 12px 40px -8px rgb(var(--rgb-purple) / 0.85);
 }
 
 /* Ghost */
